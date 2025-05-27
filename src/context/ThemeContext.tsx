@@ -28,6 +28,12 @@ interface ThemeProviderProps {
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [currentTheme, setCurrentTheme] = useState<Theme>(DEFAULT_THEME);
 
+  // Validate theme
+  const isValidTheme = (theme: string): theme is Theme => {
+    const validThemes: Theme[] = ['minimalist', 'retro-arcade', 'storytelling', '3d-interactive', 'ecommerce', 'videography'];
+    return validThemes.includes(theme as Theme);
+  };
+
   // Load theme from localStorage on mount
   useEffect(() => {
     try {
@@ -44,11 +50,21 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, []);
 
-  // Validate theme
-  const isValidTheme = (theme: string): theme is Theme => {
-    const validThemes: Theme[] = ['minimalist', 'retro-arcade', 'storytelling', '3d-interactive', 'ecommerce', 'videography'];
-    return validThemes.includes(theme as Theme);
-  };
+  // Listen for storage events to sync theme across tabs
+  useEffect(() => {
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === THEME_STORAGE_KEY && event.newValue) {
+        const newTheme = event.newValue as Theme;
+        if (isValidTheme(newTheme) && newTheme !== currentTheme) {
+          setCurrentTheme(newTheme);
+          console.log('Theme synced from another tab:', newTheme);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [currentTheme]);
 
   // Get current theme
   const getTheme = (): Theme => {
