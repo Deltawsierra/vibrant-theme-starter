@@ -1,73 +1,95 @@
-# Welcome to your Lovable project
 
-## Project info
+# Multi-Theme Developer Portfolio
 
-**URL**: https://lovable.dev/projects/4248c986-4fe9-490a-83b3-944eb85c0a4f
+A sophisticated developer portfolio website showcasing senior-level full-stack development, UI/UX design, and technical mastery through six distinct, fully isolated themes.
 
-## How can I edit this code?
+## Project Purpose
 
-There are several ways of editing your application.
+This portfolio demonstrates Fortune 500-level development skills through:
+- **Six Radically Distinct Themes**: Each theme represents a different design philosophy and technical approach
+- **Full-Stack Capabilities**: Backend integration, authentication, payments, and AI features
+- **UI/UX Mastery**: Responsive design, accessibility, and user experience optimization
+- **Enterprise-Level Code Quality**: Modular architecture, TypeScript, and maintainable patterns
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4248c986-4fe9-490a-83b3-944eb85c0a4f) and start prompting.
+### Frontend
+- **React 18** with **TypeScript** - Modern component architecture
+- **Vite** - Lightning-fast build tool and development server
+- **Tailwind CSS** - Utility-first styling framework
+- **React Router DOM** - Client-side routing and navigation
 
-Changes made via Lovable will be committed automatically to this repo.
+### Backend & Services
+- **Supabase** - Database, authentication, and real-time features
+- **Stripe** - Payment processing (demo mode)
+- **OpenAI API** - AI-powered features and interactions
+- **OAuth** - Social authentication integration
 
-**Use your preferred IDE**
+### Development Tools
+- **ESLint** - Code quality and consistency
+- **Prettier** - Automated code formatting
+- **TypeScript** - Type safety and developer experience
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Architecture
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+src/
+├── components/     # Shared, theme-agnostic components
+├── pages/         # Core site pages (About, Work, Contact, Showcase)
+├── themes/        # Six isolated theme implementations
+├── assets/        # Global assets and resources
+├── utils/         # Utility functions and helpers
+└── context/       # Global state management
 ```
 
-**Edit a file directly in GitHub**
+### Theme Isolation Philosophy
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Each theme operates in complete isolation with:
+- Own component library and design system
+- Independent color palettes and typography
+- Unique animations and interactions
+- Theme-specific routing overrides
+- Isolated asset management
 
-**Use GitHub Codespaces**
+## Planned Themes
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. **Minimalist** - Clean, typography-focused design
+2. **Retro Arcade** - Vibrant, pixel-art inspired aesthetics  
+3. **Storytelling** - Narrative-driven, immersive experience
+4. **3D Interactive** - Three-dimensional elements and animations
+5. **E-commerce** - Product showcase with shopping features
+6. **Videography** - Media-rich, portfolio-style presentation
 
-## What technologies are used for this project?
+## Development Status
 
-This project is built with:
+🚧 **In Development** - Setting up project foundation and theme architecture
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Getting Started
 
-## How can I deploy this project?
+```bash
+# Install dependencies
+npm install
 
-Simply open [Lovable](https://lovable.dev/projects/4248c986-4fe9-490a-83b3-944eb85c0a4f) and click on Share -> Publish.
+# Start development server
+npm run dev
 
-## Can I connect a custom domain to my Lovable project?
+# Build for production
+npm run build
 
-Yes, you can!
+# Preview production build
+npm run preview
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Code Quality
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This project maintains enterprise-level code standards:
+- Strict TypeScript configuration
+- Comprehensive ESLint rules
+- Automated Prettier formatting
+- Modular, maintainable architecture
+- Performance optimization
+- Accessibility compliance
+
+---
+
+*This portfolio represents a comprehensive demonstration of modern web development capabilities, designed for Fortune 500-level technical evaluation.*
