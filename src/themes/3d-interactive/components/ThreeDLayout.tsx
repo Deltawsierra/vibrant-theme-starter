@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import ThreeDNavigation from './ThreeDNavigation';
 
 interface ThreeDLayoutProps {
   children: React.ReactNode;
@@ -26,37 +27,15 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
         </div>
       )}
 
-      {/* Top Navigation Bar */}
-      <nav className="fixed top-0 left-0 w-full bg-slate-800 bg-opacity-90 backdrop-blur-sm border-b border-slate-700 z-40">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex space-x-8">
-              <div className="text-lg font-bold text-blue-400">3D Portfolio</div>
-              <div className="flex space-x-6">
-                <button className="text-gray-300 hover:text-white transition-colors">About</button>
-                <button className="text-gray-300 hover:text-white transition-colors">Work</button>
-                <button className="text-gray-300 hover:text-white transition-colors">Contact</button>
-                <button className="text-gray-300 hover:text-white transition-colors">Showcase</button>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowMinimap(!showMinimap)}
-                className="px-3 py-1 text-sm bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition-colors"
-              >
-                {showMinimap ? 'Hide Map' : 'Show Map'}
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      {/* Navigation */}
+      <ThreeDNavigation />
 
       {/* Side Control Panel */}
       <div className="fixed left-4 top-24 bg-slate-800 bg-opacity-90 backdrop-blur-sm rounded-lg p-4 z-30 border border-slate-700">
         <div className="space-y-3">
           <button
             onClick={resetCamera}
-            className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
+            className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
             Reset Camera
           </button>
@@ -69,13 +48,20 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
         </div>
       </div>
 
+      {/* Minimap Toggle */}
+      <button
+        onClick={() => setShowMinimap(!showMinimap)}
+        className="fixed top-4 right-4 z-50 px-3 py-1 text-sm bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+      >
+        {showMinimap ? 'Hide Map' : 'Show Map'}
+      </button>
+
       {/* Minimap */}
       {showMinimap && (
         <div className="fixed bottom-4 right-4 w-48 h-32 bg-slate-800 bg-opacity-90 backdrop-blur-sm rounded-lg border border-slate-700 z-30">
           <div className="p-2">
             <div className="text-xs text-gray-400 mb-2">Scene Overview</div>
             <div className="w-full h-20 bg-slate-700 rounded relative">
-              {/* Future: Minimap 3D scene representation */}
               <div className="absolute inset-0 flex items-center justify-center text-xs text-gray-500">
                 Minimap Placeholder
               </div>
@@ -87,9 +73,7 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
       {/* Main 3D Viewport Container */}
       <main className="pt-16 min-h-screen">
         <div className="w-full h-[calc(100vh-4rem)] bg-gradient-to-br from-slate-900 to-slate-800 relative">
-          {/* 3D Scene Container */}
           <div id="threejs-container" className="w-full h-full">
-            {/* Future: Three.js canvas will be rendered here */}
             <div className="w-full h-full flex items-center justify-center">
               <div className="text-center text-gray-400">
                 <div className="text-2xl mb-4">3D Scene Placeholder</div>
@@ -98,7 +82,6 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
             </div>
           </div>
           
-          {/* Content Overlay */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="pointer-events-auto">
               {children}
@@ -106,11 +89,6 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
           </div>
         </div>
       </main>
-
-      {/* Mobile/Low-end Fallback Indicator */}
-      <div className="hidden" id="fallback-mode">
-        {/* Future: Mobile/low-end device fallback UI */}
-      </div>
     </div>
   );
 };

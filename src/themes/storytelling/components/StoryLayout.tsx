@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import StoryNavigation from './StoryNavigation';
 
 interface StoryLayoutProps {
   children: React.ReactNode;
@@ -8,6 +9,7 @@ interface StoryLayoutProps {
 const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [currentChapter, setCurrentChapter] = useState(1);
+  const [showNavigation, setShowNavigation] = useState(false);
   const totalChapters = 5;
 
   const toggleAudio = () => {
@@ -24,8 +26,19 @@ const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
         ></div>
       </div>
 
+      {/* Navigation Toggle Button */}
+      <button
+        onClick={() => setShowNavigation(!showNavigation)}
+        className="fixed top-4 left-4 z-50 w-12 h-12 bg-amber-200 text-amber-800 rounded-full shadow-lg border-2 border-amber-300 flex items-center justify-center hover:bg-amber-300 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400"
+      >
+        ☰
+      </button>
+
+      {/* Navigation */}
+      <StoryNavigation isVisible={showNavigation} />
+
       {/* Chapter Progress Indicator */}
-      <div className="fixed top-4 left-4 z-50 bg-amber-100 px-4 py-2 rounded-lg shadow-lg border border-amber-300">
+      <div className="fixed top-4 left-20 z-50 bg-amber-100 px-4 py-2 rounded-lg shadow-lg border border-amber-300">
         <div className="text-sm font-medium text-amber-800">
           Chapter {currentChapter} of {totalChapters}
         </div>
@@ -42,7 +55,7 @@ const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
       {/* Floating Audio Toggle */}
       <button
         onClick={toggleAudio}
-        className="fixed top-4 right-4 z-50 w-12 h-12 bg-amber-600 text-white rounded-full shadow-lg border-2 border-amber-700 flex items-center justify-center hover:bg-amber-700 transition-colors"
+        className="fixed top-4 right-4 z-50 w-12 h-12 bg-amber-600 text-white rounded-full shadow-lg border-2 border-amber-700 flex items-center justify-center hover:bg-amber-700 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400"
       >
         {isAudioPlaying ? '⏸' : '▶'}
       </button>
@@ -50,7 +63,6 @@ const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
       {/* Main Story Page Area */}
       <main className="min-h-screen pt-12 pb-8 px-8">
         <div className="max-w-4xl mx-auto">
-          {/* Story page container with gradient background */}
           <div className="bg-gradient-to-br from-amber-50 to-amber-100 shadow-2xl rounded-lg border border-amber-200 min-h-[calc(100vh-120px)] p-12">
             <div className="prose prose-amber prose-lg max-w-none">
               {children}
