@@ -63,7 +63,7 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Placeholder for theme-specific colors (to be added later)
+				// Theme-specific colors
 				theme: {
 					// Future: minimalist colors
 					// Future: retro-arcade colors  
@@ -74,10 +74,10 @@ export default {
 				}
 			},
 			fontFamily: {
-				// Placeholder for theme-specific fonts (to be added later)
-				// Future: minimalist fonts (Magneti)
-				// Future: retro-arcade fonts (pixel fonts)
-				// Future: storytelling fonts (serif fonts)
+				// Theme-specific fonts
+				'magneti': ['Magneti', 'sans-serif'], // Minimalist theme
+				'orbitron': ['Orbitron', 'monospace'], // Retro Arcade theme
+				'crimson': ['Crimson Text', 'serif'], // Storytelling theme
 				// Future: 3d-interactive fonts
 				// Future: ecommerce fonts
 				// Future: videography fonts

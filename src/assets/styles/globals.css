@@ -1,4 +1,7 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -94,17 +97,17 @@
   }
 }
 
-/* Theme-specific class prefixes for future theme implementations */
+/* Theme-specific class prefixes */
 .theme-minimalist {
-  /* Future: Minimalist theme styles */
+  font-family: 'Magneti', sans-serif;
 }
 
 .theme-retro-arcade {
-  /* Future: Retro arcade theme styles */
+  font-family: 'Orbitron', monospace;
 }
 
 .theme-storytelling {
-  /* Future: Storytelling theme styles */
+  font-family: 'Crimson Text', serif;
 }
 
 .theme-3d-interactive {
@@ -117,4 +120,11 @@
 
 .theme-videography {
   /* Future: Videography theme styles */
+}
+
+/* Utility classes for retro arcade grid pattern */
+.bg-grid-pattern {
+  background-image: linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
