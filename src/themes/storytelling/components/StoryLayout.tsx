@@ -15,7 +15,7 @@ const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-amber-50 text-amber-900" style={{ fontFamily: '"Crimson Text", serif' }}>
+    <div className="min-h-screen bg-amber-50 text-amber-900 font-crimson">
       {/* Timeline Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-2 bg-amber-200 z-50">
         <div 
@@ -42,7 +42,7 @@ const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
       {/* Floating Audio Toggle */}
       <button
         onClick={toggleAudio}
-        className="fixed top-4 right-4 z-50 w-12 h-12 bg-amber-600 text-white rounded-full shadow-lg border-2 border-amber-700 flex items-center justify-center"
+        className="fixed top-4 right-4 z-50 w-12 h-12 bg-amber-600 text-white rounded-full shadow-lg border-2 border-amber-700 flex items-center justify-center hover:bg-amber-700 transition-colors"
       >
         {isAudioPlaying ? '⏸' : '▶'}
       </button>
@@ -50,29 +50,14 @@ const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
       {/* Main Story Page Area */}
       <main className="min-h-screen pt-12 pb-8 px-8">
         <div className="max-w-4xl mx-auto">
-          {/* Placeholder for page flip animation container */}
-          <div className="story-page-container bg-white shadow-2xl rounded-lg border border-amber-200 min-h-[calc(100vh-120px)] p-12">
-            {children}
+          {/* Story page container with gradient background */}
+          <div className="bg-gradient-to-br from-amber-50 to-amber-100 shadow-2xl rounded-lg border border-amber-200 min-h-[calc(100vh-120px)] p-12">
+            <div className="prose prose-amber prose-lg max-w-none">
+              {children}
+            </div>
           </div>
         </div>
       </main>
-
-      {/* Story-specific styles for text */}
-      <style jsx>{`
-        .story-page-container {
-          background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-        }
-        .story-page-container p {
-          line-height: 1.8;
-          font-size: 1.125rem;
-          margin-bottom: 1.5rem;
-        }
-        .story-page-container h1, .story-page-container h2, .story-page-container h3 {
-          font-weight: 600;
-          margin-bottom: 1rem;
-          color: #92400e;
-        }
-      `}</style>
     </div>
   );
 };
