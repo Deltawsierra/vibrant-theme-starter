@@ -254,6 +254,49 @@ export default {
 						transform: 'translateX(0)',
 						opacity: '1'
 					}
+				},
+				// New 3D Interactive animations
+				'float': {
+					'0%, 100%': { 
+						transform: 'translateY(0px) rotateX(0deg)',
+						boxShadow: '0 5px 15px 0px rgba(59, 130, 246, 0.1)'
+					},
+					'50%': { 
+						transform: 'translateY(-10px) rotateX(2deg)',
+						boxShadow: '0 25px 25px 0px rgba(59, 130, 246, 0.2)'
+					}
+				},
+				'scan': {
+					'0%': { transform: 'translateY(-100%)' },
+					'100%': { transform: 'translateY(calc(100vh + 100%))' }
+				},
+				'slide': {
+					'0%': { transform: 'translateX(-100%)' },
+					'100%': { transform: 'translateX(100%)' }
+				},
+				// New E-commerce animations
+				'product-hover': {
+					'0%': { transform: 'translateY(0) scale(1)' },
+					'100%': { transform: 'translateY(-4px) scale(1.02)' }
+				},
+				'cart-bounce': {
+					'0%, 20%, 50%, 80%, 100%': { transform: 'translateY(0)' },
+					'40%': { transform: 'translateY(-8px)' },
+					'60%': { transform: 'translateY(-4px)' }
+				},
+				// New Videography animations
+				'curtain-reveal': {
+					'0%': { transform: 'translateX(0%)' },
+					'100%': { transform: 'translateX(-100%)' }
+				},
+				'zoom-in': {
+					'0%': { transform: 'scale(1)' },
+					'100%': { transform: 'scale(1.05)' }
+				},
+				'spotlight': {
+					'0%': { opacity: '0.3' },
+					'50%': { opacity: '0.7' },
+					'100%': { opacity: '0.3' }
 				}
 			},
 			animation: {
@@ -268,7 +311,18 @@ export default {
 				'page-flip': 'page-flip 1.2s ease-in-out',
 				'parallax-float': 'parallax-float 6s ease-in-out infinite',
 				'story-fade-in': 'story-fade-in 0.8s ease-out',
-				'dramatic-slide': 'dramatic-slide 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+				'dramatic-slide': 'dramatic-slide 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+				// New 3D Interactive animations
+				'float': 'float 6s ease-in-out infinite',
+				'scan': 'scan 2s ease-in-out infinite',
+				'slide': 'slide 4s linear infinite',
+				// New E-commerce animations
+				'product-hover': 'product-hover 0.3s ease-out',
+				'cart-bounce': 'cart-bounce 1s ease-in-out',
+				// New Videography animations
+				'curtain-reveal': 'curtain-reveal 0.8s ease-out',
+				'zoom-in': 'zoom-in 0.5s ease-out',
+				'spotlight': 'spotlight 3s ease-in-out infinite'
 			}
 		}
 	},

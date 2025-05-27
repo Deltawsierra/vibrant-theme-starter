@@ -1,31 +1,35 @@
 
 import React, { useState } from 'react';
 import ThreeDNavigation from './ThreeDNavigation';
+import LoadingOverlay from './LoadingOverlay';
+import { useDeviceCapabilities } from './MotionHooks';
 
 interface ThreeDLayoutProps {
   children: React.ReactNode;
 }
 
 const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [showMinimap, setShowMinimap] = useState(true);
+  const { fallbackMode } = useDeviceCapabilities();
 
   const resetCamera = () => {
     console.log('Reset camera position');
     // Future: Reset 3D camera to default position
   };
 
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+  };
+
   return (
     <div className="min-h-screen bg-slate-900 text-white overflow-hidden relative">
       {/* Loading Overlay */}
-      {isLoading && (
-        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto mb-4"></div>
-            <p className="text-blue-400">Loading 3D Environment...</p>
-          </div>
-        </div>
-      )}
+      <LoadingOverlay 
+        isVisible={isLoading} 
+        onComplete={handleLoadingComplete}
+        fallbackMode={fallbackMode}
+      />
 
       {/* Navigation */}
       <ThreeDNavigation />
@@ -45,6 +49,11 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
             <div>Scroll: Zoom</div>
             <div>Arrow Keys: Move</div>
           </div>
+          {fallbackMode && (
+            <div className="text-xs text-yellow-400 bg-yellow-400/10 p-2 rounded">
+              Fallback Mode Active
+            </div>
+          )}
         </div>
       </div>
 
@@ -78,6 +87,11 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
               <div className="text-center text-gray-400">
                 <div className="text-2xl mb-4">3D Scene Placeholder</div>
                 <div className="text-sm">Three.js integration coming in Phase 3</div>
+                {fallbackMode && (
+                  <div className="text-xs text-yellow-400 mt-2">
+                    Running in compatibility mode
+                  </div>
+                )}
               </div>
             </div>
           </div>
