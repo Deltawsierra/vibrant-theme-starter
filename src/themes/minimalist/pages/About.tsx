@@ -2,8 +2,7 @@
 import React from 'react';
 
 const MinimalistAbout = () => {
-  // Minimalist theme About page - content to be added in later phases
-  return null;
+  return <div>Minimalist - About page stub</div>;
 };
 
 export default MinimalistAbout;

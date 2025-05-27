@@ -2,8 +2,7 @@
 import React from 'react';
 
 const VideographyShowcase = () => {
-  // Videography theme Showcase page - content to be added in later phases
-  return null;
+  return <div>Videography - Showcase page stub</div>;
 };
 
 export default VideographyShowcase;

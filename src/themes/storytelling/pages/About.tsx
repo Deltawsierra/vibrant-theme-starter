@@ -2,8 +2,7 @@
 import React from 'react';
 
 const StorytellingAbout = () => {
-  // Storytelling theme About page - content to be added in later phases
-  return null;
+  return <div>Storytelling - About page stub</div>;
 };
 
 export default StorytellingAbout;

@@ -2,8 +2,7 @@
 import React from 'react';
 
 const ThreeDInteractiveWork = () => {
-  // 3D Interactive theme Work page - content to be added in later phases
-  return null;
+  return <div>3D Interactive - Work page stub</div>;
 };
 
 export default ThreeDInteractiveWork;

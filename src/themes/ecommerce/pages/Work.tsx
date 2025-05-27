@@ -2,8 +2,7 @@
 import React from 'react';
 
 const EcommerceWork = () => {
-  // E-commerce theme Work page - content to be added in later phases
-  return null;
+  return <div>E-commerce - Work page stub</div>;
 };
 
 export default EcommerceWork;

@@ -2,8 +2,7 @@
 import React from 'react';
 
 const ThreeDInteractiveContact = () => {
-  // 3D Interactive theme Contact page - content to be added in later phases
-  return null;
+  return <div>3D Interactive - Contact page stub</div>;
 };
 
 export default ThreeDInteractiveContact;

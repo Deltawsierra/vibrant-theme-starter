@@ -2,8 +2,7 @@
 import React from 'react';
 
 const RetroArcadeWork = () => {
-  // Retro Arcade theme Work page - content to be added in later phases
-  return null;
+  return <div>Retro Arcade - Work page stub</div>;
 };
 
 export default RetroArcadeWork;

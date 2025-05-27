@@ -2,8 +2,7 @@
 import React from 'react';
 
 const RetroArcadeAbout = () => {
-  // Retro Arcade theme About page - content to be added in later phases
-  return null;
+  return <div>Retro Arcade - About page stub</div>;
 };
 
 export default RetroArcadeAbout;

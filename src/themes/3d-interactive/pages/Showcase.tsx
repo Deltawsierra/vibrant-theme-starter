@@ -2,8 +2,7 @@
 import React from 'react';
 
 const ThreeDInteractiveShowcase = () => {
-  // 3D Interactive theme Showcase page - content to be added in later phases
-  return null;
+  return <div>3D Interactive - Showcase page stub</div>;
 };
 
 export default ThreeDInteractiveShowcase;
