@@ -2,6 +2,7 @@
 import React, { Suspense } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import themeRegistry from '@/themes';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 interface ThemePageLoaderProps {
   pageName: 'About' | 'Work' | 'Contact' | 'Showcase';
@@ -40,18 +41,20 @@ const ThemePageLoader: React.FC<ThemePageLoaderProps> = ({ pageName }) => {
     }
 
     return (
-      <Suspense 
-        fallback={
-          <div className="min-h-screen flex items-center justify-center">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading page...</p>
+      <ErrorBoundary>
+        <Suspense 
+          fallback={
+            <div className="min-h-screen flex items-center justify-center">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading page...</p>
+              </div>
             </div>
-          </div>
-        }
-      >
-        <PageComponent />
-      </Suspense>
+          }
+        >
+          <PageComponent />
+        </Suspense>
+      </ErrorBoundary>
     );
   } catch (error) {
     console.error('Error loading theme page:', error);
