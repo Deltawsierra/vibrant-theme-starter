@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import VideographyNavigation from './VideographyNavigation';
+import { useVideo } from '../context/VideoContext';
 
 interface VideographyLayoutProps {
   children: React.ReactNode;
@@ -9,11 +10,19 @@ interface VideographyLayoutProps {
 
 const VideographyLayout: React.FC<VideographyLayoutProps> = ({ 
   children, 
-  mode = 'cinematic' 
+  mode: propMode
 }) => {
-  const [currentMode, setCurrentMode] = useState<'cinematic' | 'editorial'>(mode);
-  const [showLeftDrawer, setShowLeftDrawer] = useState(false);
-  const [showRightDrawer, setShowRightDrawer] = useState(false);
+  const { 
+    mode, 
+    setMode, 
+    isLeftDrawerOpen, 
+    isRightDrawerOpen, 
+    toggleLeftDrawer, 
+    toggleRightDrawer 
+  } = useVideo();
+  
+  // Use prop mode if provided, otherwise use context mode
+  const currentMode = propMode || mode;
   const [showLightbox, setShowLightbox] = useState(false);
 
   const cinematicClasses = "bg-black text-white";
@@ -21,18 +30,19 @@ const VideographyLayout: React.FC<VideographyLayoutProps> = ({
 
   const currentClasses = currentMode === 'cinematic' ? cinematicClasses : editorialClasses;
 
-  const toggleMode = () => {
-    setCurrentMode(currentMode === 'cinematic' ? 'editorial' : 'cinematic');
+  const handleModeToggle = () => {
+    const newMode = currentMode === 'cinematic' ? 'editorial' : 'cinematic';
+    setMode(newMode);
   };
 
   return (
     <div className={`min-h-screen ${currentClasses} relative overflow-hidden`}>
       {/* Navigation */}
-      <VideographyNavigation mode={currentMode} onModeToggle={toggleMode} />
+      <VideographyNavigation mode={currentMode} onModeToggle={handleModeToggle} />
 
       {/* Left Drawer */}
       <div className={`fixed left-0 top-0 h-full w-80 transform transition-transform duration-300 z-30 ${
-        showLeftDrawer ? 'translate-x-0' : '-translate-x-full'
+        isLeftDrawerOpen ? 'translate-x-0' : '-translate-x-full'
       } ${
         currentMode === 'cinematic' 
           ? 'bg-gray-900 bg-opacity-95 border-gray-700' 
@@ -60,7 +70,7 @@ const VideographyLayout: React.FC<VideographyLayoutProps> = ({
           </div>
         </div>
         <button
-          onClick={() => setShowLeftDrawer(false)}
+          onClick={toggleLeftDrawer}
           className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center ${
             currentMode === 'cinematic'
               ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
@@ -73,7 +83,7 @@ const VideographyLayout: React.FC<VideographyLayoutProps> = ({
 
       {/* Right Drawer */}
       <div className={`fixed right-0 top-0 h-full w-80 transform transition-transform duration-300 z-30 ${
-        showRightDrawer ? 'translate-x-0' : 'translate-x-full'
+        isRightDrawerOpen ? 'translate-x-0' : 'translate-x-full'
       } ${
         currentMode === 'cinematic' 
           ? 'bg-gray-900 bg-opacity-95 border-gray-700' 
@@ -96,7 +106,7 @@ const VideographyLayout: React.FC<VideographyLayoutProps> = ({
           </div>
         </div>
         <button
-          onClick={() => setShowRightDrawer(false)}
+          onClick={toggleRightDrawer}
           className={`absolute top-4 left-4 w-8 h-8 rounded-full flex items-center justify-center ${
             currentMode === 'cinematic'
               ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
@@ -126,7 +136,7 @@ const VideographyLayout: React.FC<VideographyLayoutProps> = ({
 
       {/* Drawer Toggle Buttons */}
       <button
-        onClick={() => setShowLeftDrawer(true)}
+        onClick={toggleLeftDrawer}
         className={`fixed left-4 top-1/2 transform -translate-y-1/2 w-10 h-16 rounded-r-lg flex items-center justify-center z-20 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 ${
           currentMode === 'cinematic'
             ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
@@ -137,7 +147,7 @@ const VideographyLayout: React.FC<VideographyLayoutProps> = ({
       </button>
 
       <button
-        onClick={() => setShowRightDrawer(true)}
+        onClick={toggleRightDrawer}
         className={`fixed right-4 top-1/2 transform -translate-y-1/2 w-10 h-16 rounded-l-lg flex items-center justify-center z-20 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 ${
           currentMode === 'cinematic'
             ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'

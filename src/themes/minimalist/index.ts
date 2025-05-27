@@ -9,6 +9,7 @@ export const minimalistTheme = {
   Work,
   Contact,
   Showcase,
+  Provider: ({ children }: { children: React.ReactNode }) => <>{children}</>, // No-op provider
 };
 
 export default minimalistTheme;

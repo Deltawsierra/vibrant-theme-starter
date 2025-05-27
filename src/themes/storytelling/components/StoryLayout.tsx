@@ -1,20 +1,20 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import StoryNavigation from './StoryNavigation';
+import { useStoryProgress } from '../context/StoryProgressContext';
 
 interface StoryLayoutProps {
   children: React.ReactNode;
 }
 
 const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const [currentChapter, setCurrentChapter] = useState(1);
-  const [showNavigation, setShowNavigation] = useState(false);
-  const totalChapters = 5;
-
-  const toggleAudio = () => {
-    setIsAudioPlaying(!isAudioPlaying);
-  };
+  const { 
+    progress, 
+    toggleAudio, 
+    getProgressPercentage 
+  } = useStoryProgress();
+  
+  const [showNavigation, setShowNavigation] = React.useState(false);
 
   return (
     <div className="min-h-screen bg-amber-50 text-amber-900 font-crimson">
@@ -22,7 +22,7 @@ const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
       <div className="fixed top-0 left-0 w-full h-2 bg-amber-200 z-50">
         <div 
           className="h-full bg-amber-600 transition-all duration-500"
-          style={{ width: `${(currentChapter / totalChapters) * 100}%` }}
+          style={{ width: `${getProgressPercentage()}%` }}
         ></div>
       </div>
 
@@ -40,13 +40,13 @@ const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
       {/* Chapter Progress Indicator */}
       <div className="fixed top-4 left-20 z-50 bg-amber-100 px-4 py-2 rounded-lg shadow-lg border border-amber-300">
         <div className="text-sm font-medium text-amber-800">
-          Chapter {currentChapter} of {totalChapters}
+          Chapter {progress.currentChapter} of {progress.totalChapters}
         </div>
         <div className="flex space-x-1 mt-1">
-          {Array.from({ length: totalChapters }, (_, i) => (
+          {Array.from({ length: progress.totalChapters }, (_, i) => (
             <div
               key={i}
-              className={`w-2 h-2 rounded-full ${i < currentChapter ? 'bg-amber-600' : 'bg-amber-300'}`}
+              className={`w-2 h-2 rounded-full ${i < progress.currentChapter ? 'bg-amber-600' : 'bg-amber-300'}`}
             ></div>
           ))}
         </div>
@@ -57,7 +57,7 @@ const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
         onClick={toggleAudio}
         className="fixed top-4 right-4 z-50 w-12 h-12 bg-amber-600 text-white rounded-full shadow-lg border-2 border-amber-700 flex items-center justify-center hover:bg-amber-700 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400"
       >
-        {isAudioPlaying ? '⏸' : '▶'}
+        {progress.isAudioPlaying ? '⏸' : '▶'}
       </button>
 
       {/* Main Story Page Area */}

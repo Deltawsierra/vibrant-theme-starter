@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ThreeDNavigation from './ThreeDNavigation';
 import LoadingOverlay from './LoadingOverlay';
 import { useDeviceCapabilities } from './MotionHooks';
+import { useThreeD } from '../context/ThreeDContext';
 
 interface ThreeDLayoutProps {
   children: React.ReactNode;
@@ -10,13 +11,13 @@ interface ThreeDLayoutProps {
 
 const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [showMinimap, setShowMinimap] = useState(true);
   const { fallbackMode } = useDeviceCapabilities();
-
-  const resetCamera = () => {
-    console.log('Reset camera position');
-    // Future: Reset 3D camera to default position
-  };
+  const { 
+    isMinimapVisible, 
+    toggleMinimap, 
+    resetCamera,
+    interactiveObjects 
+  } = useThreeD();
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
@@ -49,6 +50,10 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
             <div>Scroll: Zoom</div>
             <div>Arrow Keys: Move</div>
           </div>
+          <div className="text-xs text-blue-400">
+            <div>Objects: {interactiveObjects.length}</div>
+            <div>Highlighted: {interactiveObjects.filter(obj => obj.isHighlighted).length}</div>
+          </div>
           {fallbackMode && (
             <div className="text-xs text-yellow-400 bg-yellow-400/10 p-2 rounded">
               Fallback Mode Active
@@ -59,20 +64,20 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
 
       {/* Minimap Toggle */}
       <button
-        onClick={() => setShowMinimap(!showMinimap)}
+        onClick={toggleMinimap}
         className="fixed top-4 right-4 z-50 px-3 py-1 text-sm bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
       >
-        {showMinimap ? 'Hide Map' : 'Show Map'}
+        {isMinimapVisible ? 'Hide Map' : 'Show Map'}
       </button>
 
       {/* Minimap */}
-      {showMinimap && (
+      {isMinimapVisible && (
         <div className="fixed bottom-4 right-4 w-48 h-32 bg-slate-800 bg-opacity-90 backdrop-blur-sm rounded-lg border border-slate-700 z-30">
           <div className="p-2">
             <div className="text-xs text-gray-400 mb-2">Scene Overview</div>
             <div className="w-full h-20 bg-slate-700 rounded relative">
               <div className="absolute inset-0 flex items-center justify-center text-xs text-gray-500">
-                Minimap Placeholder
+                {interactiveObjects.length > 0 ? `${interactiveObjects.length} Objects` : 'Minimap Placeholder'}
               </div>
             </div>
           </div>
