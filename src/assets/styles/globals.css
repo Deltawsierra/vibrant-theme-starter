@@ -1,4 +1,3 @@
-
 /* Theme-specific font imports */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
@@ -103,22 +102,28 @@
 
 /* Theme-specific utility classes */
 @layer utilities {
-  /* Minimalist theme utilities */
+  /* Minimalist theme utilities - NO ANIMATIONS */
   .theme-minimalist {
     font-family: 'Magneti', system-ui, sans-serif;
+  }
+  
+  .theme-minimalist * {
+    transition: none !important;
+    animation: none !important;
   }
   
   .minimalist-text-balance {
     text-wrap: balance;
   }
 
-  /* Retro Arcade theme utilities */
+  /* Retro Arcade theme utilities - HEAVY ANIMATIONS */
   .theme-retro-arcade {
     font-family: 'Orbitron', 'Courier New', monospace;
   }
   
   .arcade-neon-glow {
     text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+    animation: neon-pulse 2s ease-in-out infinite;
   }
   
   .arcade-scanlines::before {
@@ -131,15 +136,63 @@
     background: linear-gradient(transparent 50%, rgba(0, 255, 0, 0.03) 50%);
     background-size: 100% 4px;
     pointer-events: none;
+    animation: screen-flicker 0.15s ease-in-out infinite;
+  }
+  
+  .arcade-button {
+    transition: all 0.1s ease;
+    border: 2px solid currentColor;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .arcade-button:hover {
+    animation: neon-glow 0.5s ease-in-out;
+    box-shadow: 0 0 20px currentColor;
+  }
+  
+  .arcade-button:active {
+    animation: pixel-blink 0.1s ease;
   }
 
-  /* Storytelling theme utilities */
+  /* Storytelling theme utilities - ELEGANT ANIMATIONS */
   .theme-storytelling {
     font-family: 'Crimson Text', Georgia, serif;
   }
   
   .story-drop-cap::first-letter {
     @apply text-6xl font-bold text-story-warm-700 float-left mr-2 mt-1 leading-none;
+    animation: story-fade-in 1s ease-out;
+  }
+  
+  .story-page {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+  
+  .story-page-content {
+    backface-visibility: hidden;
+    transition: transform 0.8s ease-in-out;
+  }
+  
+  .story-parallax {
+    will-change: transform;
+  }
+  
+  .story-section {
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .story-timeline-item {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.6s ease-out;
+  }
+  
+  .story-timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+    animation: dramatic-slide 0.8s ease-out;
   }
 
   /* 3D Interactive theme utilities */
@@ -164,6 +217,16 @@
   .video-editorial {
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   }
+  
+  /* Accessibility utilities */
+  @media (prefers-reduced-motion: reduce) {
+    .theme-retro-arcade *,
+    .theme-storytelling * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
 /* Grid pattern for retro arcade */
@@ -171,6 +234,7 @@
   background-image: linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
                     linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
   background-size: 20px 20px;
+  animation: screen-flicker 2s ease-in-out infinite;
 }
 
 /* Pixel art scaling */
@@ -179,4 +243,11 @@
   image-rendering: -webkit-crisp-edges;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+}
+
+/* Storytelling page flip effect */
+.story-book-page {
+  background: linear-gradient(135deg, #faf5eb 0%, #f5f0e6 100%);
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  border: 1px solid #e8dcc0;
 }

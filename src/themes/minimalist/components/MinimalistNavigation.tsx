@@ -13,41 +13,45 @@ const MinimalistNavigation: React.FC = () => {
         <div className="flex space-x-12">
           <Link 
             to="/about" 
-            className={`text-lg font-medium transition-colors ${
+            className={`text-lg font-medium ${
               isActive('/about') 
                 ? 'text-black dark:text-white' 
-                : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                : 'text-gray-600 dark:text-gray-400'
             }`}
+            style={{ transition: 'none' }}
           >
             About
           </Link>
           <Link 
             to="/work" 
-            className={`text-lg font-medium transition-colors ${
+            className={`text-lg font-medium ${
               isActive('/work') 
                 ? 'text-black dark:text-white' 
-                : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                : 'text-gray-600 dark:text-gray-400'
             }`}
+            style={{ transition: 'none' }}
           >
             Work
           </Link>
           <Link 
             to="/contact" 
-            className={`text-lg font-medium transition-colors ${
+            className={`text-lg font-medium ${
               isActive('/contact') 
                 ? 'text-black dark:text-white' 
-                : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                : 'text-gray-600 dark:text-gray-400'
             }`}
+            style={{ transition: 'none' }}
           >
             Contact
           </Link>
           <Link 
             to="/showcase" 
-            className={`text-lg font-medium transition-colors ${
+            className={`text-lg font-medium ${
               isActive('/showcase') 
                 ? 'text-black dark:text-white' 
-                : 'text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white'
+                : 'text-gray-600 dark:text-gray-400'
             }`}
+            style={{ transition: 'none' }}
           >
             Showcase
           </Link>

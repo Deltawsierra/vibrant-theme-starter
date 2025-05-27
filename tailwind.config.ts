@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,7 +62,6 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Theme-specific colors
 				minimalist: {
 					100: '#ffffff',
 					200: '#f8f9fa',
@@ -141,17 +139,15 @@ export default {
 				}
 			},
 			fontFamily: {
-				// Theme-specific fonts
-				'magneti': ['Magneti', 'system-ui', 'sans-serif'], // Minimalist theme
-				'orbitron': ['Orbitron', 'Courier New', 'monospace'], // Retro Arcade theme
-				'crimson': ['Crimson Text', 'Georgia', 'serif'], // Storytelling theme
-				'inter': ['Inter', 'system-ui', 'sans-serif'], // 3D Interactive theme
-				'source-sans': ['Source Sans Pro', 'system-ui', 'sans-serif'], // E-commerce theme
-				'montserrat': ['Montserrat', 'system-ui', 'sans-serif'], // Videography theme
-				'pixel': ['Perfect DOS VGA 437', 'Courier New', 'monospace'] // Retro Arcade pixel font
+				'magneti': ['Magneti', 'system-ui', 'sans-serif'],
+				'orbitron': ['Orbitron', 'Courier New', 'monospace'],
+				'crimson': ['Crimson Text', 'Georgia', 'serif'],
+				'inter': ['Inter', 'system-ui', 'sans-serif'],
+				'source-sans': ['Source Sans Pro', 'system-ui', 'sans-serif'],
+				'montserrat': ['Montserrat', 'system-ui', 'sans-serif'],
+				'pixel': ['Perfect DOS VGA 437', 'Courier New', 'monospace']
 			},
 			spacing: {
-				// Theme-specific spacing
 				'minimalist-lg': '4rem',
 				'arcade-grid': '1.25rem',
 				'story-indent': '2.5rem'
@@ -160,8 +156,8 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)',
-				'arcade': '0', // Sharp corners for arcade
-				'story': '0.25rem' // Subtle rounds for storytelling
+				'arcade': '0',
+				'story': '0.25rem'
 			},
 			keyframes: {
 				'accordion-down': {
@@ -189,12 +185,90 @@ export default {
 						textShadow: '0 0 2px currentColor, 0 0 5px currentColor, 0 0 8px currentColor',
 						opacity: '0.8'
 					}
+				},
+				'pixel-blink': {
+					'0%, 50%': { opacity: '1' },
+					'51%, 100%': { opacity: '0' }
+				},
+				'screen-flicker': {
+					'0%': { opacity: '1' },
+					'98%': { opacity: '1' },
+					'99%': { opacity: '0.96' },
+					'100%': { opacity: '1' }
+				},
+				'neon-glow': {
+					'0%': { 
+						boxShadow: '0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor, 0 0 20px currentColor' 
+					},
+					'50%': { 
+						boxShadow: '0 0 2px currentColor, 0 0 5px currentColor, 0 0 8px currentColor, 0 0 12px currentColor' 
+					},
+					'100%': { 
+						boxShadow: '0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor, 0 0 20px currentColor' 
+					}
+				},
+				'arcade-entrance': {
+					'0%': { 
+						transform: 'scale(0) rotate(180deg)',
+						opacity: '0'
+					},
+					'50%': {
+						transform: 'scale(1.1) rotate(90deg)',
+						opacity: '0.8'
+					},
+					'100%': { 
+						transform: 'scale(1) rotate(0deg)',
+						opacity: '1'
+					}
+				},
+				'page-turn': {
+					'0%': { transform: 'rotateY(0deg)' },
+					'50%': { transform: 'rotateY(-90deg)' },
+					'100%': { transform: 'rotateY(-180deg)' }
+				},
+				'page-flip': {
+					'0%': { transform: 'rotateY(0deg)', zIndex: '2' },
+					'50%': { transform: 'rotateY(90deg)', zIndex: '2' },
+					'100%': { transform: 'rotateY(180deg)', zIndex: '1' }
+				},
+				'parallax-float': {
+					'0%, 100%': { transform: 'translateY(0px)' },
+					'50%': { transform: 'translateY(-10px)' }
+				},
+				'story-fade-in': {
+					'0%': { 
+						opacity: '0',
+						transform: 'translateY(30px)'
+					},
+					'100%': { 
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'dramatic-slide': {
+					'0%': { 
+						transform: 'translateX(-100%)',
+						opacity: '0'
+					},
+					'100%': { 
+						transform: 'translateX(0)',
+						opacity: '1'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'neon-pulse': 'neon-pulse 2s ease-in-out infinite'
+				'neon-pulse': 'neon-pulse 2s ease-in-out infinite',
+				'pixel-blink': 'pixel-blink 1s step-start infinite',
+				'screen-flicker': 'screen-flicker 0.15s ease-in-out infinite',
+				'neon-glow': 'neon-glow 2s ease-in-out infinite alternate',
+				'arcade-entrance': 'arcade-entrance 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+				'page-turn': 'page-turn 1.5s ease-in-out',
+				'page-flip': 'page-flip 1.2s ease-in-out',
+				'parallax-float': 'parallax-float 6s ease-in-out infinite',
+				'story-fade-in': 'story-fade-in 0.8s ease-out',
+				'dramatic-slide': 'dramatic-slide 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
 			}
 		}
 	},
