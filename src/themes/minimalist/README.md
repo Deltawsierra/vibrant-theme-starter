@@ -1,66 +1,77 @@
 
 # Minimalist Theme
 
-## Design Intent
-Clean, typography-focused design emphasizing whitespace, simplicity, and elegance. This theme demonstrates mastery of content hierarchy, spacing, and minimal aesthetic principles.
+Clean, typography-focused design emphasizing content over decoration.
 
-## Color Palette
-- **Primary**: Monochromatic grayscale scheme
-- **Accent**: Single accent color (subtle blue or green)
-- **Background**: Pure white and light grays
-- **Text**: High contrast blacks and dark grays
-- **Maximum 3 colors** in the entire palette
+## Design Philosophy
+- **Typography First**: Content and readability are paramount
+- **Grayscale Palette**: Only black, white, and gray tones
+- **Minimal Interactions**: Subtle hover states and transitions
+- **Accessibility**: WCAG 2.1 AA compliant (optional for this theme)
 
-## Typography
-- **Primary Font**: Magneti (MyFonts) - Clean, modern typeface
-- **Hierarchy**: Clear size and weight distinctions
-- **Spacing**: Generous line-height and letter-spacing
-- **Focus**: Content readability and visual hierarchy
+## Layout Structure
 
-## Design Constraints
-- Accessibility is optional for this theme (focus on aesthetics)
-- All images and logos must be converted to grayscale
+### MinimalistLayout.tsx
+**Purpose**: Main layout wrapper providing consistent structure and dark mode functionality
+
+**Features Implemented**:
+- ✅ Dark/light mode toggle (fixed top-right)
+- ✅ Horizontal navigation integration
+- ✅ Clean footer with theme attribution
+- ✅ Font-magneti typography (pending font loading)
+
+**TODO**:
+- [ ] Load and integrate Magneti font from MyFonts
+- [ ] Add subtle page transitions
+- [ ] Implement proper focus management
+- [ ] Add reading time estimates
+
+### MinimalistNavigation.tsx
+**Purpose**: Clean horizontal navigation with active state indicators
+
+**Features Implemented**:
+- ✅ Horizontal link layout
+- ✅ Active page highlighting
+- ✅ Dark mode support
+- ✅ Keyboard navigation
+
+**TODO**:
+- [ ] Add breadcrumb navigation for deeper pages
+- [ ] Implement smooth scrolling to sections
+- [ ] Add skip-to-content link
+
+## Pages
+All pages follow the format: "Minimalist – [Page Name]"
+
+### Constraints
+- Only use grayscale colors (#000000 to #FFFFFF)
+- Typography-focused content hierarchy
 - Minimal decorative elements
-- Maximum whitespace utilization
-- Typography-driven layouts only
+- Clean whitespace management
 
-## Implementation Status
-
-### Phase 2 Complete ✅
-- [x] Page stubs created (About, Work, Contact, Showcase)
-- [x] Theme registration and dynamic loading
-- [x] Basic component structure
-
-### Phase 3 - To Do
-- [ ] Implement Magneti font integration
-- [ ] Create typography scale and spacing system
-- [ ] Design minimal navigation component
-- [ ] Build content-focused page layouts
-- [ ] Implement subtle micro-animations
-- [ ] Add grayscale image processing
-- [ ] Create minimal form components
-
-## Components (Planned)
-- Minimal, clean interface elements
-- Typography-driven card layouts
-- Subtle hover states and transitions
-- Clean form inputs with focus states
-- Minimal loading states
-- Content-first image galleries
-
-## Technical Notes
-- Font loading optimization for Magneti typeface
-- CSS Grid for clean, structured layouts
-- Minimal use of shadows and borders
-- Performance-first image handling
-- SEO-optimized content structure
-
-## File Structure
+### Content Structure (Placeholder)
 ```
-minimalist/
-├── pages/           # Theme page implementations
-├── components/      # Minimal UI components
-├── assets/          # Grayscale images and Magneti font
-├── index.ts         # Theme export
-└── README.md        # This file
+About: Personal introduction, skills, philosophy
+Work: Project showcase with detailed descriptions
+Contact: Simple contact form and information
+Showcase: Featured work with case studies
+```
+
+## Accessibility Notes
+- High contrast ratios maintained
+- Focus indicators visible
+- Semantic HTML structure
+- Screen reader friendly
+
+## Development Notes
+```typescript
+// Dark mode implementation
+const [isDarkMode, setIsDarkMode] = useState(false);
+
+// Theme-specific color classes
+const colors = {
+  background: isDarkMode ? 'bg-gray-900' : 'bg-white',
+  text: isDarkMode ? 'text-gray-100' : 'text-gray-900',
+  accent: isDarkMode ? 'text-gray-400' : 'text-gray-600'
+};
 ```

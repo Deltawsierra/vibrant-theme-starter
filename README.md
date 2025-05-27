@@ -38,6 +38,7 @@ src/
 ├── components/           # Shared, theme-agnostic components
 │   ├── ThemeSelector.tsx    # Theme selection interface
 │   ├── ThemePageLoader.tsx  # Dynamic theme component loader
+│   ├── ThemeSwitcher.tsx    # Global theme switcher dropdown
 │   ├── ErrorBoundary.tsx    # Error handling wrapper
 │   └── Navigation.tsx       # Site navigation
 ├── pages/               # Core site pages (About, Work, Contact, Showcase)
@@ -50,8 +51,13 @@ src/
 │   └── videography/        # Media-rich portfolio
 ├── context/             # Global state management
 │   └── ThemeContext.tsx    # Theme persistence and switching
+├── utils/               # Utility functions and hooks
+│   ├── useResponsive.ts    # Responsive breakpoint utilities
+│   ├── useLocalStorage.ts  # Storage management hooks
+│   ├── useThemeUtils.ts    # Theme-specific utilities
+│   └── storage.ts          # Storage helper functions
 ├── assets/              # Global assets and resources
-└── utils/               # Utility functions and helpers
+└── hooks/               # Shared React hooks
 ```
 
 ## Core Components
@@ -67,6 +73,12 @@ Landing page component for theme selection:
 - Accessible button grid for all six themes
 - Current theme detection with options to keep or change
 - Success feedback and automatic navigation
+
+### ThemeSwitcher
+Global dropdown component for theme switching:
+- Visually neutral design that works with any theme
+- Accessible keyboard navigation
+- Available from any page
 
 ### ThemePageLoader
 Dynamic component loader with lazy loading:
@@ -93,31 +105,68 @@ Each theme operates in complete isolation with:
 
 ## Available Themes
 
-1. **Minimalist** - Clean, typography-focused design with grayscale palette
-2. **Retro Arcade** - Vibrant, pixel-art inspired aesthetics with neon colors
-3. **Storytelling** - Narrative-driven, immersive chapter-based experience
-4. **3D Interactive** - Three-dimensional elements with depth and interactivity
-5. **E-commerce** - Product showcase with shopping cart and payment integration
-6. **Videography** - Media-rich, cinematic portfolio presentation
+### 1. Minimalist
+- **Layout**: Clean typography-focused design with optional dark mode
+- **Navigation**: Horizontal links with subtle hover states
+- **Features**: Dark/light mode toggle, grayscale palette
+- **Status**: ✅ Layout and navigation implemented
+
+### 2. Retro Arcade
+- **Layout**: Neon colors, pixel-art aesthetic, game-like interface
+- **Navigation**: Button-style links with score display
+- **Features**: Mute toggle, animated backgrounds
+- **Status**: ✅ Layout and navigation implemented
+
+### 3. Storytelling
+- **Layout**: Chapter-based narrative structure with timeline
+- **Navigation**: Chapter navigation with progress indicators
+- **Features**: Immersive reading experience, bookmark system
+- **Status**: ✅ Layout and navigation implemented
+
+### 4. 3D Interactive
+- **Layout**: Fixed overlays over 3D viewport container
+- **Navigation**: Floating controls with minimap and camera reset
+- **Features**: Mobile fallback, loading animations
+- **Status**: ✅ Layout shell implemented (3D logic pending)
+
+### 5. E-commerce
+- **Layout**: Product-focused with sticky navigation and mobile cart
+- **Navigation**: Category links, search bar, user account area
+- **Features**: Newsletter modals, responsive design
+- **Status**: ✅ Layout and navigation implemented
+
+### 6. Videography
+- **Layout**: Cinematic with floating navigation and video spotlight
+- **Navigation**: Mode-switching between cinematic and editorial
+- **Features**: Video lightbox, drawer controls
+- **Status**: ✅ Layout and navigation implemented
+
+## Utility Functions
+
+### Theme-Agnostic Hooks
+- `useResponsive()` - Breakpoint detection and viewport dimensions
+- `useLocalStorage()` - Type-safe localStorage management
+- `useSessionStorage()` - Session storage utilities
+- `useThemeUtils()` - Theme-specific helpers and utilities
+- `useThemeValue()` - Conditional rendering based on theme
 
 ## Development Status
 
-### Phase 2 Complete ✅
-- [x] Theme context and persistence system
-- [x] Dynamic theme/page loading architecture
-- [x] Error boundary implementation
-- [x] Landing page theme selector
-- [x] All theme page stubs created
-- [x] Cross-tab theme synchronization
-- [x] Comprehensive error handling
+### Phase 3 Complete ✅
+- [x] All theme layouts and navigation implemented
+- [x] Theme-specific visual isolation achieved
+- [x] Global ThemeSwitcher component
+- [x] Utility hooks for responsive design and storage
+- [x] Comprehensive documentation
 
-### Phase 3 - Next Steps
-- [ ] Minimalist theme full implementation
-- [ ] Retro Arcade theme development
-- [ ] Advanced theme features and animations
-- [ ] Backend integration (Supabase)
-- [ ] Authentication system
-- [ ] Payment processing (Stripe)
+### Phase 4 - Next Steps
+- [ ] **TODO**: Real content and assets for each theme
+- [ ] **TODO**: Advanced animations and interactions
+- [ ] **TODO**: Backend integration (Supabase)
+- [ ] **TODO**: Authentication system
+- [ ] **TODO**: Payment processing (Stripe)
+- [ ] **TODO**: 3D implementation for interactive theme
+- [ ] **TODO**: Video player for videography theme
 
 ## Getting Started
 
@@ -140,15 +189,18 @@ npm run preview
 ### Adding a New Theme
 1. Create theme folder: `/src/themes/[theme-name]/`
 2. Add required page components: `About.tsx`, `Work.tsx`, `Contact.tsx`, `Showcase.tsx`
-3. Export theme in `/src/themes/[theme-name]/index.ts`
-4. Register theme in `/src/themes/index.ts`
-5. Update theme type in `/src/context/ThemeContext.tsx`
+3. Create `Layout.tsx` and `Navigation.tsx` components
+4. Export theme in `/src/themes/[theme-name]/index.ts`
+5. Register theme in `/src/themes/index.ts`
+6. Update theme type in `/src/context/ThemeContext.tsx`
 
 ### Theme Structure
 ```
 themes/[theme-name]/
 ├── pages/           # Theme-specific page implementations
 ├── components/      # Theme-specific reusable components
+│   ├── Layout.tsx      # Main layout wrapper
+│   └── Navigation.tsx  # Theme navigation component
 ├── assets/          # Theme-specific images, fonts, etc.
 ├── index.ts         # Theme export configuration
 └── README.md        # Theme documentation
