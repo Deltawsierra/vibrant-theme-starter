@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,25 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Placeholder for theme-specific colors (to be added later)
+				theme: {
+					// Future: minimalist colors
+					// Future: retro-arcade colors  
+					// Future: storytelling colors
+					// Future: 3d-interactive colors
+					// Future: ecommerce colors
+					// Future: videography colors
 				}
+			},
+			fontFamily: {
+				// Placeholder for theme-specific fonts (to be added later)
+				// Future: minimalist fonts (Magneti)
+				// Future: retro-arcade fonts (pixel fonts)
+				// Future: storytelling fonts (serif fonts)
+				// Future: 3d-interactive fonts
+				// Future: ecommerce fonts
+				// Future: videography fonts
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
