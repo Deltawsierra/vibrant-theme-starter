@@ -1,6 +1,10 @@
 
+/* Theme-specific font imports */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -97,34 +101,82 @@
   }
 }
 
-/* Theme-specific class prefixes */
-.theme-minimalist {
-  font-family: 'Magneti', sans-serif;
+/* Theme-specific utility classes */
+@layer utilities {
+  /* Minimalist theme utilities */
+  .theme-minimalist {
+    font-family: 'Magneti', system-ui, sans-serif;
+  }
+  
+  .minimalist-text-balance {
+    text-wrap: balance;
+  }
+
+  /* Retro Arcade theme utilities */
+  .theme-retro-arcade {
+    font-family: 'Orbitron', 'Courier New', monospace;
+  }
+  
+  .arcade-neon-glow {
+    text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+  }
+  
+  .arcade-scanlines::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(transparent 50%, rgba(0, 255, 0, 0.03) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+  }
+
+  /* Storytelling theme utilities */
+  .theme-storytelling {
+    font-family: 'Crimson Text', Georgia, serif;
+  }
+  
+  .story-drop-cap::first-letter {
+    @apply text-6xl font-bold text-story-warm-700 float-left mr-2 mt-1 leading-none;
+  }
+
+  /* 3D Interactive theme utilities */
+  .theme-3d-interactive {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  /* E-commerce theme utilities */
+  .theme-ecommerce {
+    font-family: 'Source Sans Pro', system-ui, sans-serif;
+  }
+
+  /* Videography theme utilities */
+  .theme-videography {
+    font-family: 'Montserrat', system-ui, sans-serif;
+  }
+  
+  .video-cinematic {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+  }
+  
+  .video-editorial {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  }
 }
 
-.theme-retro-arcade {
-  font-family: 'Orbitron', monospace;
-}
-
-.theme-storytelling {
-  font-family: 'Crimson Text', serif;
-}
-
-.theme-3d-interactive {
-  /* Future: 3D interactive theme styles */
-}
-
-.theme-ecommerce {
-  /* Future: E-commerce theme styles */
-}
-
-.theme-videography {
-  /* Future: Videography theme styles */
-}
-
-/* Utility classes for retro arcade grid pattern */
+/* Grid pattern for retro arcade */
 .bg-grid-pattern {
   background-image: linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
                     linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
   background-size: 20px 20px;
+}
+
+/* Pixel art scaling */
+.pixel-art {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
