@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useState, useCallback } from 'react';
 
 export interface StoryProgress {
   currentChapter: number;
@@ -7,6 +7,7 @@ export interface StoryProgress {
   sectionsCompleted: string[];
   isAudioPlaying: boolean;
   bookmarkPages: number[];
+  currentSection: string;
 }
 
 interface StoryProgressContextType {
@@ -17,9 +18,11 @@ interface StoryProgressContextType {
   addBookmark: (page: number) => void;
   removeBookmark: (page: number) => void;
   getProgressPercentage: () => number;
+  completedSections: string[];
+  setCurrentSection: (sectionId: string) => void;
 }
 
-const StoryProgressContext = createContext<StoryProgressContextType | undefined>(undefined);
+export const StoryProgressContext = createContext<StoryProgressContextType | undefined>(undefined);
 
 interface StoryProgressProviderProps {
   children: React.ReactNode;
@@ -37,7 +40,8 @@ export const StoryProgressProvider: React.FC<StoryProgressProviderProps> = ({
       totalChapters,
       sectionsCompleted: [],
       isAudioPlaying: false,
-      bookmarkPages: []
+      bookmarkPages: [],
+      currentSection: 'about'
     };
   });
 
@@ -48,6 +52,10 @@ export const StoryProgressProvider: React.FC<StoryProgressProviderProps> = ({
 
   const setCurrentChapter = useCallback((chapter: number) => {
     saveProgress({ ...progress, currentChapter: chapter });
+  }, [progress, saveProgress]);
+
+  const setCurrentSection = useCallback((sectionId: string) => {
+    saveProgress({ ...progress, currentSection: sectionId });
   }, [progress, saveProgress]);
 
   const toggleAudio = useCallback(() => {
@@ -86,11 +94,13 @@ export const StoryProgressProvider: React.FC<StoryProgressProviderProps> = ({
   const contextValue: StoryProgressContextType = {
     progress,
     setCurrentChapter,
+    setCurrentSection,
     toggleAudio,
     markSectionCompleted,
     addBookmark,
     removeBookmark,
-    getProgressPercentage
+    getProgressPercentage,
+    completedSections: progress.sectionsCompleted
   };
 
   return (
@@ -98,12 +108,4 @@ export const StoryProgressProvider: React.FC<StoryProgressProviderProps> = ({
       {children}
     </StoryProgressContext.Provider>
   );
-};
-
-export const useStoryProgress = (): StoryProgressContextType => {
-  const context = useContext(StoryProgressContext);
-  if (!context) {
-    throw new Error('useStoryProgress must be used within a StoryProgressProvider');
-  }
-  return context;
 };

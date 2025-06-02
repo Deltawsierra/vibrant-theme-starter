@@ -14,6 +14,7 @@ const ProgressTimeline: React.FC = () => {
     progress, 
     getProgressPercentage, 
     setCurrentChapter,
+    setCurrentSection,
     completedSections 
   } = useStoryProgress();
 
@@ -31,6 +32,7 @@ const ProgressTimeline: React.FC = () => {
     
     if (canNavigate) {
       setCurrentChapter(index + 1);
+      setCurrentSection(sectionId);
       // Navigate to section - would integrate with router in full implementation
       console.log(`Navigating to section: ${sectionId}`);
     }
