@@ -1,76 +1,106 @@
 
 # Retro Arcade Theme
 
-## Design Intent
-Vibrant, pixel-art inspired aesthetics capturing the essence of 80s/90s arcade games. This theme showcases mastery of high-energy design, animations, and nostalgic user experiences.
+Vibrant, pixel-art inspired design with authentic 80s arcade aesthetics.
 
-## Color Palette
-- **Primary**: Electric blue (#00FFFF), Hot pink (#FF1493), Lime green (#32CD32)
-- **Secondary**: Purple (#8A2BE2), Orange (#FF4500), Yellow (#FFD700)
-- **Background**: Deep space blues and cosmic purples
-- **Effects**: Neon glows, gradients, and color cycling
-- **High contrast combinations** for maximum visual impact
+## Design Philosophy
+- **Nostalgic Gaming**: Authentic 8-bit/16-bit arcade experience
+- **Neon Color Palette**: Electric blues, greens, magentas, and yellows
+- **Pixel-Perfect Typography**: Orbitron font with pixelated elements
+- **Motion & Effects**: Scanlines, glows, and screen flicker animations
 
-## Typography
-- **Primary**: Pixel fonts and bitmap-style typefaces
-- **Secondary**: Bold, chunky letterforms
-- **Effects**: Glitch effects, neon outlines
-- **Style**: Retro gaming aesthetic with digital readouts
+## Audio Implementation
 
-## Design Constraints
-- Accessibility is secondary to "arcade chaos" aesthetic
-- Heavy use of animations and visual effects
-- Nostalgic gaming references throughout
-- High energy, dynamic layouts
-- Sound effects integration (future enhancement)
+### Sound Effects (SFX)
+All sound effects are placeholders and need to be replaced with royalty-free or CC-licensed audio:
 
-## Implementation Status
+**Required SFX Files** (to be added to `/src/themes/retro-arcade/assets/sfx/`):
+- `coin-insert.wav` - Classic arcade coin insertion sound
+- `button-press.wav` - Menu button press/selection
+- `menu-navigate.wav` - Navigation between menu items
+- `page-transition.wav` - Page/room transitions
+- `error.wav` - Error/invalid action sound
+- `success.wav` - Successful action completion
+- `power-up.wav` - Achievement/power-up collection
+- `game-over.wav` - Game over/failure sound
 
-### Phase 2 Complete ✅
-- [x] Page stubs created (About, Work, Contact, Showcase)
-- [x] Theme registration and dynamic loading
-- [x] Basic component structure
+**Recommended Sources**:
+- [Freesound.org](https://freesound.org) - CC-licensed audio
+- [Zapsplat](https://zapsplat.com) - Royalty-free arcade sounds
+- [8-bit Music Maker](https://www.8bitmusicmaker.com) - Custom retro sounds
 
-### Phase 3 - To Do
-- [ ] Implement pixel art design system
-- [ ] Create neon glow and glitch effects
-- [ ] Build arcade-style navigation
-- [ ] Design pixel art button components
-- [ ] Add scrolling backgrounds and parallax
-- [ ] Implement color cycling animations
-- [ ] Create retro loading animations
-- [ ] Add 8-bit style form components
+### Background Music
+Background music should loop seamlessly and match the 80s arcade aesthetic:
 
-## Components (Planned)
-- Pixel-art style buttons with hover effects
-- Glitch text animations
-- Arcade cabinet-inspired layouts
-- Neon border effects
-- Retro progress bars and loading screens
-- Gaming-inspired navigation menus
-- High-score style data displays
+**Required Music Files** (to be added to `/src/themes/retro-arcade/assets/music/`):
+- `background.mp3` - Main theme loop (synthwave/chiptune style)
+- `menu.mp3` - Menu/navigation background music
+- `game-room.mp3` - Individual game room themes
 
-## Visual Effects
-- CSS animations for glitch effects
-- Neon glow shadows and borders
-- Color cycling gradients
-- Pixel art scaling and effects
-- Parallax scrolling backgrounds
-- Matrix-style text effects
+**Music Requirements**:
+- Format: MP3 or OGG for web compatibility
+- Loop-friendly (seamless start/end)
+- 80s synthwave or chiptune style
+- Volume normalized to prevent audio spikes
 
-## Technical Notes
-- CSS custom properties for neon colors
-- Keyframe animations for glitch effects
-- Canvas elements for advanced pixel effects
-- Performance optimization for heavy animations
-- Mobile-responsive pixel scaling
+### Accessibility Features
+- All audio controls include ARIA labels
+- Keyboard navigation supported for all audio controls
+- Visual indicators accompany audio feedback
+- Mute controls persist across sessions
+- Volume controls have clear min/max indicators
 
-## File Structure
+### Implementation Notes
+```typescript
+// Audio files should be imported as:
+import coinSound from '../assets/sfx/coin-insert.wav';
+import backgroundMusic from '../assets/music/background.mp3';
+
+// Volume levels:
+// SFX: 0.7 (default), range 0.0-1.0
+// Music: 0.3 (default), range 0.0-1.0
 ```
-retro-arcade/
-├── pages/           # Theme page implementations
-├── components/      # Arcade-style UI components
-├── assets/          # Pixel art, neon textures, fonts
-├── index.ts         # Theme export
-└── README.md        # This file
+
+### Motion & Animation Controls
+- Motion warning modal on first visit
+- All animations can be disabled via settings
+- Scanlines and glow effects are toggleable
+- Fallback to static design for reduced motion preference
+
+## Layout Structure
+
+### ArcadeLayout.tsx
+**Purpose**: Main layout with arcade room atmosphere and persistent audio controls
+
+**Features Implemented**:
+- ✅ Motion warning modal with accessibility
+- ✅ Persistent audio controls (SFX + Music)
+- ✅ Background scanlines and effects
+- ✅ Arcade carpet footer with scrolling text
+
+### AudioControls.tsx
+**Purpose**: Floating audio control panel for SFX and music
+
+**Features Implemented**:
+- ✅ SFX mute/volume controls
+- ✅ Background music play/pause/mute
+- ✅ Volume sliders with accessibility
+- ✅ Persistent settings via localStorage
+
+## Game Components (Scaffolded)
+- Mini-game mounting system
+- RPG stat cards for portfolio items
+- Easter egg/collectibles tracking
+- High score persistence
+
+## Development Notes
+```typescript
+// Theme context usage:
+const { settings, playSFX, toggleScanlines } = useArcade();
+
+// Audio hook usage:
+const { playBackgroundMusic, toggleMusic, isMusicPlaying } = useArcadeAudio();
 ```
+
+## Audio Licensing
+**IMPORTANT**: All placeholder audio must be replaced with properly licensed content before production deployment. Current implementation logs audio actions to console for development purposes.

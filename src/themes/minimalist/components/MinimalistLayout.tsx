@@ -1,31 +1,28 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import MinimalistNavigation from './MinimalistNavigation';
+import { useDarkMode } from '../hooks/useDarkMode';
 
 interface MinimalistLayoutProps {
   children: React.ReactNode;
 }
 
 const MinimalistLayout: React.FC<MinimalistLayoutProps> = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   return (
     <div className={`min-h-screen font-magneti ${isDarkMode ? 'bg-gray-900 text-gray-100 dark' : 'bg-white text-gray-900'}`}>
       {/* Navigation */}
-      <MinimalistNavigation />
+      <MinimalistNavigation isDarkMode={isDarkMode} />
 
       {/* Dark Mode Toggle - NO ANIMATIONS */}
       <div className="fixed top-6 right-8 z-50">
         <button
           onClick={toggleDarkMode}
-          className={`px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-400 rounded ${
-            isDarkMode ? 'bg-gray-700 text-gray-200' : 'bg-gray-200 text-gray-800'
+          className={`px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-400 ${
+            isDarkMode ? 'bg-gray-700 text-gray-200 border border-gray-600' : 'bg-gray-200 text-gray-800 border border-gray-300'
           }`}
-          style={{ transition: 'none' }}
+          aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
         >
           {isDarkMode ? 'Light' : 'Dark'}
         </button>
