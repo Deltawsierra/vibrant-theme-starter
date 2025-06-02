@@ -1,4 +1,5 @@
 
+import React from 'react';
 import About from './pages/About';
 import Work from './pages/Work';
 import Contact from './pages/Contact';
@@ -9,7 +10,7 @@ export const minimalistTheme = {
   Work,
   Contact,
   Showcase,
-  Provider: ({ children }: { children: React.ReactNode }) => <>{children}</>, // No-op provider
+  Provider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children), // No-op provider
 };
 
 export default minimalistTheme;
