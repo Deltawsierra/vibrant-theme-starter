@@ -1,7 +1,8 @@
 
 import React from 'react';
 import StoryNavigation from './StoryNavigation';
-import { StoryProgressProvider, useStoryProgress } from '../context/StoryProgressContext';
+import { StoryProgressProvider } from '../context/StoryProgressContext';
+import { useStoryProgress } from '../hooks/useStoryProgress';
 
 interface StoryLayoutProps {
   children: React.ReactNode;
