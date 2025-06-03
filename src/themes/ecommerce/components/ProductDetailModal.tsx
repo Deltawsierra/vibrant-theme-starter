@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Product } from './ProductCard';
-import { useShoppingCart } from '../context/ShoppingContext';
+import { useShopping } from '../context/ShoppingContext';
 
 interface ProductDetailModalProps {
   product: Product;
@@ -10,7 +10,7 @@ interface ProductDetailModalProps {
 }
 
 const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, isOpen, onClose }) => {
-  const { addToCart } = useShoppingCart();
+  const { addToCart } = useShopping();
   const [selectedColor, setSelectedColor] = useState(product.variants.colors[0] || '');
   const [selectedSize, setSelectedSize] = useState(product.variants.sizes[0] || '');
   const [quantity, setQuantity] = useState(1);

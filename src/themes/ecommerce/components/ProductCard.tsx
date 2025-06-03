@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useShoppingCart } from '../context/ShoppingContext';
+import { useShopping } from '../context/ShoppingContext';
 
 export interface Product {
   id: string;
@@ -22,7 +22,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails }) => {
-  const { addToCart } = useShoppingCart();
+  const { addToCart } = useShopping();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();

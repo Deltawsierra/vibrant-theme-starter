@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useShoppingCart } from '../context/ShoppingContext';
+import { useShopping } from '../context/ShoppingContext';
 
 interface ShoppingCartProps {
   isOpen: boolean;
@@ -9,13 +9,13 @@ interface ShoppingCartProps {
 
 const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
   const { 
-    items, 
+    cartItems, 
     updateQuantity, 
     removeFromCart, 
     clearCart, 
-    getTotalItems, 
-    getTotalPrice 
-  } = useShoppingCart();
+    getCartItemCount, 
+    getCartTotal 
+  } = useShopping();
 
   if (!isOpen) return null;
 
@@ -33,7 +33,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
       <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-hidden flex flex-col">
         <div className="flex justify-between items-center p-4 border-b">
           <h2 className="text-xl font-bold text-gray-900">
-            Shopping Cart ({getTotalItems()})
+            Shopping Cart ({getCartItemCount()})
           </h2>
           <button
             onClick={onClose}
@@ -45,14 +45,14 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
         </div>
         
         <div className="flex-1 overflow-y-auto p-4">
-          {items.length === 0 ? (
+          {cartItems.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               Your cart is empty
             </div>
           ) : (
             <div className="space-y-4">
-              {items.map((item) => (
-                <div key={`${item.id}-${item.selectedVariants.color}-${item.selectedVariants.size}`} className="flex space-x-3 border-b pb-4">
+              {cartItems.map((item) => (
+                <div key={`${item.id}-${item.selectedVariants?.color}-${item.selectedVariants?.size}`} className="flex space-x-3 border-b pb-4">
                   <img 
                     src={item.image || "/placeholder.svg"} 
                     alt={item.name}
@@ -62,13 +62,13 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
                   <div className="flex-1 min-w-0">
                     <h4 className="font-medium text-gray-900 truncate">{item.name}</h4>
                     <div className="text-sm text-gray-600">
-                      {item.selectedVariants.color && (
+                      {item.selectedVariants?.color && (
                         <span>Color: {item.selectedVariants.color}</span>
                       )}
-                      {item.selectedVariants.color && item.selectedVariants.size && (
+                      {item.selectedVariants?.color && item.selectedVariants?.size && (
                         <span className="mx-1">•</span>
                       )}
-                      {item.selectedVariants.size && (
+                      {item.selectedVariants?.size && (
                         <span>Size: {item.selectedVariants.size}</span>
                       )}
                     </div>
@@ -103,11 +103,11 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({ isOpen, onClose }) => {
           )}
         </div>
         
-        {items.length > 0 && (
+        {cartItems.length > 0 && (
           <div className="border-t p-4 space-y-3">
             <div className="flex justify-between text-lg font-bold">
               <span>Total:</span>
-              <span>${getTotalPrice().toFixed(2)}</span>
+              <span>${getCartTotal().toFixed(2)}</span>
             </div>
             
             <div className="space-y-2">
