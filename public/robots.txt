@@ -1,14 +1,26 @@
-User-agent: Googlebot
+
+User-agent: *
 Allow: /
 
-User-agent: Bingbot
+# Sitemap
+Sitemap: https://yoursite.com/sitemap.xml
+
+# Disallow admin or sensitive areas
+Disallow: /admin/
+Disallow: /api/
+
+# Allow search engines to crawl all themes
+Allow: /about
+Allow: /work
+Allow: /contact
+Allow: /showcase
+
+# Social media crawlers
+User-agent: facebookexternalhit
 Allow: /
 
 User-agent: Twitterbot
 Allow: /
 
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: *
+User-agent: LinkedInBot
 Allow: /
