@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 export class PerformanceMonitor {
@@ -92,7 +91,7 @@ export class PerformanceMonitor {
 export function withPerformanceTracking<P extends object>(
   Component: React.ComponentType<P>,
   name?: string
-): React.ComponentType<P> {
+) {
   const componentName = name || Component.displayName || Component.name || 'Component';
   
   return React.memo((props: P) => {
