@@ -42,7 +42,7 @@ export const useWorldProgress = () => {
         setProgress({
           unlocked_objects: data.unlocked_objects || [],
           discovered_locations: data.discovered_locations || [],
-          progress_nodes: data.progress_nodes || {}
+          progress_nodes: (data.progress_nodes as Record<string, any>) || {}
         });
       }
     } catch (error) {
