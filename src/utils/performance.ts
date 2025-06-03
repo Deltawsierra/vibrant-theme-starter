@@ -1,4 +1,6 @@
 
+import React from 'react';
+
 export class PerformanceMonitor {
   private static instance: PerformanceMonitor;
   private metrics: Map<string, number> = new Map();
@@ -87,10 +89,10 @@ export class PerformanceMonitor {
   }
 }
 
-export const withPerformanceTracking = <P extends object>(
+export function withPerformanceTracking<P extends object>(
   Component: React.ComponentType<P>,
   name?: string
-): React.ComponentType<P> => {
+): React.ComponentType<P> {
   const componentName = name || Component.displayName || Component.name || 'Component';
   
   return React.memo((props: P) => {
@@ -103,6 +105,6 @@ export const withPerformanceTracking = <P extends object>(
       };
     }, []);
 
-    return <Component {...props} />;
+    return React.createElement(Component, props);
   });
-};
+}
