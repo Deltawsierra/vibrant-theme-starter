@@ -5,17 +5,17 @@ import EcommerceLayout from '../components/EcommerceLayout';
 const EcommerceAbout = () => {
   return (
     <EcommerceLayout>
-      <div className="max-w-4xl mx-auto px-4 py-16">
-        <h1 className="text-4xl font-bold mb-8 text-gray-900">E-commerce – About Page</h1>
-        <div className="space-y-6 text-lg leading-relaxed bg-white p-8 rounded-lg shadow-md">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold mb-8">E-commerce – About Page</h1>
+        <div className="max-w-2xl mx-auto space-y-6 text-lg leading-relaxed">
           <p>
             This is a placeholder for the About page in the E-commerce theme.
           </p>
           <p>
-            Content will be presented in a clean, modern layout optimized for product discovery and sales conversion.
+            Content will be presented with a professional online store aesthetic featuring product showcases and shopping functionality.
           </p>
           <p>
-            The design focuses on trust-building elements and clear information hierarchy.
+            The layout emphasizes conversion optimization and user-friendly shopping experiences.
           </p>
         </div>
       </div>

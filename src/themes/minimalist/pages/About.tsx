@@ -5,11 +5,18 @@ import MinimalistLayout from '../components/MinimalistLayout';
 const MinimalistAbout = () => {
   return (
     <MinimalistLayout>
-      <div className="max-w-4xl mx-auto px-8 py-16">
-        <h1 className="text-4xl font-bold mb-8">Minimalist – About Page</h1>
-        <div className="space-y-6 text-lg leading-relaxed">
-          <p>This is a placeholder for the About page in the Minimalist theme.</p>
-          <p>Content will be clean, typography-focused, and use only grayscale colors.</p>
+      <div className="text-center">
+        <h1 className="text-4xl font-bold mb-8">About</h1>
+        <div className="max-w-2xl mx-auto space-y-6 text-lg leading-relaxed">
+          <p>
+            This is the About page in the Minimalist theme.
+          </p>
+          <p>
+            Content is presented with clean typography, generous whitespace, and focus on essential information.
+          </p>
+          <p>
+            The design emphasizes clarity and readability above all else.
+          </p>
         </div>
       </div>
     </MinimalistLayout>
