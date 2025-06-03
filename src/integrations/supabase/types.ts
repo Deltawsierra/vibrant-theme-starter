@@ -9,7 +9,210 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      contact_submissions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          subject?: string | null
+        }
+        Relationships: []
+      }
+      page_content: {
+        Row: {
+          content: Json
+          id: string
+          page_name: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content: Json
+          id?: string
+          page_name: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: Json
+          id?: string
+          page_name?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          updated_at: string
+          username: string | null
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          updated_at?: string
+          username?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          updated_at?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      story_chapters: {
+        Row: {
+          chapter_number: number
+          content: string
+          created_at: string
+          id: string
+          images: Json | null
+          metadata: Json | null
+          title: string
+        }
+        Insert: {
+          chapter_number: number
+          content: string
+          created_at?: string
+          id?: string
+          images?: Json | null
+          metadata?: Json | null
+          title: string
+        }
+        Update: {
+          chapter_number?: number
+          content?: string
+          created_at?: string
+          id?: string
+          images?: Json | null
+          metadata?: Json | null
+          title?: string
+        }
+        Relationships: []
+      }
+      story_progress: {
+        Row: {
+          completed_chapters: number[] | null
+          completion_percentage: number | null
+          current_chapter: number
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_chapters?: number[] | null
+          completion_percentage?: number | null
+          current_chapter?: number
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_chapters?: number[] | null
+          completion_percentage?: number | null
+          current_chapter?: number
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_collectibles: {
+        Row: {
+          collectible_id: string
+          found_at: string
+          id: string
+          theme: string
+          user_id: string
+        }
+        Insert: {
+          collectible_id: string
+          found_at?: string
+          id?: string
+          theme: string
+          user_id: string
+        }
+        Update: {
+          collectible_id?: string
+          found_at?: string
+          id?: string
+          theme?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_scores: {
+        Row: {
+          created_at: string
+          game_type: string
+          id: string
+          score: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          game_type?: string
+          id?: string
+          score?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          game_type?: string
+          id?: string
+          score?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      world_progress: {
+        Row: {
+          discovered_locations: string[] | null
+          id: string
+          progress_nodes: Json | null
+          unlocked_objects: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          discovered_locations?: string[] | null
+          id?: string
+          progress_nodes?: Json | null
+          unlocked_objects?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          discovered_locations?: string[] | null
+          id?: string
+          progress_nodes?: Json | null
+          unlocked_objects?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

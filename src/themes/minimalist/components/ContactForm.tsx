@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ContactFormData {
   name: string;
@@ -16,6 +17,7 @@ interface ContactFormProps {
 const ContactForm: React.FC<ContactFormProps> = ({ isDarkMode }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
     register,
@@ -26,17 +28,36 @@ const ContactForm: React.FC<ContactFormProps> = ({ isDarkMode }) => {
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
+    setSubmitError(null);
+    setSubmitSuccess(false);
     
-    // Mock submission - replace with actual API call later
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    console.log('Form submitted:', data);
-    setSubmitSuccess(true);
-    setIsSubmitting(false);
-    reset();
-    
-    // Clear success message after 3 seconds
-    setTimeout(() => setSubmitSuccess(false), 3000);
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([
+          {
+            name: data.name,
+            email: data.email,
+            subject: data.subject,
+            message: data.message
+          }
+        ]);
+
+      if (error) {
+        throw error;
+      }
+
+      setSubmitSuccess(true);
+      reset();
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      setSubmitError('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const inputClasses = `w-full px-4 py-3 border text-base focus:outline-none focus:ring-2 focus:ring-gray-400 ${
@@ -162,6 +183,14 @@ const ContactForm: React.FC<ContactFormProps> = ({ isDarkMode }) => {
             isDarkMode ? 'text-gray-300' : 'text-gray-700'
           }`}>
             Message sent successfully. Thank you for your inquiry.
+          </div>
+        )}
+
+        {submitError && (
+          <div className={`text-center text-sm ${
+            isDarkMode ? 'text-gray-400' : 'text-gray-600'
+          }`}>
+            {submitError}
           </div>
         )}
       </form>
