@@ -8,11 +8,23 @@ export interface Product {
   image: string;
   category: string;
   inStock: boolean;
-  quantity?: number;
+  variants: {
+    colors: string[];
+    sizes: string[];
+  };
+  description: string;
 }
 
-export interface CartItem extends Product {
+export interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
   quantity: number;
+  selectedVariants?: {
+    color: string;
+    size: string;
+  };
 }
 
 interface ShoppingContextType {
@@ -20,7 +32,7 @@ interface ShoppingContextType {
   wishlistItems: Product[];
   isCartOpen: boolean;
   recentlyViewed: Product[];
-  addToCart: (product: Product, quantity?: number) => void;
+  addToCart: (item: CartItem) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   addToWishlist: (product: Product) => void;
@@ -66,16 +78,20 @@ export const ShoppingProvider: React.FC<ShoppingProviderProps> = ({ children }) 
     localStorage.setItem('ecommerce-wishlist', JSON.stringify(items));
   }, []);
 
-  const addToCart = useCallback((product: Product, quantity = 1) => {
+  const addToCart = useCallback((item: CartItem) => {
     setCartItems(prev => {
-      const existing = prev.find(item => item.id === product.id);
+      const existingKey = `${item.id}-${item.selectedVariants?.color}-${item.selectedVariants?.size}`;
+      const existing = prev.find(cartItem => 
+        `${cartItem.id}-${cartItem.selectedVariants?.color}-${cartItem.selectedVariants?.size}` === existingKey
+      );
+      
       const newItems = existing
-        ? prev.map(item => 
-            item.id === product.id 
-              ? { ...item, quantity: item.quantity + quantity }
-              : item
+        ? prev.map(cartItem => 
+            `${cartItem.id}-${cartItem.selectedVariants?.color}-${cartItem.selectedVariants?.size}` === existingKey
+              ? { ...cartItem, quantity: cartItem.quantity + item.quantity }
+              : cartItem
           )
-        : [...prev, { ...product, quantity }];
+        : [...prev, item];
       
       localStorage.setItem('ecommerce-cart', JSON.stringify(newItems));
       return newItems;
