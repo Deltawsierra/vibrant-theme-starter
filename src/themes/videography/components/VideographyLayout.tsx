@@ -1,14 +1,14 @@
 
 import React, { useState } from 'react';
 import VideographyNavigation from './VideographyNavigation';
-import { useVideo } from '../context/VideoContext';
+import { VideoProvider, useVideo } from '../context/VideoContext';
 
 interface VideographyLayoutProps {
   children: React.ReactNode;
   mode?: 'cinematic' | 'editorial';
 }
 
-const VideographyLayout: React.FC<VideographyLayoutProps> = ({ 
+const VideographyLayoutContent: React.FC<VideographyLayoutProps> = ({ 
   children, 
   mode: propMode
 }) => {
@@ -176,6 +176,14 @@ const VideographyLayout: React.FC<VideographyLayoutProps> = ({
         </div>
       )}
     </div>
+  );
+};
+
+const VideographyLayout: React.FC<VideographyLayoutProps> = ({ children, mode }) => {
+  return (
+    <VideoProvider>
+      <VideographyLayoutContent mode={mode}>{children}</VideographyLayoutContent>
+    </VideoProvider>
   );
 };
 

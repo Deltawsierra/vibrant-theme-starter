@@ -4,13 +4,13 @@ import ThreeDNavigation from './ThreeDNavigation';
 import LoadingOverlay from './LoadingOverlay';
 import ThreeDViewport from './ThreeDViewport';
 import { useDeviceCapabilities } from './MotionHooks';
-import { useThreeD } from '../context/ThreeDContext';
+import { ThreeDProvider, useThreeD } from '../context/ThreeDContext';
 
 interface ThreeDLayoutProps {
   children: React.ReactNode;
 }
 
-const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
+const ThreeDLayoutContent: React.FC<ThreeDLayoutProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const { fallbackMode } = useDeviceCapabilities();
   const { 
@@ -143,6 +143,14 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
         </div>
       </main>
     </div>
+  );
+};
+
+const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
+  return (
+    <ThreeDProvider>
+      <ThreeDLayoutContent>{children}</ThreeDLayoutContent>
+    </ThreeDProvider>
   );
 };
 

@@ -3,14 +3,14 @@ import React, { useEffect } from 'react';
 import ArcadeNavigation from './ArcadeNavigation';
 import MotionWarningModal from './MotionWarningModal';
 import AudioControls from './AudioControls';
-import { useArcade } from '../context/ArcadeContext';
+import { ArcadeProvider, useArcade } from '../context/ArcadeContext';
 import { useArcadeAudio } from '../hooks/useArcadeAudio';
 
 interface ArcadeLayoutProps {
   children: React.ReactNode;
 }
 
-const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
+const ArcadeLayoutContent: React.FC<ArcadeLayoutProps> = ({ children }) => {
   const { settings, dismissMotionWarning } = useArcade();
   const { playSFX, userHasInteracted, playBackgroundMusic } = useArcadeAudio();
 
@@ -75,6 +75,14 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
         </footer>
       </div>
     </>
+  );
+};
+
+const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
+  return (
+    <ArcadeProvider>
+      <ArcadeLayoutContent>{children}</ArcadeLayoutContent>
+    </ArcadeProvider>
   );
 };
 

@@ -1,12 +1,13 @@
+
 import React from 'react';
 import StoryNavigation from './StoryNavigation';
-import { useStoryProgress } from '../hooks/useStoryProgress';
+import { StoryProgressProvider, useStoryProgress } from '../context/StoryProgressContext';
 
 interface StoryLayoutProps {
   children: React.ReactNode;
 }
 
-const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
+const StoryLayoutContent: React.FC<StoryLayoutProps> = ({ children }) => {
   const { 
     progress, 
     toggleAudio, 
@@ -70,6 +71,14 @@ const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
         </div>
       </main>
     </div>
+  );
+};
+
+const StoryLayout: React.FC<StoryLayoutProps> = ({ children }) => {
+  return (
+    <StoryProgressProvider>
+      <StoryLayoutContent>{children}</StoryLayoutContent>
+    </StoryProgressProvider>
   );
 };
 
