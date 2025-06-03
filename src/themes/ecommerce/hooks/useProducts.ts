@@ -36,7 +36,7 @@ export const useProducts = (category?: string) => {
         .from('products')
         .select(`
           *,
-          variants:product_variants(*)
+          product_variants(*)
         `);
 
       if (category) {

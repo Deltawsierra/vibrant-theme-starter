@@ -31,7 +31,7 @@ export const useScores = (gameType: string = 'galaga') => {
           score,
           game_type,
           created_at,
-          profiles (
+          profiles!user_scores_user_id_fkey (
             username
           )
         `)
@@ -40,10 +40,11 @@ export const useScores = (gameType: string = 'galaga') => {
         .limit(10);
 
       if (fetchError) {
-        throw fetchError;
+        console.warn('Could not fetch scores from Supabase:', fetchError);
+        setScores([]);
+      } else {
+        setScores(data || []);
       }
-
-      setScores(data || []);
     } catch (err) {
       console.error('Error fetching scores:', err);
       setError('Failed to load scores');

@@ -30,7 +30,7 @@ export const use3DAssets = (): UseAssetsReturn => {
 
         // Try to fetch from Supabase first
         const { data, error: fetchError } = await supabase
-          .from('3d_assets')
+          .from('assets_3d')
           .select('*');
 
         if (fetchError) {

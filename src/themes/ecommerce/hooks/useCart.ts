@@ -46,9 +46,14 @@ export const useCart = () => {
       // Load from localStorage for guests
       const saved = localStorage.getItem('cart');
       if (saved) {
-        const items = JSON.parse(saved);
-        const totals = calculateTotals(items);
-        setCart({ items, ...totals });
+        try {
+          const items = JSON.parse(saved);
+          const totals = calculateTotals(items);
+          setCart({ items, ...totals });
+        } catch (error) {
+          console.error('Error parsing cart from localStorage:', error);
+          setCart({ items: [], total: 0, item_count: 0 });
+        }
       }
       return;
     }
@@ -59,17 +64,36 @@ export const useCart = () => {
         .from('cart_items')
         .select(`
           *,
-          product:products(name, price, image_url)
+          products!cart_items_product_id_fkey(name, price, image_url)
         `)
         .eq('user_id', user.id);
 
-      if (error) throw error;
+      if (error) {
+        console.warn('Could not load cart from Supabase:', error);
+        // Fall back to localStorage
+        const saved = localStorage.getItem('cart');
+        if (saved) {
+          try {
+            const items = JSON.parse(saved);
+            const totals = calculateTotals(items);
+            setCart({ items, ...totals });
+          } catch (parseError) {
+            console.error('Error parsing cart from localStorage:', parseError);
+            setCart({ items: [], total: 0, item_count: 0 });
+          }
+        }
+        return;
+      }
 
-      const items = data || [];
+      const items = (data || []).map(item => ({
+        ...item,
+        product: Array.isArray(item.products) ? item.products[0] : item.products
+      }));
       const totals = calculateTotals(items);
       setCart({ items, ...totals });
     } catch (error) {
       console.error('Error loading cart:', error);
+      setCart({ items: [], total: 0, item_count: 0 });
     } finally {
       setLoading(false);
     }
@@ -93,32 +117,41 @@ export const useCart = () => {
             }
           ]);
 
-        if (error) throw error;
-        await loadCart();
+        if (error) {
+          console.warn('Failed to add to cart in Supabase:', error);
+          // Fall back to localStorage
+          updateLocalStorageCart(productId, quantity, variantId);
+        } else {
+          await loadCart();
+        }
       } catch (error) {
         console.error('Error adding to cart:', error);
+        updateLocalStorageCart(productId, quantity, variantId);
       }
     } else {
-      // Update localStorage for guests
-      const existingIndex = cart.items.findIndex(
-        item => item.product_id === productId && item.variant_id === variantId
-      );
-      
-      let updatedItems;
-      if (existingIndex >= 0) {
-        updatedItems = cart.items.map((item, index) => 
-          index === existingIndex 
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      } else {
-        updatedItems = [...cart.items, { id: Date.now().toString(), ...newItem }];
-      }
-      
-      localStorage.setItem('cart', JSON.stringify(updatedItems));
-      const totals = calculateTotals(updatedItems);
-      setCart({ items: updatedItems, ...totals });
+      updateLocalStorageCart(productId, quantity, variantId);
     }
+  };
+
+  const updateLocalStorageCart = (productId: string, quantity: number, variantId?: string) => {
+    const existingIndex = cart.items.findIndex(
+      item => item.product_id === productId && item.variant_id === variantId
+    );
+    
+    let updatedItems;
+    if (existingIndex >= 0) {
+      updatedItems = cart.items.map((item, index) => 
+        index === existingIndex 
+          ? { ...item, quantity: item.quantity + quantity }
+          : item
+      );
+    } else {
+      updatedItems = [...cart.items, { id: Date.now().toString(), product_id: productId, quantity, variant_id: variantId }];
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(updatedItems));
+    const totals = calculateTotals(updatedItems);
+    setCart({ items: updatedItems, ...totals });
   };
 
   const removeFromCart = async (itemId: string) => {
@@ -129,7 +162,9 @@ export const useCart = () => {
           .delete()
           .eq('id', itemId);
 
-        if (error) throw error;
+        if (error) {
+          console.warn('Failed to remove from cart in Supabase:', error);
+        }
         await loadCart();
       } catch (error) {
         console.error('Error removing from cart:', error);
@@ -150,7 +185,9 @@ export const useCart = () => {
           .delete()
           .eq('user_id', user.id);
 
-        if (error) throw error;
+        if (error) {
+          console.warn('Failed to clear cart in Supabase:', error);
+        }
       } catch (error) {
         console.error('Error clearing cart:', error);
       }
