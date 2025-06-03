@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
 interface Product {
   id: string;
@@ -32,45 +31,28 @@ export const useProducts = (category?: string) => {
       setLoading(true);
       setError(null);
 
-      let query = supabase
-        .from('products')
-        .select(`
-          *,
-          product_variants(*)
-        `);
-
-      if (category) {
-        query = query.eq('category', category);
-      }
-
-      const { data, error: fetchError } = await query;
-
-      if (fetchError) {
-        console.warn('Could not fetch products from Supabase, using fallback data');
-        // Fallback products
-        setProducts([
-          {
-            id: 'prod-1',
-            name: 'Portfolio Template',
-            description: 'Professional portfolio template',
-            price: 49.99,
-            category: 'templates',
-            stock_quantity: 100,
-            image_url: '/placeholder.svg'
-          },
-          {
-            id: 'prod-2',
-            name: 'Design System',
-            description: 'Complete design system package',
-            price: 99.99,
-            category: 'design',
-            stock_quantity: 50,
-            image_url: '/placeholder.svg'
-          }
-        ]);
-      } else {
-        setProducts(data || []);
-      }
+      // Using fallback products since database table doesn't exist yet
+      console.log('Using fallback products data');
+      setProducts([
+        {
+          id: 'prod-1',
+          name: 'Portfolio Template',
+          description: 'Professional portfolio template',
+          price: 49.99,
+          category: 'templates',
+          stock_quantity: 100,
+          image_url: '/placeholder.svg'
+        },
+        {
+          id: 'prod-2',
+          name: 'Design System',
+          description: 'Complete design system package',
+          price: 99.99,
+          category: 'design',
+          stock_quantity: 50,
+          image_url: '/placeholder.svg'
+        }
+      ]);
     } catch (err) {
       console.error('Error fetching products:', err);
       setError('Failed to load products');
@@ -80,29 +62,8 @@ export const useProducts = (category?: string) => {
     }
   };
 
-  // Set up real-time subscription for stock updates
   useEffect(() => {
     fetchProducts();
-
-    const subscription = supabase
-      .channel('products-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'products'
-        },
-        (payload) => {
-          console.log('Product updated:', payload);
-          fetchProducts(); // Refetch to get latest data
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(subscription);
-    };
   }, [category]);
 
   return {

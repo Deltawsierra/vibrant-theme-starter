@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
 interface AssetData {
   id: string;
@@ -23,72 +22,43 @@ export const use3DAssets = (): UseAssetsReturn => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchAssets = async () => {
+    const loadAssets = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // Try to fetch from Supabase first
-        const { data, error: fetchError } = await supabase
-          .from('assets_3d')
-          .select('*');
-
-        if (fetchError) {
-          console.warn('Could not fetch 3D assets from Supabase, using fallback data');
-          // Fallback to hardcoded assets
-          setAssets([
-            {
-              id: 'card-1',
-              name: 'Portfolio Card',
-              type: 'card',
-              metadata: { color: '#3b82f6', position: [-5, 0, 0] }
-            },
-            {
-              id: 'pod-1',
-              name: 'Interactive Pod',
-              type: 'pod',
-              metadata: { color: '#10b981', position: [0, 2, -3] }
-            },
-            {
-              id: 'island-1',
-              name: 'Content Island',
-              type: 'island',
-              metadata: { color: '#f59e0b', position: [5, -1, 2] }
-            }
-          ]);
-        } else {
-          setAssets(data || []);
-        }
-      } catch (err) {
-        console.error('Error loading 3D assets:', err);
-        setError('Failed to load 3D assets');
-        // Fallback assets
+        // Using fallback assets since database tables don't exist yet
+        console.log('Using fallback 3D assets data');
         setAssets([
           {
-            id: 'card-fallback',
+            id: 'card-1',
             name: 'Portfolio Card',
             type: 'card',
             metadata: { color: '#3b82f6', position: [-5, 0, 0] }
           },
           {
-            id: 'pod-fallback',
+            id: 'pod-1',
             name: 'Interactive Pod',
             type: 'pod',
             metadata: { color: '#10b981', position: [0, 2, -3] }
           },
           {
-            id: 'island-fallback',
+            id: 'island-1',
             name: 'Content Island',
             type: 'island',
             metadata: { color: '#f59e0b', position: [5, -1, 2] }
           }
         ]);
+      } catch (err) {
+        console.error('Error loading 3D assets:', err);
+        setError('Failed to load 3D assets');
+        setAssets([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAssets();
+    loadAssets();
   }, []);
 
   return { assets, loading, error };

@@ -25,16 +25,7 @@ export const useScores = (gameType: string = 'galaga') => {
 
       const { data, error: fetchError } = await supabase
         .from('user_scores')
-        .select(`
-          id,
-          user_id,
-          score,
-          game_type,
-          created_at,
-          profiles!user_scores_user_id_fkey (
-            username
-          )
-        `)
+        .select('*')
         .eq('game_type', gameType)
         .order('score', { ascending: false })
         .limit(10);
@@ -43,7 +34,12 @@ export const useScores = (gameType: string = 'galaga') => {
         console.warn('Could not fetch scores from Supabase:', fetchError);
         setScores([]);
       } else {
-        setScores(data || []);
+        // Transform data to match expected interface
+        const transformedData = (data || []).map(item => ({
+          ...item,
+          profiles: null // No profiles join since relation doesn't exist
+        }));
+        setScores(transformedData);
       }
     } catch (err) {
       console.error('Error fetching scores:', err);
