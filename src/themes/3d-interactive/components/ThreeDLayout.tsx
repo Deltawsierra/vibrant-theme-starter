@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import ThreeDNavigation from './ThreeDNavigation';
 import LoadingOverlay from './LoadingOverlay';
+import ThreeDViewport from './ThreeDViewport';
 import { useDeviceCapabilities } from './MotionHooks';
 import { useThreeD } from '../context/ThreeDContext';
 
@@ -16,10 +17,15 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
     isMinimapVisible, 
     toggleMinimap, 
     resetCamera,
-    interactiveObjects 
+    interactiveObjects,
+    selectedObjectId 
   } = useThreeD();
 
   const handleLoadingComplete = () => {
+    setIsLoading(false);
+  };
+
+  const handleViewportReady = () => {
     setIsLoading(false);
   };
 
@@ -35,6 +41,14 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
       {/* Navigation */}
       <ThreeDNavigation />
 
+      {/* Back to Lobby Button */}
+      <button
+        onClick={() => window.location.href = '/'}
+        className="fixed top-4 left-4 z-50 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+      >
+        ← Back to Lobby
+      </button>
+
       {/* Side Control Panel */}
       <div className="fixed left-4 top-24 bg-slate-800 bg-opacity-90 backdrop-blur-sm rounded-lg p-4 z-30 border border-slate-700">
         <div className="space-y-3">
@@ -48,11 +62,11 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
             <div>Controls:</div>
             <div>Click & Drag: Rotate</div>
             <div>Scroll: Zoom</div>
-            <div>Arrow Keys: Move</div>
+            <div>Right Click: Pan</div>
           </div>
           <div className="text-xs text-blue-400">
             <div>Objects: {interactiveObjects.length}</div>
-            <div>Highlighted: {interactiveObjects.filter(obj => obj.isHighlighted).length}</div>
+            <div>Selected: {selectedObjectId || 'None'}</div>
           </div>
           {fallbackMode && (
             <div className="text-xs text-yellow-400 bg-yellow-400/10 p-2 rounded">
@@ -76,8 +90,20 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
           <div className="p-2">
             <div className="text-xs text-gray-400 mb-2">Scene Overview</div>
             <div className="w-full h-20 bg-slate-700 rounded relative">
-              <div className="absolute inset-0 flex items-center justify-center text-xs text-gray-500">
-                {interactiveObjects.length > 0 ? `${interactiveObjects.length} Objects` : 'Minimap Placeholder'}
+              <div className="absolute inset-0 p-2">
+                {interactiveObjects.map((obj, index) => (
+                  <div
+                    key={obj.id}
+                    className={`absolute w-2 h-2 rounded-full ${
+                      obj.id === selectedObjectId ? 'bg-yellow-400' : 'bg-blue-400'
+                    }`}
+                    style={{
+                      left: `${((obj.position.x + 10) / 20) * 100}%`,
+                      top: `${((obj.position.z + 10) / 20) * 100}%`
+                    }}
+                    title={obj.name}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -86,20 +112,28 @@ const ThreeDLayout: React.FC<ThreeDLayoutProps> = ({ children }) => {
 
       {/* Main 3D Viewport Container */}
       <main className="pt-16 min-h-screen">
-        <div className="w-full h-[calc(100vh-4rem)] bg-gradient-to-br from-slate-900 to-slate-800 relative">
-          <div id="threejs-container" className="w-full h-full">
-            <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-[calc(100vh-4rem)] relative">
+          {fallbackMode ? (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
               <div className="text-center text-gray-400">
-                <div className="text-2xl mb-4">3D Scene Placeholder</div>
-                <div className="text-sm">Three.js integration coming in Phase 3</div>
-                {fallbackMode && (
-                  <div className="text-xs text-yellow-400 mt-2">
-                    Running in compatibility mode
-                  </div>
-                )}
+                <div className="text-2xl mb-4">3D Scene Fallback</div>
+                <div className="text-sm">Your device doesn't support 3D rendering</div>
+                <div className="mt-4 grid grid-cols-3 gap-4">
+                  {interactiveObjects.map((obj) => (
+                    <div
+                      key={obj.id}
+                      className="p-4 bg-slate-800 rounded cursor-pointer hover:bg-slate-700"
+                      onClick={() => console.log('Clicked', obj.name)}
+                    >
+                      {obj.name}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <ThreeDViewport onReady={handleViewportReady} />
+          )}
           
           <div className="absolute inset-0 pointer-events-none">
             <div className="pointer-events-auto">
