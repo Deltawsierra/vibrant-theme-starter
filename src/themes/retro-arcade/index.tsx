@@ -1,5 +1,5 @@
 
-import { ComponentType } from 'react';
+import React, { ComponentType } from 'react';
 import About from './pages/About';
 import Work from './pages/Work';
 import Contact from './pages/Contact';
