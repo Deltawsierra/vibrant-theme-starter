@@ -6,23 +6,45 @@ interface InsertCoinLoaderProps {
   isVisible: boolean;
   onCoinInserted?: () => void;
   message?: string;
+  autoHide?: boolean;
+  autoHideDelay?: number;
 }
 
 const InsertCoinLoader: React.FC<InsertCoinLoaderProps> = ({
   isVisible,
   onCoinInserted,
-  message = "INSERT COIN TO CONTINUE"
+  message = "INSERT COIN TO CONTINUE",
+  autoHide = false,
+  autoHideDelay = 3000
 }) => {
   const { playSFX, settings } = useArcade();
   const [coins, setCoins] = useState(0);
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible) {
+      setIsClosing(false);
+      setCoins(0);
+      return;
+    }
+
+    // Auto-hide functionality
+    if (autoHide) {
+      const autoHideTimer = setTimeout(() => {
+        handleClose();
+      }, autoHideDelay);
+
+      return () => clearTimeout(autoHideTimer);
+    }
 
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.code === 'Space' || e.code === 'Enter') {
         e.preventDefault();
         insertCoin();
+      }
+      if (e.code === 'Escape') {
+        e.preventDefault();
+        handleClose();
       }
     };
 
@@ -31,12 +53,21 @@ const InsertCoinLoader: React.FC<InsertCoinLoaderProps> = ({
     };
 
     const insertCoin = () => {
+      if (isClosing) return;
+      
       playSFX('coin-insert');
       setCoins(prev => prev + 1);
       
       setTimeout(() => {
-        onCoinInserted?.();
+        handleClose();
       }, 800);
+    };
+
+    const handleClose = () => {
+      setIsClosing(true);
+      setTimeout(() => {
+        onCoinInserted?.();
+      }, 300);
     };
 
     document.addEventListener('keydown', handleKeyPress);
@@ -46,12 +77,12 @@ const InsertCoinLoader: React.FC<InsertCoinLoaderProps> = ({
       document.removeEventListener('keydown', handleKeyPress);
       document.removeEventListener('click', handleClick);
     };
-  }, [isVisible, onCoinInserted, playSFX]);
+  }, [isVisible, onCoinInserted, playSFX, autoHide, autoHideDelay, isClosing]);
 
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black flex items-center justify-center arcade-crt-effect">
+    <div className={`fixed inset-0 z-50 bg-black flex items-center justify-center arcade-crt-effect transition-opacity duration-300 ${isClosing ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}>
       {/* Background Grid */}
       <div className="absolute inset-0 bg-arcade-grid opacity-20" 
            style={{ backgroundSize: '30px 30px' }} />
@@ -92,6 +123,11 @@ const InsertCoinLoader: React.FC<InsertCoinLoaderProps> = ({
           <div className="text-sm opacity-80">
             COINS INSERTED: {coins}
           </div>
+          {autoHide && (
+            <div className="text-xs opacity-60">
+              ESC TO SKIP
+            </div>
+          )}
         </div>
 
         {/* Progress Indicators */}

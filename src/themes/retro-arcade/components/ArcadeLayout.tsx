@@ -17,17 +17,11 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
   const { playSFX, userHasInteracted, playBackgroundMusic } = useArcadeAudio();
   const [showBootSequence, setShowBootSequence] = useState(true);
   const [bootProgress, setBootProgress] = useState(0);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Boot sequence effect
+  // Boot sequence effect - only runs once on initial load
   useEffect(() => {
-    if (!showBootSequence) return;
-
-    const bootTimer = setTimeout(() => {
-      setShowBootSequence(false);
-      if (userHasInteracted) {
-        playBackgroundMusic();
-      }
-    }, 3000);
+    if (isInitialized) return;
 
     const progressTimer = setInterval(() => {
       setBootProgress(prev => {
@@ -35,25 +29,33 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
           clearInterval(progressTimer);
           return 100;
         }
-        return prev + 2;
+        return prev + 4; // Faster progress
       });
-    }, 50);
+    }, 30);
+
+    const bootTimer = setTimeout(() => {
+      setShowBootSequence(false);
+      setIsInitialized(true);
+      if (userHasInteracted) {
+        playBackgroundMusic();
+      }
+    }, 1500); // Reduced to 1.5 seconds
 
     return () => {
       clearTimeout(bootTimer);
       clearInterval(progressTimer);
     };
-  }, [showBootSequence, userHasInteracted, playBackgroundMusic]);
+  }, [isInitialized, userHasInteracted, playBackgroundMusic]);
 
   // Auto-start background music after first interaction
   useEffect(() => {
-    if (userHasInteracted && !showBootSequence) {
+    if (userHasInteracted && !showBootSequence && isInitialized) {
       const timer = setTimeout(() => {
         playBackgroundMusic();
-      }, 1000);
+      }, 500);
       return () => clearTimeout(timer);
     }
-  }, [userHasInteracted, playBackgroundMusic, showBootSequence]);
+  }, [userHasInteracted, playBackgroundMusic, showBootSequence, isInitialized]);
 
   const handleMotionAccept = () => {
     dismissMotionWarning();
@@ -65,16 +67,11 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
     playSFX('button-press');
   };
 
-  const handleBootComplete = () => {
-    setShowBootSequence(false);
-    playSFX('power-up');
-  };
-
   return (
     <>
-      {/* Boot Sequence */}
-      {showBootSequence && (
-        <div className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center arcade-crt-effect">
+      {/* Boot Sequence - only shows on initial load */}
+      {showBootSequence && !isInitialized && (
+        <div className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center arcade-crt-effect pointer-events-auto">
           <div className="text-center space-y-8">
             {/* System Name */}
             <div className="text-4xl md:text-6xl font-pixel font-bold text-arcade-neon-green animate-arcade-boot">
@@ -104,7 +101,9 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
               <div>✓ GRAPHICS PROCESSOR INITIALIZED</div>
               <div>✓ SOUND SYSTEM LOADED</div>
               <div>✓ INPUT CONTROLLERS DETECTED</div>
-              <div className="animate-pixel-blink">⟳ LOADING GAME DATA...</div>
+              <div className={bootProgress < 100 ? 'animate-pixel-blink' : ''}>
+                {bootProgress < 100 ? '⟳ LOADING GAME DATA...' : '✓ SYSTEM READY'}
+              </div>
             </div>
           </div>
         </div>
