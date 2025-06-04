@@ -7,13 +7,13 @@ import Showcase from './pages/Showcase';
 import { ArcadeProvider } from './context/ArcadeContext';
 
 // Higher-order component to wrap pages with ArcadeProvider
-const withArcadeProvider = <P extends object>(Component: ComponentType<P>) => {
+function withArcadeProvider<P extends object>(Component: ComponentType<P>) {
   return (props: P) => (
     <ArcadeProvider>
       <Component {...props} />
     </ArcadeProvider>
   );
-};
+}
 
 export const retroArcadeTheme = {
   About: withArcadeProvider(About),
