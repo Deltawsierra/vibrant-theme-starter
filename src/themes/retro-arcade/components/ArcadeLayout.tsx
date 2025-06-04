@@ -4,14 +4,14 @@ import ArcadeNavigation from './ArcadeNavigation';
 import MotionWarningModal from './MotionWarningModal';
 import AudioControls from './AudioControls';
 import ArcadeHUD from './ArcadeHUD';
-import { ArcadeProvider, useArcade } from '../context/ArcadeContext';
+import { useArcade } from '../context/ArcadeContext';
 import { useArcadeAudio } from '../hooks/useArcadeAudio';
 
 interface ArcadeLayoutProps {
   children: React.ReactNode;
 }
 
-const ArcadeLayoutContent: React.FC<ArcadeLayoutProps> = ({ children }) => {
+const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
   const { settings, dismissMotionWarning } = useArcade();
   const { playSFX, userHasInteracted, playBackgroundMusic } = useArcadeAudio();
 
@@ -135,14 +135,6 @@ const ArcadeLayoutContent: React.FC<ArcadeLayoutProps> = ({ children }) => {
         </footer>
       </div>
     </>
-  );
-};
-
-const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
-  return (
-    <ArcadeProvider>
-      <ArcadeLayoutContent>{children}</ArcadeLayoutContent>
-    </ArcadeProvider>
   );
 };
 
