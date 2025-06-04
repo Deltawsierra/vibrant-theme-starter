@@ -1,6 +1,6 @@
 
 import { minimalistTheme } from './minimalist';
-import { retroArcadeTheme } from './retro-arcade';
+import retroArcadeTheme from './retro-arcade';
 import { storytellingTheme } from './storytelling';
 import { threeDInteractiveTheme } from './3d-interactive';
 import { ecommerceTheme } from './ecommerce';
