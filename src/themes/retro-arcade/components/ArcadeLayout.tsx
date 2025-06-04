@@ -29,9 +29,9 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
           clearInterval(progressTimer);
           return 100;
         }
-        return prev + 4; // Faster progress
+        return prev + 8; // Faster progress
       });
-    }, 30);
+    }, 20);
 
     const bootTimer = setTimeout(() => {
       setShowBootSequence(false);
@@ -39,7 +39,7 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
       if (userHasInteracted) {
         playBackgroundMusic();
       }
-    }, 1500); // Reduced to 1.5 seconds
+    }, 800); // Much faster boot
 
     return () => {
       clearTimeout(bootTimer);
@@ -71,7 +71,7 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
     <>
       {/* Boot Sequence - only shows on initial load */}
       {showBootSequence && !isInitialized && (
-        <div className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center arcade-crt-effect pointer-events-auto">
+        <div className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center pointer-events-auto">
           <div className="text-center space-y-8">
             {/* System Name */}
             <div className="text-4xl md:text-6xl font-pixel font-bold text-arcade-neon-green animate-arcade-boot">
@@ -117,28 +117,28 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
         />
       )}
       
-      <div className={`min-h-screen bg-black text-arcade-neon-green font-pixel overflow-hidden relative arcade-crt-effect ${settings.enableScanlines ? 'animate-screen-flicker' : ''}`}>
-        {/* Multiple Layer CRT Effects */}
+      <div className={`min-h-screen bg-black text-arcade-neon-green font-pixel overflow-hidden relative ${settings.enableScanlines ? 'animate-screen-flicker' : ''}`}>
+        {/* Subtle CRT Effects - Much Reduced Opacity */}
         {settings.enableScanlines && (
           <>
-            {/* Primary scanlines */}
-            <div className="fixed inset-0 pointer-events-none z-40 opacity-30">
+            {/* Primary scanlines - very subtle */}
+            <div className="fixed inset-0 pointer-events-none z-10 opacity-5">
               <div className="w-full h-full bg-crt-scanlines"></div>
             </div>
             
-            {/* Secondary flicker effect */}
-            <div className="fixed inset-0 pointer-events-none z-39 opacity-10">
-              <div className="w-full h-full bg-repeat-y animate-screen-flicker bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgMSA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjMDBmZjAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPgo8cmVjdCB5PSI0IiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjMDBmZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8L3N2Zz4K')]"></div>
+            {/* Secondary flicker effect - barely visible */}
+            <div className="fixed inset-0 pointer-events-none z-9 opacity-3">
+              <div className="w-full h-full bg-repeat-y animate-screen-flicker bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgMSA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjMDBmZjAwIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8cmVjdCB5PSI0IiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjMDBmZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')]"></div>
             </div>
           </>
         )}
 
         {/* Enhanced Parallax Star Field Background */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="fixed inset-0 overflow-hidden pointer-events-none z-5">
           <div className={`absolute inset-0 ${settings.enableGlow ? 'animate-parallax-float' : ''}`}>
             {/* Layer 1 - Distant stars */}
-            <div className="absolute inset-0 opacity-20">
-              {[...Array(80)].map((_, i) => (
+            <div className="absolute inset-0 opacity-15">
+              {[...Array(40)].map((_, i) => (
                 <div
                   key={`star-1-${i}`}
                   className="absolute w-1 h-1 bg-arcade-neon-cyan rounded-full animate-pixel-blink"
@@ -152,8 +152,8 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
             </div>
             
             {/* Layer 2 - Medium stars with colors */}
-            <div className={`absolute inset-0 opacity-40 ${settings.enableGlow ? 'animate-slide' : ''}`}>
-              {[...Array(50)].map((_, i) => {
+            <div className={`absolute inset-0 opacity-20 ${settings.enableGlow ? 'animate-slide' : ''}`}>
+              {[...Array(25)].map((_, i) => {
                 const colors = ['arcade-neon-magenta', 'arcade-neon-cyan', 'arcade-neon-yellow'];
                 const color = colors[i % colors.length];
                 return (
@@ -170,8 +170,8 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
             </div>
             
             {/* Layer 3 - Bright pulsing stars */}
-            <div className="absolute inset-0 opacity-60">
-              {[...Array(30)].map((_, i) => (
+            <div className="absolute inset-0 opacity-30">
+              {[...Array(15)].map((_, i) => (
                 <div
                   key={`star-3-${i}`}
                   className={`absolute w-3 h-3 bg-arcade-neon-yellow rounded-full ${settings.enableGlow ? 'animate-neon-pulse' : ''}`}
@@ -185,11 +185,11 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
             </div>
 
             {/* Layer 4 - Moving particles */}
-            <div className="absolute inset-0">
-              {[...Array(15)].map((_, i) => (
+            <div className="absolute inset-0 opacity-25">
+              {[...Array(8)].map((_, i) => (
                 <div
                   key={`particle-${i}`}
-                  className="absolute w-1 h-8 bg-gradient-to-b from-arcade-neon-pink to-transparent opacity-60 animate-slide"
+                  className="absolute w-1 h-8 bg-gradient-to-b from-arcade-neon-pink to-transparent animate-slide"
                   style={{
                     left: `${Math.random() * 100}%`,
                     top: `${Math.random() * 100}%`,
@@ -212,12 +212,12 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
         <ArcadeHUD />
 
         {/* Main Arcade Floor */}
-        <main className="min-h-[calc(100vh-80px)] relative z-10 pt-20">
+        <main className="min-h-[calc(100vh-80px)] relative z-20 pt-20">
           {/* Enhanced Perspective Grid Floor */}
-          <div className="absolute bottom-0 left-0 right-0 h-80 pointer-events-none">
+          <div className="absolute bottom-0 left-0 right-0 h-80 pointer-events-none z-5">
             {/* Primary grid */}
-            <div className="absolute inset-0 bg-gradient-to-t from-arcade-neon-cyan/20 via-arcade-neon-magenta/10 to-transparent">
-              <div className="absolute inset-0 bg-arcade-grid opacity-40 animate-slide" 
+            <div className="absolute inset-0 bg-gradient-to-t from-arcade-neon-cyan/10 via-arcade-neon-magenta/5 to-transparent">
+              <div className="absolute inset-0 bg-arcade-grid opacity-20 animate-slide" 
                    style={{ backgroundSize: '40px 40px' }} />
             </div>
             
@@ -226,7 +226,7 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
               {[...Array(8)].map((_, i) => (
                 <div
                   key={i}
-                  className="absolute bottom-0 left-1/2 w-1 bg-arcade-neon-cyan opacity-30"
+                  className="absolute bottom-0 left-1/2 w-1 bg-arcade-neon-cyan opacity-15"
                   style={{
                     height: `${20 + i * 8}%`,
                     transform: `translateX(-50%) rotateZ(${(i - 4) * 2}deg)`,
@@ -238,13 +238,13 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
           </div>
 
           {/* Content Container */}
-          <div className="relative z-20 px-4">
+          <div className="relative z-30 px-4">
             {children}
           </div>
         </main>
 
         {/* Enhanced Arcade Cabinet Footer */}
-        <footer className={`relative z-30 bg-gradient-to-r from-arcade-neon-magenta/30 via-arcade-neon-cyan/30 to-arcade-neon-yellow/30 border-t-4 border-arcade-neon-green backdrop-blur-sm ${settings.enableGlow ? 'animate-neon-pulse' : ''}`}>
+        <footer className={`relative z-30 bg-gradient-to-r from-arcade-neon-magenta/20 via-arcade-neon-cyan/20 to-arcade-neon-yellow/20 border-t-4 border-arcade-neon-green backdrop-blur-sm ${settings.enableGlow ? 'animate-neon-pulse' : ''}`}>
           <div className="max-w-7xl mx-auto px-4 py-6">
             <div className="text-center space-y-4">
               {/* Main message */}
