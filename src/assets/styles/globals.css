@@ -1,9 +1,38 @@
+
 /* Theme-specific font imports */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+/* Magneti Font - Premium minimalist typography */
+@font-face {
+  font-family: 'Magneti';
+  src: url('https://cdn.myfonts.net/s/aw/original/390/0/180063.woff2') format('woff2'),
+       url('https://cdn.myfonts.net/s/aw/original/390/0/180063.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Magneti';
+  src: url('https://cdn.myfonts.net/s/aw/original/390/0/180064.woff2') format('woff2'),
+       url('https://cdn.myfonts.net/s/aw/original/390/0/180064.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Magneti';
+  src: url('https://cdn.myfonts.net/s/aw/original/390/0/180065.woff2') format('woff2'),
+       url('https://cdn.myfonts.net/s/aw/original/390/0/180065.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -102,18 +131,32 @@
 
 /* Theme-specific utility classes */
 @layer utilities {
-  /* Minimalist theme utilities - NO ANIMATIONS */
+  /* Minimalist theme utilities - ZERO ANIMATIONS */
   .theme-minimalist {
-    font-family: 'Magneti', system-ui, sans-serif;
+    font-family: 'Magneti', 'Inter', system-ui, sans-serif;
   }
   
-  .theme-minimalist * {
+  .theme-minimalist *,
+  .theme-minimalist *:before,
+  .theme-minimalist *:after {
     transition: none !important;
     animation: none !important;
+    transform: none !important;
   }
   
-  .minimalist-text-balance {
-    text-wrap: balance;
+  .theme-minimalist button,
+  .theme-minimalist a,
+  .theme-minimalist input,
+  .theme-minimalist textarea {
+    transition: none !important;
+  }
+  
+  .theme-minimalist button:hover,
+  .theme-minimalist a:hover,
+  .theme-minimalist button:focus,
+  .theme-minimalist a:focus {
+    transform: none !important;
+    box-shadow: none !important;
   }
 
   /* Retro Arcade theme utilities - HEAVY ANIMATIONS */
@@ -225,6 +268,12 @@
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+    }
+    
+    /* Minimalist theme should never animate regardless */
+    .theme-minimalist * {
+      animation: none !important;
+      transition: none !important;
     }
   }
 }

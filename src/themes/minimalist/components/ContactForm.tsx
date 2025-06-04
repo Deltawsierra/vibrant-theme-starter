@@ -50,7 +50,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ isDarkMode }) => {
       setSubmitSuccess(true);
       reset();
       
-      // Clear success message after 5 seconds
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (error) {
       console.error('Error submitting contact form:', error);
@@ -60,39 +59,37 @@ const ContactForm: React.FC<ContactFormProps> = ({ isDarkMode }) => {
     }
   };
 
-  const inputClasses = `w-full px-4 py-3 border text-base focus:outline-none focus:ring-2 focus:ring-gray-400 ${
+  const inputClasses = `w-full px-0 py-4 text-lg font-magneti font-light border-0 border-b-2 bg-transparent focus:outline-none focus:ring-0 ${
     isDarkMode 
-      ? 'bg-gray-800 border-gray-600 text-gray-100' 
-      : 'bg-white border-gray-300 text-gray-900'
+      ? 'border-gray-700 text-gray-100 focus:border-gray-500 placeholder-gray-600' 
+      : 'border-gray-300 text-gray-900 focus:border-gray-600 placeholder-gray-500'
   }`;
 
-  const labelClasses = `block text-sm font-medium mb-2 ${
-    isDarkMode ? 'text-gray-200' : 'text-gray-700'
-  }`;
-
-  const errorClasses = `text-sm mt-1 ${
+  const labelClasses = `block text-lg font-magneti font-light mb-2 ${
     isDarkMode ? 'text-gray-400' : 'text-gray-600'
   }`;
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         <div>
           <label htmlFor="name" className={labelClasses}>
-            Name (required)
+            Name
           </label>
           <input
             id="name"
             type="text"
             className={inputClasses}
+            placeholder="Your name"
             {...register('name', { 
               required: 'Name is required',
               minLength: { value: 2, message: 'Name must be at least 2 characters' }
             })}
-            aria-describedby={errors.name ? 'name-error' : undefined}
           />
           {errors.name && (
-            <p id="name-error" className={errorClasses}>
+            <p className={`text-base font-magneti mt-2 ${
+              isDarkMode ? 'text-gray-500' : 'text-gray-600'
+            }`}>
               {errors.name.message}
             </p>
           )}
@@ -100,12 +97,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ isDarkMode }) => {
 
         <div>
           <label htmlFor="email" className={labelClasses}>
-            Email (required)
+            Email
           </label>
           <input
             id="email"
             type="email"
             className={inputClasses}
+            placeholder="your.email@domain.com"
             {...register('email', { 
               required: 'Email is required',
               pattern: {
@@ -113,10 +111,11 @@ const ContactForm: React.FC<ContactFormProps> = ({ isDarkMode }) => {
                 message: 'Invalid email address'
               }
             })}
-            aria-describedby={errors.email ? 'email-error' : undefined}
           />
           {errors.email && (
-            <p id="email-error" className={errorClasses}>
+            <p className={`text-base font-magneti mt-2 ${
+              isDarkMode ? 'text-gray-500' : 'text-gray-600'
+            }`}>
               {errors.email.message}
             </p>
           )}
@@ -124,20 +123,22 @@ const ContactForm: React.FC<ContactFormProps> = ({ isDarkMode }) => {
 
         <div>
           <label htmlFor="subject" className={labelClasses}>
-            Subject (required)
+            Subject
           </label>
           <input
             id="subject"
             type="text"
             className={inputClasses}
+            placeholder="Project inquiry"
             {...register('subject', { 
               required: 'Subject is required',
               minLength: { value: 5, message: 'Subject must be at least 5 characters' }
             })}
-            aria-describedby={errors.subject ? 'subject-error' : undefined}
           />
           {errors.subject && (
-            <p id="subject-error" className={errorClasses}>
+            <p className={`text-base font-magneti mt-2 ${
+              isDarkMode ? 'text-gray-500' : 'text-gray-600'
+            }`}>
               {errors.subject.message}
             </p>
           )}
@@ -145,50 +146,52 @@ const ContactForm: React.FC<ContactFormProps> = ({ isDarkMode }) => {
 
         <div>
           <label htmlFor="message" className={labelClasses}>
-            Message (required)
+            Message
           </label>
           <textarea
             id="message"
-            rows={6}
+            rows={4}
             className={inputClasses}
+            placeholder="Tell me about your project"
             {...register('message', { 
               required: 'Message is required',
               minLength: { value: 10, message: 'Message must be at least 10 characters' }
             })}
-            aria-describedby={errors.message ? 'message-error' : undefined}
           />
           {errors.message && (
-            <p id="message-error" className={errorClasses}>
+            <p className={`text-base font-magneti mt-2 ${
+              isDarkMode ? 'text-gray-500' : 'text-gray-600'
+            }`}>
               {errors.message.message}
             </p>
           )}
         </div>
 
-        <div>
+        <div className="pt-4">
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full py-3 px-6 text-base font-medium focus:outline-none focus:ring-2 focus:ring-gray-400 ${
+            className={`w-full py-6 text-lg font-magneti font-light border-2 ${
               isDarkMode
-                ? 'bg-gray-700 text-gray-100 border border-gray-600'
-                : 'bg-gray-200 text-gray-900 border border-gray-300'
-            } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                ? 'bg-gray-900 text-gray-100 border-gray-700'
+                : 'bg-white text-gray-900 border-gray-300'
+            } ${isSubmitting ? 'opacity-50' : ''}`}
           >
-            {isSubmitting ? 'Sending...' : 'Send Message'}
+            {isSubmitting ? 'Sending' : 'Send Message'}
           </button>
         </div>
 
         {submitSuccess && (
-          <div className={`text-center text-sm ${
-            isDarkMode ? 'text-gray-300' : 'text-gray-700'
+          <div className={`text-center text-lg font-magneti font-light ${
+            isDarkMode ? 'text-gray-400' : 'text-gray-600'
           }`}>
-            Message sent successfully. Thank you for your inquiry.
+            Message sent successfully
           </div>
         )}
 
         {submitError && (
-          <div className={`text-center text-sm ${
-            isDarkMode ? 'text-gray-400' : 'text-gray-600'
+          <div className={`text-center text-lg font-magneti font-light ${
+            isDarkMode ? 'text-gray-500' : 'text-gray-600'
           }`}>
             {submitError}
           </div>

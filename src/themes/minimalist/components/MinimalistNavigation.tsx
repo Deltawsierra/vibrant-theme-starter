@@ -12,49 +12,60 @@ const MinimalistNavigation: React.FC<MinimalistNavigationProps> = ({ isDarkMode 
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className={`w-full ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} border-b`}>
-      <div className="max-w-6xl mx-auto px-8 py-6">
-        <div className="flex space-x-12">
+    <nav className={`w-full ${isDarkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} border-b`}>
+      <div className="max-w-6xl mx-auto px-8 py-8">
+        <div className="flex justify-between items-center">
           <Link 
-            to="/about" 
-            className={`text-lg font-medium ${
-              isActive('/about') 
-                ? (isDarkMode ? 'text-white' : 'text-black')
-                : (isDarkMode ? 'text-gray-400' : 'text-gray-600')
+            to="/" 
+            className={`text-2xl font-magneti font-medium ${
+              isDarkMode ? 'text-gray-100' : 'text-gray-900'
             }`}
           >
-            About
+            Portfolio
           </Link>
-          <Link 
-            to="/work" 
-            className={`text-lg font-medium ${
-              isActive('/work') 
-                ? (isDarkMode ? 'text-white' : 'text-black')
-                : (isDarkMode ? 'text-gray-400' : 'text-gray-600')
-            }`}
-          >
-            Work
-          </Link>
-          <Link 
-            to="/contact" 
-            className={`text-lg font-medium ${
-              isActive('/contact') 
-                ? (isDarkMode ? 'text-white' : 'text-black')
-                : (isDarkMode ? 'text-gray-400' : 'text-gray-600')
-            }`}
-          >
-            Contact
-          </Link>
-          <Link 
-            to="/showcase" 
-            className={`text-lg font-medium ${
-              isActive('/showcase') 
-                ? (isDarkMode ? 'text-white' : 'text-black')
-                : (isDarkMode ? 'text-gray-400' : 'text-gray-600')
-            }`}
-          >
-            Showcase
-          </Link>
+          
+          <div className="flex space-x-16">
+            <Link 
+              to="/about" 
+              className={`text-xl font-magneti font-light ${
+                isActive('/about') 
+                  ? (isDarkMode ? 'text-gray-100' : 'text-gray-900')
+                  : (isDarkMode ? 'text-gray-500' : 'text-gray-500')
+              }`}
+            >
+              About
+            </Link>
+            <Link 
+              to="/work" 
+              className={`text-xl font-magneti font-light ${
+                isActive('/work') 
+                  ? (isDarkMode ? 'text-gray-100' : 'text-gray-900')
+                  : (isDarkMode ? 'text-gray-500' : 'text-gray-500')
+              }`}
+            >
+              Work
+            </Link>
+            <Link 
+              to="/contact" 
+              className={`text-xl font-magneti font-light ${
+                isActive('/contact') 
+                  ? (isDarkMode ? 'text-gray-100' : 'text-gray-900')
+                  : (isDarkMode ? 'text-gray-500' : 'text-gray-500')
+              }`}
+            >
+              Contact
+            </Link>
+            <Link 
+              to="/showcase" 
+              className={`text-xl font-magneti font-light ${
+                isActive('/showcase') 
+                  ? (isDarkMode ? 'text-gray-100' : 'text-gray-900')
+                  : (isDarkMode ? 'text-gray-500' : 'text-gray-500')
+              }`}
+            >
+              Showcase
+            </Link>
+          </div>
         </div>
       </div>
     </nav>
