@@ -1,324 +1,266 @@
 import type { Config } from "tailwindcss";
 
-export default {
-	darkMode: ["class"],
-	content: [
-		"./pages/**/*.{ts,tsx}",
-		"./components/**/*.{ts,tsx}",
-		"./app/**/*.{ts,tsx}",
-		"./src/**/*.{ts,tsx}",
-	],
-	prefix: "",
-	theme: {
-		container: {
-			center: true,
-			padding: '2rem',
-			screens: {
-				'2xl': '1400px'
-			}
-		},
-		extend: {
-			colors: {
-				border: 'hsl(var(--border))',
-				input: 'hsl(var(--input))',
-				ring: 'hsl(var(--ring))',
-				background: 'hsl(var(--background))',
-				foreground: 'hsl(var(--foreground))',
-				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
-				},
-				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
-				},
-				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))'
-				},
-				muted: {
-					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))'
-				},
-				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
-				},
-				popover: {
-					DEFAULT: 'hsl(var(--popover))',
-					foreground: 'hsl(var(--popover-foreground))'
-				},
-				card: {
-					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))'
-				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				},
-				minimalist: {
-					100: '#ffffff',
-					200: '#f8f9fa',
-					300: '#e9ecef',
-					400: '#dee2e6',
-					500: '#adb5bd',
-					600: '#6c757d',
-					700: '#495057',
-					800: '#343a40',
-					900: '#212529'
-				},
-				arcade: {
-					neon: {
-						green: '#00ff00',
-						cyan: '#00ffff',
-						magenta: '#ff00ff',
-						yellow: '#ffff00',
-						orange: '#ff8000',
-						red: '#ff0040'
-					},
-					dark: {
-						100: '#1a1a1a',
-						200: '#0d1117',
-						300: '#000000'
-					}
-				},
-				story: {
-					warm: {
-						50: '#fef7ed',
-						100: '#fdd5a6',
-						200: '#f6ad55',
-						300: '#ed8936',
-						400: '#dd6b20',
-						500: '#c05621',
-						600: '#9c4221',
-						700: '#7c2d12',
-						800: '#651e0e',
-						900: '#44140a'
-					},
-					parchment: '#faf5eb',
-					ink: '#2d1810'
-				},
-				threed: {
-					blue: {
-						400: '#60a5fa',
-						500: '#3b82f6',
-						600: '#2563eb'
-					},
-					slate: {
-						700: '#334155',
-						800: '#1e293b',
-						900: '#0f172a'
-					}
-				},
-				ecommerce: {
-					primary: {
-						50: '#eff6ff',
-						100: '#dbeafe',
-						500: '#3b82f6',
-						600: '#2563eb',
-						700: '#1d4ed8'
-					},
-					success: '#10b981',
-					warning: '#f59e0b',
-					error: '#ef4444'
-				},
-				video: {
-					gold: {
-						400: '#fbbf24',
-						500: '#f59e0b',
-						600: '#d97706'
-					},
-					cinematic: '#000000',
-					editorial: '#ffffff'
-				}
-			},
-			fontFamily: {
-				'magneti': ['Magneti', 'system-ui', 'sans-serif'],
-				'orbitron': ['Orbitron', 'Courier New', 'monospace'],
-				'crimson': ['Crimson Text', 'Georgia', 'serif'],
-				'inter': ['Inter', 'system-ui', 'sans-serif'],
-				'source-sans': ['Source Sans Pro', 'system-ui', 'sans-serif'],
-				'montserrat': ['Montserrat', 'system-ui', 'sans-serif'],
-				'pixel': ['Perfect DOS VGA 437', 'Courier New', 'monospace']
-			},
-			spacing: {
-				'minimalist-lg': '4rem',
-				'arcade-grid': '1.25rem',
-				'story-indent': '2.5rem'
-			},
-			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)',
-				'arcade': '0',
-				'story': '0.25rem'
-			},
-			keyframes: {
-				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
-				},
-				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
-				},
-				'neon-pulse': {
-					'0%, 100%': { 
-						textShadow: '0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor',
-						opacity: '1'
-					},
-					'50%': { 
-						textShadow: '0 0 2px currentColor, 0 0 5px currentColor, 0 0 8px currentColor',
-						opacity: '0.8'
-					}
-				},
-				'pixel-blink': {
-					'0%, 50%': { opacity: '1' },
-					'51%, 100%': { opacity: '0' }
-				},
-				'screen-flicker': {
-					'0%': { opacity: '1' },
-					'98%': { opacity: '1' },
-					'99%': { opacity: '0.96' },
-					'100%': { opacity: '1' }
-				},
-				'neon-glow': {
-					'0%': { 
-						boxShadow: '0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor, 0 0 20px currentColor' 
-					},
-					'50%': { 
-						boxShadow: '0 0 2px currentColor, 0 0 5px currentColor, 0 0 8px currentColor, 0 0 12px currentColor' 
-					},
-					'100%': { 
-						boxShadow: '0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor, 0 0 20px currentColor' 
-					}
-				},
-				'arcade-entrance': {
-					'0%': { 
-						transform: 'scale(0) rotate(180deg)',
-						opacity: '0'
-					},
-					'50%': {
-						transform: 'scale(1.1) rotate(90deg)',
-						opacity: '0.8'
-					},
-					'100%': { 
-						transform: 'scale(1) rotate(0deg)',
-						opacity: '1'
-					}
-				},
-				'page-turn': {
-					'0%': { transform: 'rotateY(0deg)' },
-					'50%': { transform: 'rotateY(-90deg)' },
-					'100%': { transform: 'rotateY(-180deg)' }
-				},
-				'page-flip': {
-					'0%': { transform: 'rotateY(0deg)', zIndex: '2' },
-					'50%': { transform: 'rotateY(90deg)', zIndex: '2' },
-					'100%': { transform: 'rotateY(180deg)', zIndex: '1' }
-				},
-				'parallax-float': {
-					'0%, 100%': { transform: 'translateY(0px)' },
-					'50%': { transform: 'translateY(-10px)' }
-				},
-				'story-fade-in': {
-					'0%': { 
-						opacity: '0',
-						transform: 'translateY(30px)'
-					},
-					'100%': { 
-						opacity: '1',
-						transform: 'translateY(0)'
-					}
-				},
-				'dramatic-slide': {
-					'0%': { 
-						transform: 'translateX(-100%)',
-						opacity: '0'
-					},
-					'100%': { 
-						transform: 'translateX(0)',
-						opacity: '1'
-					}
-				},
-				'float': {
-					'0%, 100%': { 
-						transform: 'translateY(0px) rotateX(0deg)',
-						boxShadow: '0 5px 15px 0px rgba(59, 130, 246, 0.1)'
-					},
-					'50%': { 
-						transform: 'translateY(-10px) rotateX(2deg)',
-						boxShadow: '0 25px 25px 0px rgba(59, 130, 246, 0.2)'
-					}
-				},
-				'scan': {
-					'0%': { transform: 'translateY(-100%)' },
-					'100%': { transform: 'translateY(calc(100vh + 100%))' }
-				},
-				'slide': {
-					'0%': { transform: 'translateX(-100%)' },
-					'100%': { transform: 'translateX(100%)' }
-				},
-				'product-hover': {
-					'0%': { transform: 'translateY(0) scale(1)' },
-					'100%': { transform: 'translateY(-4px) scale(1.02)' }
-				},
-				'cart-bounce': {
-					'0%, 20%, 50%, 80%, 100%': { transform: 'translateY(0)' },
-					'40%': { transform: 'translateY(-8px)' },
-					'60%': { transform: 'translateY(-4px)' }
-				},
-				'curtain-reveal': {
-					'0%': { transform: 'translateX(0%)' },
-					'100%': { transform: 'translateX(-100%)' }
-				},
-				'zoom-in': {
-					'0%': { transform: 'scale(1)' },
-					'100%': { transform: 'scale(1.05)' }
-				},
-				'spotlight': {
-					'0%': { opacity: '0.3' },
-					'50%': { opacity: '0.7' },
-					'100%': { opacity: '0.3' }
-				}
-			},
-			animation: {
-				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out',
-				'neon-pulse': 'neon-pulse 2s ease-in-out infinite',
-				'pixel-blink': 'pixel-blink 1s step-start infinite',
-				'screen-flicker': 'screen-flicker 0.15s ease-in-out infinite',
-				'neon-glow': 'neon-glow 2s ease-in-out infinite alternate',
-				'arcade-entrance': 'arcade-entrance 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-				'page-turn': 'page-turn 1.5s ease-in-out',
-				'page-flip': 'page-flip 1.2s ease-in-out',
-				'parallax-float': 'parallax-float 6s ease-in-out infinite',
-				'story-fade-in': 'story-fade-in 0.8s ease-out',
-				'dramatic-slide': 'dramatic-slide 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-				'float': 'float 6s ease-in-out infinite',
-				'scan': 'scan 2s ease-in-out infinite',
-				'slide': 'slide 4s linear infinite',
-				'product-hover': 'product-hover 0.3s ease-out',
-				'cart-bounce': 'cart-bounce 1s ease-in-out',
-				'curtain-reveal': 'curtain-reveal 0.8s ease-out',
-				'zoom-in': 'zoom-in 0.5s ease-out',
-				'spotlight': 'spotlight 3s ease-in-out infinite'
-			}
-		}
-	},
-	plugins: [require("tailwindcss-animate")],
+const config: Config = {
+  darkMode: ["class"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
+  prefix: "",
+  theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
+    extend: {
+      fontFamily: {
+        // Minimalist theme font
+        'magneti': ['Magneti', 'Inter', 'system-ui', 'sans-serif'],
+        
+        // Retro Arcade theme fonts
+        'pixel': ['Press Start 2P', 'VT323', 'Courier New', 'monospace'],
+        'arcade': ['VT323', 'Courier New', 'monospace'],
+        
+        // Other theme fonts
+        'story': ['Crimson Text', 'Georgia', 'serif'],
+        'modern': ['Inter', 'system-ui', 'sans-serif'],
+        'video': ['Montserrat', 'system-ui', 'sans-serif'],
+        'commerce': ['Source Sans Pro', 'system-ui', 'sans-serif']
+      },
+      colors: {
+        // Shadcn colors
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        
+        // Retro Arcade neon palette
+        'arcade-neon': {
+          'pink': '#ff00ff',
+          'purple': '#8a2be2',
+          'blue': '#00bfff',
+          'cyan': '#00ffff',
+          'green': '#00ff00',
+          'yellow': '#ffff00',
+          'orange': '#ffa500',
+          'red': '#ff0000',
+          'magenta': '#ff1493',
+          'lime': '#32cd32',
+          'violet': '#9400d3',
+          'gold': '#ffd700'
+        },
+        
+        // Story theme colors
+        'story-warm': {
+          50: '#fdf8f3',
+          100: '#faf0e4',
+          200: '#f4dfc4',
+          300: '#ecc89f',
+          400: '#e2a86a',
+          500: '#db9455',
+          600: '#cd7c47',
+          700: '#ab5f3c',
+          800: '#8a4d37',
+          900: '#70402e'
+        }
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        // Accordion animations
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        
+        // Retro Arcade animations
+        "neon-pulse": {
+          "0%, 100%": { 
+            textShadow: "0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor",
+            opacity: "1" 
+          },
+          "50%": { 
+            textShadow: "0 0 2px currentColor, 0 0 5px currentColor, 0 0 8px currentColor",
+            opacity: "0.8" 
+          }
+        },
+        "neon-glow": {
+          "0%, 100%": { 
+            boxShadow: "0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor, inset 0 0 10px currentColor" 
+          },
+          "50%": { 
+            boxShadow: "0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor, inset 0 0 20px currentColor" 
+          }
+        },
+        "pixel-blink": {
+          "0%, 50%": { opacity: "1" },
+          "51%, 100%": { opacity: "0" }
+        },
+        "screen-flicker": {
+          "0%, 100%": { opacity: "0.02" },
+          "50%": { opacity: "0.05" }
+        },
+        "slide": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" }
+        },
+        "parallax-float": {
+          "0%, 100%": { transform: "translateY(0px) rotate(0deg)" },
+          "33%": { transform: "translateY(-10px) rotate(1deg)" },
+          "66%": { transform: "translateY(5px) rotate(-1deg)" }
+        },
+        "arcade-boot": {
+          "0%": { 
+            transform: "scale(0.8)",
+            opacity: "0",
+            filter: "brightness(0)"
+          },
+          "30%": {
+            transform: "scale(1.1)",
+            opacity: "0.5",
+            filter: "brightness(2)"
+          },
+          "60%": {
+            transform: "scale(0.95)",
+            opacity: "0.8",
+            filter: "brightness(1.5)"
+          },
+          "100%": { 
+            transform: "scale(1)",
+            opacity: "1",
+            filter: "brightness(1)"
+          }
+        },
+        "coin-insert": {
+          "0%, 100%": { 
+            transform: "translateY(0px) rotate(0deg)",
+            textShadow: "0 0 10px #ffd700"
+          },
+          "25%": { 
+            transform: "translateY(-5px) rotate(2deg)",
+            textShadow: "0 0 15px #ffd700, 0 0 25px #ffd700"
+          },
+          "75%": { 
+            transform: "translateY(5px) rotate(-2deg)",
+            textShadow: "0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700"
+          }
+        },
+        "glitch": {
+          "0%, 100%": { 
+            transform: "translateX(0)",
+            filter: "hue-rotate(0deg)"
+          },
+          "10%": { 
+            transform: "translateX(-2px)",
+            filter: "hue-rotate(90deg)"
+          },
+          "20%": { 
+            transform: "translateX(2px)",
+            filter: "hue-rotate(180deg)"
+          },
+          "30%": { 
+            transform: "translateX(-1px)",
+            filter: "hue-rotate(270deg)"
+          },
+          "40%": { 
+            transform: "translateX(1px)",
+            filter: "hue-rotate(360deg)"
+          }
+        },
+        
+        // Storytelling animations
+        "story-fade-in": {
+          "0%": { 
+            opacity: "0",
+            transform: "translateY(30px)"
+          },
+          "100%": { 
+            opacity: "1",
+            transform: "translateY(0)"
+          }
+        },
+        "dramatic-slide": {
+          "0%": { 
+            opacity: "0",
+            transform: "translateX(-100px) scale(0.8)"
+          },
+          "100%": { 
+            opacity: "1",
+            transform: "translateX(0) scale(1)"
+          }
+        }
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        
+        // Retro Arcade animations
+        "neon-pulse": "neon-pulse 2s ease-in-out infinite",
+        "neon-glow": "neon-glow 1.5s ease-in-out infinite",
+        "pixel-blink": "pixel-blink 1s step-end infinite",
+        "screen-flicker": "screen-flicker 0.15s ease-in-out infinite",
+        "slide": "slide 20s linear infinite",
+        "parallax-float": "parallax-float 6s ease-in-out infinite",
+        "arcade-boot": "arcade-boot 2s ease-out",
+        "coin-insert": "coin-insert 2s ease-in-out infinite",
+        "glitch": "glitch 0.5s ease-in-out infinite",
+        
+        // Storytelling animations
+        "story-fade-in": "story-fade-in 1s ease-out",
+        "dramatic-slide": "dramatic-slide 0.8s ease-out"
+      },
+      backgroundImage: {
+        'arcade-grid': 'linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)',
+        'crt-scanlines': "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 0, 0.03) 2px, rgba(0, 255, 0, 0.03) 4px)"
+      },
+      backgroundSize: {
+        'arcade-grid': '20px 20px',
+        'crt-scanlines': '100% 4px'
+      }
+    },
+  },
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+
+export default config;
