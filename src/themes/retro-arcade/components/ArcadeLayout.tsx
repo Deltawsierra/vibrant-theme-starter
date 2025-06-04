@@ -117,22 +117,7 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
         />
       )}
       
-      <div className={`min-h-screen bg-black text-arcade-neon-green font-pixel overflow-hidden relative ${settings.enableScanlines ? 'animate-screen-flicker' : ''}`}>
-        {/* Subtle CRT Effects - Much Reduced Opacity */}
-        {settings.enableScanlines && (
-          <>
-            {/* Primary scanlines - very subtle */}
-            <div className="fixed inset-0 pointer-events-none z-10 opacity-5">
-              <div className="w-full h-full bg-crt-scanlines"></div>
-            </div>
-            
-            {/* Secondary flicker effect - barely visible */}
-            <div className="fixed inset-0 pointer-events-none z-9 opacity-3">
-              <div className="w-full h-full bg-repeat-y animate-screen-flicker bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgMSA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjMDBmZjAwIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8cmVjdCB5PSI0IiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjMDBmZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')]"></div>
-            </div>
-          </>
-        )}
-
+      <div className="min-h-screen bg-black text-arcade-neon-green font-pixel overflow-hidden relative">
         {/* Enhanced Parallax Star Field Background */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-5">
           <div className={`absolute inset-0 ${settings.enableGlow ? 'animate-parallax-float' : ''}`}>
