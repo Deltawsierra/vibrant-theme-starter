@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import ArcadeNavigation from './ArcadeNavigation';
 import MotionWarningModal from './MotionWarningModal';
-import AudioControls from './AudioControls';
+import AudioControlsSidebar from './AudioControlsSidebar';
 import ArcadeHUD from './ArcadeHUD';
 import ArcadeBootSequence from './ArcadeBootSequence';
 import ArcadeBackground from './ArcadeBackground';
@@ -22,7 +22,7 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
   const [bootProgress, setBootProgress] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Boot sequence effect - only runs once on initial load
+  // Extended boot sequence effect - minimum 3 seconds
   useEffect(() => {
     if (isInitialized) return;
 
@@ -32,17 +32,18 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
           clearInterval(progressTimer);
           return 100;
         }
-        return prev + 8; // Faster progress
+        return prev + 3; // Slower progress for better readability
       });
-    }, 20);
+    }, 100);
 
+    // Minimum 3 second boot time
     const bootTimer = setTimeout(() => {
       setShowBootSequence(false);
       setIsInitialized(true);
       if (userHasInteracted) {
         playBackgroundMusic();
       }
-    }, 800); // Much faster boot
+    }, 3000); // Extended to 3 seconds minimum
 
     return () => {
       clearTimeout(bootTimer);
@@ -72,7 +73,7 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
 
   return (
     <>
-      {/* Boot Sequence - only shows on initial load */}
+      {/* Boot Sequence - only shows on initial load with extended timing */}
       {showBootSequence && !isInitialized && (
         <ArcadeBootSequence 
           isVisible={showBootSequence && !isInitialized}
@@ -95,8 +96,8 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
         {/* Navigation HUD */}
         <ArcadeNavigation />
 
-        {/* Audio Controls */}
-        <AudioControls />
+        {/* Audio Controls Sidebar - Replaces old fixed controls */}
+        <AudioControlsSidebar />
 
         {/* Arcade HUD */}
         <ArcadeHUD />
@@ -106,7 +107,7 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
           {/* Enhanced Perspective Grid Floor */}
           <ArcadeFloor />
 
-          {/* Content Container */}
+          {/* Content Container - No overlays after boot */}
           <div className="relative z-30 px-4">
             {children}
           </div>

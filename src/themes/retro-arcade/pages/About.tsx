@@ -19,28 +19,33 @@ const RetroArcadeAbout = () => {
           </div>
         </div>
 
-        {/* Character Card */}
+        {/* Enhanced Character Card with Resume Info */}
         <div className="flex justify-center mb-16">
-          <div className="bg-black/80 border-4 border-arcade-neon-green p-8 max-w-2xl">
+          <div className="bg-black/80 border-4 border-arcade-neon-green p-8 max-w-3xl">
             <div className="flex items-start space-x-8">
               {/* Pixel Avatar */}
-              <div className="w-32 h-32 bg-gradient-to-br from-arcade-neon-cyan to-arcade-neon-magenta border-2 border-arcade-neon-yellow flex items-center justify-center">
-                <div className="text-4xl font-pixel text-black font-bold">DEV</div>
+              <div className="w-40 h-40 bg-gradient-to-br from-arcade-neon-cyan to-arcade-neon-magenta border-4 border-arcade-neon-yellow flex flex-col items-center justify-center">
+                <div className="text-3xl font-pixel text-black font-bold">DAVID</div>
+                <div className="text-sm font-pixel text-black font-bold">SMITH</div>
               </div>
               
-              {/* Character Stats */}
+              {/* Enhanced Character Stats */}
               <div className="flex-1 space-y-4">
                 <div className={`text-2xl font-pixel font-bold text-arcade-neon-green ${settings.enableGlow ? 'animate-neon-pulse' : ''}`}>
                   SENIOR FULL-STACK DEVELOPER
                 </div>
+                <div className="text-sm font-pixel text-arcade-neon-cyan">
+                  LEVEL: 9+ YEARS EXPERIENCE | CLASS: TECH LEAD
+                </div>
                 
-                {/* Stats Bars */}
+                {/* Enhanced Stats Bars with Real Skills */}
                 <div className="space-y-3">
                   {[
-                    { label: 'FRONTEND', level: 95, color: 'arcade-neon-cyan' },
-                    { label: 'BACKEND', level: 90, color: 'arcade-neon-magenta' },
-                    { label: 'DATABASE', level: 85, color: 'arcade-neon-yellow' },
-                    { label: 'DEVOPS', level: 80, color: 'arcade-neon-green' }
+                    { label: 'REACT/TS', level: 98, color: 'arcade-neon-cyan' },
+                    { label: 'AWS CLOUD', level: 95, color: 'arcade-neon-magenta' },
+                    { label: 'NODE.JS', level: 92, color: 'arcade-neon-yellow' },
+                    { label: 'TEAM LEAD', level: 90, color: 'arcade-neon-green' },
+                    { label: 'CI/CD', level: 88, color: 'arcade-neon-red' }
                   ].map(({ label, level, color }) => (
                     <div key={label} className="flex items-center space-x-4">
                       <div className={`w-20 text-sm font-pixel text-${color}`}>{label}</div>
@@ -59,27 +64,27 @@ const RetroArcadeAbout = () => {
           </div>
         </div>
 
-        {/* Special Abilities */}
+        {/* Special Abilities & Certifications */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           {[
             {
               title: 'SPECIAL MOVES',
               color: 'arcade-neon-cyan',
               items: [
-                '↓→A: Scalable Architecture',
-                '←↓→B: Performance Optimization', 
-                '↑↑A+B: Bug-Free Deployment',
-                '←→←→A: Code Review Combo'
+                '↓→A: Serverless Architecture (AWS Lambda)',
+                '←↓→B: Performance Optimization (Core Web Vitals)', 
+                '↑↑A+B: Zero-Downtime Deployment',
+                '←→←→A: Code Review & Mentoring Combo'
               ]
             },
             {
-              title: 'POWER-UPS',
+              title: 'UNLOCKED ACHIEVEMENTS',
               color: 'arcade-neon-magenta',
               items: [
-                '◆ React/TypeScript Mastery',
-                '◆ Database Design Expert',
-                '◆ Cloud Infrastructure Pro',
-                '◆ Team Leadership Bonus'
+                '🏆 AWS Cloud Solutions Architect',
+                '🏆 Meta Frontend Developer Certified',
+                '🏆 IBM Generative AI Expert',
+                '🏆 NVIDIA GenAI Fundamentals'
               ]
             }
           ].map(({ title, color, items }) => (
@@ -98,23 +103,48 @@ const RetroArcadeAbout = () => {
           ))}
         </div>
 
-        {/* Backstory Terminal */}
+        {/* Tech Stack Inventory */}
+        <div className="bg-black/80 border-4 border-arcade-neon-yellow p-6 mb-16">
+          <div className={`text-2xl font-pixel font-bold text-arcade-neon-yellow mb-6 text-center ${settings.enableGlow ? 'animate-neon-pulse' : ''}`}>
+            🎒 TECH STACK INVENTORY
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              'React', 'TypeScript', 'Node.js', 'AWS',
+              'Python', 'Docker', 'Kubernetes', 'MongoDB',
+              'PostgreSQL', 'Redis', 'GraphQL', 'REST APIs',
+              'Jest', 'Cypress', 'Terraform', 'Jenkins'
+            ].map((tech, index) => (
+              <div key={tech} className="bg-arcade-neon-yellow/20 border border-arcade-neon-yellow p-3 text-center">
+                <div className="text-arcade-neon-yellow font-pixel text-sm font-bold">
+                  {tech}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Enhanced Backstory Terminal */}
         <div className="bg-black/80 border-2 border-arcade-neon-green p-6">
           <div className={`text-xl font-pixel font-bold text-arcade-neon-green mb-4 ${settings.enableGlow ? 'animate-pixel-blink' : ''}`}>
-            &gt; BACKSTORY.EXE
+            &gt; PLAYER_PROFILE.EXE
           </div>
           <div className="space-y-4 text-arcade-neon-green font-pixel text-sm leading-relaxed">
             <p>
-              &gt; Specialized in creating scalable web applications with modern technologies.
-              &gt; Experience spans frontend frameworks, backend architecture, and database design.
+              &gt; DAVID SMITH - Mission-driven Senior Full-Stack Developer with 9+ years XP
+              &gt; Currently: Principal Engineer at Digital Systems Forge LLC (2016-2025)
             </p>
             <p>
-              &gt; Focused on clean code, performance optimization, and user-centered design.
-              &gt; Committed to delivering solutions that balance technical excellence with business objectives.
+              &gt; SPECIAL ABILITIES: Serverless architecture, team mentoring, agile leadership
+              &gt; ACHIEVEMENTS: Migrated 50k+ user systems, built enterprise SaaS platforms
+            </p>
+            <p>
+              &gt; EDUCATION: BS Computer Science, continuous learning mindset
+              &gt; MISSION: Delivering scalable solutions that balance tech excellence with business value
             </p>
             <p className={settings.enableGlow ? 'animate-pixel-blink' : ''}>
-              &gt; Available for consulting, full-time opportunities, and collaborative projects.
-              &gt; INSERT COIN TO START MISSION_
+              &gt; STATUS: Available for new quests and collaborative missions
+              &gt; INSERT_COIN_TO_START_COLLABORATION_
             </p>
           </div>
         </div>
@@ -123,10 +153,10 @@ const RetroArcadeAbout = () => {
         <div className="text-center mt-16">
           <div className={`inline-block bg-arcade-neon-yellow/20 border-2 border-arcade-neon-yellow px-8 py-4 ${settings.enableGlow ? 'animate-neon-pulse' : ''}`}>
             <div className="text-arcade-neon-yellow font-pixel font-bold">
-              🏆 ACHIEVEMENT UNLOCKED: ABOUT PAGE CLEARED! 🏆
+              🏆 ACHIEVEMENT UNLOCKED: DEVELOPER PROFILE ANALYZED! 🏆
             </div>
             <div className="text-arcade-neon-yellow font-pixel text-sm mt-2">
-              +1000 XP | BONUS: Developer Trust Level Up!
+              +2500 XP | BONUS: Trust Level Maximum!
             </div>
           </div>
         </div>

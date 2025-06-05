@@ -8,34 +8,37 @@ const RetroArcadeShowcase = () => {
 
   const featuredProjects = [
     {
-      title: 'ENTERPRISE FORTRESS',
+      title: 'ENTERPRISE ARCHITECT',
       type: 'FINAL BOSS',
       difficulty: '★★★★★',
       color: 'arcade-neon-cyan',
       health: 100,
-      damage: 95,
-      description: 'The ultimate challenge - a complete enterprise solution that handles massive scale.',
-      abilities: ['Auto-scaling', 'Load Balancing', 'Zero Downtime', 'Real-time Sync']
+      damage: 98,
+      description: 'The ultimate challenge - leading enterprise-scale serverless architecture serving 50,000+ users.',
+      abilities: ['AWS Lambda Mastery', 'Zero-Downtime Deployment', 'Team Leadership', 'Performance Optimization'],
+      certifications: ['AWS Cloud Solutions Architect', 'Meta Frontend Developer']
     },
     {
-      title: 'AI INTEGRATION DRAGON',
+      title: 'LEGACY SYSTEM SLAYER',
       type: 'SECRET BOSS',
-      difficulty: '★★★★☆',
+      difficulty: '★★★★★',
       color: 'arcade-neon-magenta',
-      health: 85,
-      damage: 90,
-      description: 'Hidden challenge unlocked - machine learning and AI integration mastery.',
-      abilities: ['Neural Networks', 'Data Processing', 'Predictive Analytics', 'NLP']
+      health: 95,
+      damage: 96,
+      description: 'Legendary achievement - modernizing critical legacy systems without breaking production.',
+      abilities: ['Microservices Migration', 'Database Optimization', 'Docker/Kubernetes', 'Risk Management'],
+      certifications: ['IBM Generative AI Expert', 'NVIDIA GenAI Fundamentals']
     },
     {
-      title: 'PERFORMANCE DEMON',
+      title: 'PERFORMANCE WIZARD',
       type: 'SPEED BOSS',
-      difficulty: '★★★☆☆',
+      difficulty: '★★★★☆',
       color: 'arcade-neon-yellow',
-      health: 70,
-      damage: 88,
-      description: 'Lightning-fast optimization challenges that push performance to the limit.',
-      abilities: ['Code Splitting', 'Lazy Loading', 'Caching', 'Minification']
+      health: 88,
+      damage: 94,
+      description: 'Master of optimization - achieving 3x performance improvements through strategic architecture.',
+      abilities: ['Core Web Vitals', 'Bundle Optimization', 'CDN Strategy', 'Caching Architecture'],
+      certifications: ['Meta Backend Developer', 'AWS Certified']
     }
   ];
 
@@ -48,10 +51,10 @@ const RetroArcadeShowcase = () => {
             FINAL STAGE
           </div>
           <div className="text-2xl font-pixel text-arcade-neon-yellow">
-            ⚡ BOSS BATTLE ARENA ⚡
+            ⚡ CAREER BOSS BATTLES ⚡
           </div>
           <div className="text-sm font-pixel text-arcade-neon-green mt-2">
-            WARNING: MAXIMUM DIFFICULTY SHOWCASE
+            MAXIMUM DIFFICULTY ACCOMPLISHMENTS
           </div>
         </div>
 
@@ -76,21 +79,21 @@ const RetroArcadeShowcase = () => {
                     </div>
                   </div>
                   <div className={`text-right text-${boss.color} font-pixel text-sm`}>
-                    <div>STAGE {index + 1}/3</div>
-                    <div className={settings.enableGlow ? 'animate-pixel-blink' : ''}>PREPARE FOR BATTLE</div>
+                    <div>ACCOMPLISHMENT {index + 1}/3</div>
+                    <div className={settings.enableGlow ? 'animate-pixel-blink' : ''}>CAREER DEFINING</div>
                   </div>
                 </div>
 
                 {/* Boss Health Bar */}
                 <div className="mb-8">
-                  <div className={`text-${boss.color} font-pixel text-sm mb-2`}>BOSS HEALTH</div>
+                  <div className={`text-${boss.color} font-pixel text-sm mb-2`}>PROJECT SUCCESS RATE</div>
                   <div className={`w-full h-6 bg-gray-800 border-2 border-${boss.color} relative overflow-hidden`}>
                     <div 
-                      className={`h-full bg-gradient-to-r from-${boss.color} to-red-500 ${settings.enableGlow ? 'animate-neon-glow' : ''}`}
+                      className={`h-full bg-gradient-to-r from-${boss.color} to-green-500 ${settings.enableGlow ? 'animate-neon-glow' : ''}`}
                       style={{ width: `${boss.health}%` }}
                     ></div>
                     <div className={`absolute inset-0 flex items-center justify-center text-${boss.color} font-pixel font-bold text-xs`}>
-                      {boss.health}/100 HP
+                      {boss.health}% SUCCESS
                     </div>
                   </div>
                 </div>
@@ -99,22 +102,36 @@ const RetroArcadeShowcase = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                   <div>
                     <div className={`text-xl font-pixel font-bold text-${boss.color} mb-4`}>
-                      BOSS DESCRIPTION
+                      MISSION BRIEFING
                     </div>
                     <div className={`text-${boss.color} font-pixel text-sm leading-relaxed mb-6 opacity-90`}>
                       {boss.description}
                     </div>
                     
-                    {/* Attack Damage */}
+                    {/* Impact Power */}
                     <div className="mb-4">
-                      <div className={`text-${boss.color} font-pixel text-sm mb-2`}>ATTACK POWER</div>
+                      <div className={`text-${boss.color} font-pixel text-sm mb-2`}>IMPACT POWER</div>
                       <div className={`w-full h-4 bg-gray-800 border border-${boss.color}`}>
                         <div 
-                          className={`h-full bg-gradient-to-r from-red-500 to-${boss.color} ${settings.enableGlow ? 'animate-neon-glow' : ''}`}
+                          className={`h-full bg-gradient-to-r from-yellow-500 to-${boss.color} ${settings.enableGlow ? 'animate-neon-glow' : ''}`}
                           style={{ width: `${boss.damage}%` }}
                         ></div>
                       </div>
-                      <div className={`text-${boss.color} font-pixel text-xs mt-1`}>{boss.damage}/100 DMG</div>
+                      <div className={`text-${boss.color} font-pixel text-xs mt-1`}>{boss.damage}% BUSINESS IMPACT</div>
+                    </div>
+
+                    {/* Certifications */}
+                    <div className="mb-4">
+                      <div className={`text-${boss.color} font-pixel text-sm mb-2 font-bold`}>
+                        🏆 CERTIFICATIONS EARNED:
+                      </div>
+                      <div className="space-y-1">
+                        {boss.certifications.map((cert, certIndex) => (
+                          <div key={certIndex} className={`text-xs font-pixel text-${boss.color} opacity-80`}>
+                            ✓ {cert}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
@@ -138,13 +155,13 @@ const RetroArcadeShowcase = () => {
                 {/* Battle Actions */}
                 <div className="flex justify-center space-x-4">
                   <button className={`px-6 py-3 bg-${boss.color}/20 border-2 border-${boss.color} text-${boss.color} font-pixel font-bold hover:bg-${boss.color} hover:text-black transition-colors ${settings.enableGlow ? 'animate-neon-pulse' : ''}`}>
-                    ATTACK
+                    VIEW DETAILS
                   </button>
                   <button className={`px-6 py-3 bg-arcade-neon-green/20 border-2 border-arcade-neon-green text-arcade-neon-green font-pixel font-bold hover:bg-arcade-neon-green hover:text-black transition-colors`}>
-                    DEFEND
+                    CASE STUDY
                   </button>
                   <button className={`px-6 py-3 bg-arcade-neon-yellow/20 border-2 border-arcade-neon-yellow text-arcade-neon-yellow font-pixel font-bold hover:bg-arcade-neon-yellow hover:text-black transition-colors`}>
-                    SPECIAL
+                    COLLABORATE
                   </button>
                 </div>
               </div>
@@ -155,22 +172,22 @@ const RetroArcadeShowcase = () => {
         {/* Victory Screen */}
         <div className="bg-black/90 border-4 border-arcade-neon-yellow p-12 text-center mt-16">
           <div className={`text-5xl font-pixel font-bold text-arcade-neon-yellow mb-6 ${settings.enableGlow ? 'animate-neon-pulse' : ''}`}>
-            🏆 CONGRATULATIONS! 🏆
+            🏆 LEGENDARY STATUS ACHIEVED! 🏆
           </div>
           <div className="text-2xl font-pixel text-arcade-neon-green mb-4">
-            ALL BOSSES DEFEATED!
+            ALL CAREER BOSSES DEFEATED!
           </div>
           <div className="text-lg font-pixel text-arcade-neon-cyan mb-8">
-            YOU HAVE WITNESSED THE ULTIMATE PORTFOLIO SHOWCASE
+            9+ YEARS OF TECHNICAL EXCELLENCE UNLOCKED
           </div>
           
           {/* Final Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             {[
-              { label: 'TOTAL SCORE', value: '999,999', color: 'arcade-neon-yellow' },
-              { label: 'BOSSES DEFEATED', value: '3/3', color: 'arcade-neon-green' },
-              { label: 'COMPLETION TIME', value: '00:15:42', color: 'arcade-neon-cyan' },
-              { label: 'RANK ACHIEVED', value: 'S++', color: 'arcade-neon-magenta' }
+              { label: 'USERS IMPACTED', value: '50,000+', color: 'arcade-neon-yellow' },
+              { label: 'SYSTEMS MIGRATED', value: 'ZERO LOSS', color: 'arcade-neon-green' },
+              { label: 'PERFORMANCE BOOST', value: '+300%', color: 'arcade-neon-cyan' },
+              { label: 'CERTIFICATION RANK', value: 'S-TIER', color: 'arcade-neon-magenta' }
             ].map(({ label, value, color }) => (
               <div key={label} className={`bg-${color}/10 border-2 border-${color} p-4`}>
                 <div className={`text-${color} font-pixel text-sm mb-2`}>{label}</div>
@@ -181,10 +198,10 @@ const RetroArcadeShowcase = () => {
 
           {/* Credits Roll */}
           <div className={`text-arcade-neon-green font-pixel text-sm mb-6 ${settings.enableGlow ? 'animate-pixel-blink' : ''}`}>
-            PRESS START TO PLAY AGAIN
+            READY FOR YOUR NEXT CHALLENGE?
           </div>
           <div className="text-arcade-neon-magenta font-pixel text-xs">
-            THANK YOU FOR EXPERIENCING THE RETRO ARCADE PORTFOLIO
+            LET'S BUILD THE FUTURE TOGETHER - DAVID SMITH, SENIOR FULL-STACK DEVELOPER
           </div>
         </div>
       </div>
