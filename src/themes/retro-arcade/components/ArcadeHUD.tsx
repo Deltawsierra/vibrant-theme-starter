@@ -6,8 +6,8 @@ const ArcadeHUD: React.FC = () => {
   const { settings } = useArcade();
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-40 pointer-events-none">
-      {/* Top HUD Bar */}
+    <div className="fixed top-20 left-0 right-0 z-30 pointer-events-none">
+      {/* Top HUD Bar - positioned below navigation */}
       <div className="flex justify-between items-start p-4">
         {/* Left HUD - Player Stats */}
         <div className={`bg-black/80 border-2 border-arcade-neon-green p-3 font-pixel text-sm pointer-events-auto ${settings.enableGlow ? 'animate-neon-pulse' : ''}`}>
