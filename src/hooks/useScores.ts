@@ -41,12 +41,20 @@ export const useScores = (gameType: string = 'galaga') => {
       const { data: { user } } = await supabase.auth.getUser();
       
       if (user) {
-        // Try to fetch from database
+        // Try to fetch from database - fixed the join query
         const { data: scoresData, error: scoresError } = await supabase
           .from('user_scores')
           .select(`
-            *,
-            profiles:user_id (username)
+            id,
+            user_id,
+            score,
+            game_type,
+            created_at,
+            level_reached,
+            pellets_eaten,
+            ghosts_eaten,
+            session_id,
+            profiles!user_scores_user_id_fkey (username)
           `)
           .eq('game_type', gameType)
           .order('score', { ascending: false })
