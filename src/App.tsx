@@ -5,25 +5,21 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
-import { ThemeProvider } from "@/context/ThemeContext";
+import { ThemeProvider, useTheme } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { AccessibilityProvider } from "@/components/AccessibilityProvider";
 import { AnalyticsProvider } from "@/components/Analytics";
 import { ErrorTrackerProvider } from "@/components/ErrorTracker";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import ThemePageLoader from "@/components/ThemePageLoader";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Work from "./pages/Work";
 import Contact from "./pages/Contact";
 import Showcase from "./pages/Showcase";
+import Game from "./pages/Game";
 import AuthPage from "./pages/Auth";
 import NotFound from "./pages/NotFound";
-
-// Create a Game page component
-const Game = () => {
-  const { currentTheme } = useTheme();
-  return <ThemePageLoader pageName="Game" />;
-};
 
 const queryClient = new QueryClient({
   defaultOptions: {
