@@ -22,7 +22,7 @@ const IndexPage = () => {
         structuredData={{
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "name": "Multi-Theme Developer Portfolio",
+          "name": "Multi-Theme Developer Portfolio", 
           "url": window.location.origin,
           "description": "A sophisticated developer portfolio showcasing full-stack mastery through six distinct themes",
           "author": {
