@@ -28,7 +28,8 @@ const ArcadeNavigation: React.FC = () => {
               { path: '/about', label: 'ABOUT', color: 'arcade-neon-green' },
               { path: '/work', label: 'WORK', color: 'arcade-neon-cyan' },
               { path: '/contact', label: 'CONTACT', color: 'arcade-neon-magenta' },
-              { path: '/showcase', label: 'SHOWCASE', color: 'arcade-neon-yellow' }
+              { path: '/showcase', label: 'SHOWCASE', color: 'arcade-neon-yellow' },
+              { path: '/game', label: 'GAME!', color: 'arcade-neon-red' }
             ].map(({ path, label, color }) => (
               <Link 
                 key={path}

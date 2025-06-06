@@ -42,6 +42,12 @@ const Navigation = () => {
             >
               Contact
             </Link>
+            <Link 
+              to="/game" 
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              Game
+            </Link>
           </div>
         </div>
       </div>

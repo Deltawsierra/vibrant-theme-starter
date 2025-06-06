@@ -1,26 +1,28 @@
 
-import React, { ComponentType } from 'react';
-import About from './pages/About';
-import Work from './pages/Work';
-import Contact from './pages/Contact';
-import Showcase from './pages/Showcase';
+import React from 'react';
 import { ArcadeProvider } from './context/ArcadeContext';
+import ArcadeLayout from './components/ArcadeLayout';
 
-// Higher-order component to wrap pages with ArcadeProvider
-function withArcadeProvider<P extends object>(Component: ComponentType<P>) {
-  return (props: P) => (
+// Import theme pages
+import ArcadeAbout from './pages/About';
+import ArcadeWork from './pages/Work';
+import ArcadeContact from './pages/Contact';
+import ArcadeShowcase from './pages/Showcase';
+import ArcadeGame from './pages/Game';
+
+const RetroArcadeTheme = {
+  About: ArcadeAbout,
+  Work: ArcadeWork,
+  Contact: ArcadeContact,
+  Showcase: ArcadeShowcase,
+  Game: ArcadeGame,
+  Provider: ({ children }: { children: React.ReactNode }) => (
     <ArcadeProvider>
-      <Component {...props} />
+      <ArcadeLayout>
+        {children}
+      </ArcadeLayout>
     </ArcadeProvider>
-  );
-}
-
-export const retroArcadeTheme = {
-  About: withArcadeProvider(About),
-  Work: withArcadeProvider(Work),
-  Contact: withArcadeProvider(Contact),
-  Showcase: withArcadeProvider(Showcase),
-  Provider: ArcadeProvider,
+  )
 };
 
-export default retroArcadeTheme;
+export default RetroArcadeTheme;
