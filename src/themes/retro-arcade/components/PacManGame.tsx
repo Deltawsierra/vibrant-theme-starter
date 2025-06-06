@@ -126,24 +126,20 @@ const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
       });
     });
 
-    // Draw Pac-Man
+    // Draw Pac-Man - FIXED: Make sure this renders properly
+    const pacmanPixelX = pacman.x * CELL_SIZE + CELL_SIZE/2;
+    const pacmanPixelY = pacman.y * CELL_SIZE + CELL_SIZE/2;
+    const radius = CELL_SIZE/2 - 2;
+
+    // Draw Pac-Man body
     ctx.fillStyle = '#ffff00';
     ctx.beginPath();
-    ctx.arc(
-      pacman.x * CELL_SIZE + CELL_SIZE/2,
-      pacman.y * CELL_SIZE + CELL_SIZE/2,
-      CELL_SIZE/2 - 2,
-      0,
-      Math.PI * 2
-    );
+    ctx.arc(pacmanPixelX, pacmanPixelY, radius, 0, Math.PI * 2);
     ctx.fill();
 
     // Add mouth based on direction
     ctx.fillStyle = '#000';
     ctx.beginPath();
-    const centerX = pacman.x * CELL_SIZE + CELL_SIZE/2;
-    const centerY = pacman.y * CELL_SIZE + CELL_SIZE/2;
-    const radius = CELL_SIZE/2 - 2;
     
     let startAngle, endAngle;
     switch (pacmanDirection) {
@@ -165,9 +161,20 @@ const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
         break;
     }
     
-    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-    ctx.lineTo(centerX, centerY);
+    ctx.arc(pacmanPixelX, pacmanPixelY, radius, startAngle, endAngle);
+    ctx.lineTo(pacmanPixelX, pacmanPixelY);
     ctx.fill();
+
+    // Add glow effect for Pac-Man
+    if (settings.enableGlow) {
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#ffff00';
+      ctx.fillStyle = '#ffff00';
+      ctx.beginPath();
+      ctx.arc(pacmanPixelX, pacmanPixelY, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
 
     // Draw ghosts
     ghosts.forEach(ghost => {
@@ -306,7 +313,7 @@ const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
     }
   }, [pacman, ghosts, currentMaze, score, playSFX, submitScore]);
 
-  // Game loop
+  // Game loop - improved smoothness from 200ms to 120ms
   useEffect(() => {
     if (gameState !== 'playing') return;
 
@@ -314,7 +321,7 @@ const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
       moveGhosts();
       checkCollisions();
       drawGame();
-    }, 200);
+    }, 120);
 
     return () => clearInterval(gameLoop);
   }, [gameState, moveGhosts, checkCollisions, drawGame]);

@@ -46,7 +46,7 @@ const SpaceInvadersGame: React.FC<SpaceInvadersGameProps> = ({ onBackToSelect })
   const [bullets, setBullets] = useState<Bullet[]>([]);
   const [invaders, setInvaders] = useState<Invader[]>([]);
   const [invaderDirection, setInvaderDirection] = useState<'left' | 'right'>('right');
-  const [invaderSpeed, setInvaderSpeed] = useState(1);
+  const [invaderSpeed, setInvaderSpeed] = useState(1.5); // Increased from 1
 
   // Initialize invaders
   const initializeInvaders = useCallback(() => {
@@ -186,7 +186,7 @@ const SpaceInvadersGame: React.FC<SpaceInvadersGameProps> = ({ onBackToSelect })
       prevBullets
         .map(bullet => ({
           ...bullet,
-          y: bullet.direction === 'up' ? bullet.y - 5 : bullet.y + 3
+          y: bullet.direction === 'up' ? bullet.y - 8 : bullet.y + 5 // Increased speed from 5/3 to 8/5
         }))
         .filter(bullet => bullet.y > 0 && bullet.y < CANVAS_HEIGHT)
     );
@@ -274,7 +274,7 @@ const SpaceInvadersGame: React.FC<SpaceInvadersGameProps> = ({ onBackToSelect })
     }
   }, [invaders]);
 
-  // Game loop
+  // Game loop - increased speed from 100ms to 80ms
   useEffect(() => {
     if (gameState !== 'playing') return;
 
@@ -284,7 +284,7 @@ const SpaceInvadersGame: React.FC<SpaceInvadersGameProps> = ({ onBackToSelect })
       spawnInvaderBullets();
       checkCollisions();
       drawGame();
-    }, 100);
+    }, 80);
 
     return () => clearInterval(gameLoop);
   }, [gameState, moveInvaders, moveBullets, spawnInvaderBullets, checkCollisions, drawGame]);
@@ -311,12 +311,12 @@ const SpaceInvadersGame: React.FC<SpaceInvadersGameProps> = ({ onBackToSelect })
         case 'ArrowLeft':
         case 'a':
         case 'A':
-          setPlayer(prev => ({ ...prev, x: Math.max(20, prev.x - 10) }));
+          setPlayer(prev => ({ ...prev, x: Math.max(20, prev.x - 15) })); // Increased speed from 10 to 15
           break;
         case 'ArrowRight':
         case 'd':
         case 'D':
-          setPlayer(prev => ({ ...prev, x: Math.min(CANVAS_WIDTH - 20, prev.x + 10) }));
+          setPlayer(prev => ({ ...prev, x: Math.min(CANVAS_WIDTH - 20, prev.x + 15) })); // Increased speed from 10 to 15
           break;
         case ' ':
         case 'ArrowUp':
@@ -324,9 +324,9 @@ const SpaceInvadersGame: React.FC<SpaceInvadersGameProps> = ({ onBackToSelect })
         case 'W':
           e.preventDefault();
           setBullets(prev => {
-            // Limit to 3 player bullets
+            // Increased limit from 3 to 30 player bullets
             const playerBullets = prev.filter(b => b.direction === 'up');
-            if (playerBullets.length < 3) {
+            if (playerBullets.length < 30) {
               playSFX('button-press');
               return [...prev, { x: player.x, y: player.y - 20, direction: 'up' }];
             }
@@ -352,7 +352,7 @@ const SpaceInvadersGame: React.FC<SpaceInvadersGameProps> = ({ onBackToSelect })
     setPlayer({ x: CANVAS_WIDTH / 2, y: CANVAS_HEIGHT - 40 });
     setBullets([]);
     setInvaderDirection('right');
-    setInvaderSpeed(1);
+    setInvaderSpeed(1.5); // Reset to new faster speed
     initializeInvaders();
   };
 
