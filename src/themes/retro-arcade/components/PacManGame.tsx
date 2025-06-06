@@ -1,21 +1,23 @@
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useArcade } from '../context/ArcadeContext';
 import { useAuth } from '@/context/AuthContext';
 import GameHUD from './GameHUD';
 import GameOverScreen from './GameOverScreen';
 import ArcadeAuthModal from './ArcadeAuthModal';
+import PacManControls from './PacManControls';
+import PacManCanvas from './PacManCanvas';
+import PacManGameLogic from './PacManGameLogic';
 import { useScores } from '../../../hooks/useScores';
 import { usePacManGame } from '../hooks/usePacManGame';
 import { usePacManRenderer } from './PacManRenderer';
-import { CELL_SIZE, MAZE, GAME_LOOP_INTERVAL } from '../constants/pacmanConstants';
+import { CELL_SIZE, MAZE } from '../constants/pacmanConstants';
 
 interface PacManGameProps {
   onBackToSelect: () => void;
 }
 
 const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { playSFX, settings } = useArcade();
   const { user } = useAuth();
   const { submitScore, unlockAchievement } = useScores('pacman');
@@ -62,7 +64,7 @@ const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
   } = usePacManGame(playSFX, handleSubmitScore);
 
   const { drawGame } = usePacManRenderer({
-    canvasRef,
+    canvasRef: { current: null },
     pacman,
     pacmanDirection,
     ghosts,
@@ -72,78 +74,9 @@ const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
     canvasHeight: CANVAS_HEIGHT
   });
 
-  // Game loop
-  useEffect(() => {
-    if (gameState !== 'playing') return;
-
-    const gameLoop = setInterval(() => {
-      moveGhosts();
-      checkCollisions();
-      drawGame();
-    }, GAME_LOOP_INTERVAL);
-
-    return () => clearInterval(gameLoop);
-  }, [gameState, moveGhosts, checkCollisions, drawGame]);
-
-  // Initial draw
-  useEffect(() => {
-    drawGame();
-  }, [drawGame]);
-
   // Track pellets and ghosts eaten for achievements
-  useEffect(() => {
-    // This would be better tracked in the game logic, but for now we can estimate
-    // based on score increases
-  }, [score]);
-
-  // Controls with page scroll prevention
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (gameState === 'waiting') {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          startGame();
-        }
-        return;
-      }
-
-      if (gameState !== 'playing') return;
-
-      // Prevent page scrolling for game controls
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'W', 's', 'S', 'a', 'A', 'd', 'D'].includes(e.key)) {
-        e.preventDefault();
-      }
-
-      switch (e.key) {
-        case 'ArrowUp':
-        case 'w':
-        case 'W':
-          movePacman('up');
-          break;
-        case 'ArrowDown':
-        case 's':
-        case 'S':
-          movePacman('down');
-          break;
-        case 'ArrowLeft':
-        case 'a':
-        case 'A':
-          movePacman('left');
-          break;
-        case 'ArrowRight':
-        case 'd':
-        case 'D':
-          movePacman('right');
-          break;
-        case 'Escape':
-          onBackToSelect();
-          return;
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [gameState, movePacman, onBackToSelect, startGame]);
+  // This would be better tracked in the game logic, but for now we can estimate
+  // based on score increases
 
   return (
     <div className="h-full flex flex-col">
@@ -155,44 +88,30 @@ const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
         onBackToSelect={onBackToSelect}
       />
 
-      <div className="flex-1 flex items-center justify-center p-4">
-        <div className="relative">
-          <canvas
-            ref={canvasRef}
-            width={CANVAS_WIDTH}
-            height={CANVAS_HEIGHT}
-            className="border-2 border-arcade-neon-yellow bg-black"
-            style={{
-              imageRendering: 'pixelated',
-              maxWidth: '100%',
-              maxHeight: '400px'
-            }}
-          />
-          
-          {gameState === 'waiting' && (
-            <div className="absolute inset-0 bg-black/80 flex items-center justify-center">
-              <div className="text-center">
-                <div className={`text-2xl font-pixel font-bold text-arcade-neon-yellow mb-4 ${settings.enableGlow ? 'animate-neon-pulse' : 'animate-pixel-blink'}`}>
-                  READY!
-                </div>
-                <div className="text-sm font-pixel text-arcade-neon-cyan">
-                  PRESS ENTER TO START
-                </div>
-                {!user && (
-                  <div className="mt-4">
-                    <button
-                      onClick={() => setShowAuthModal(true)}
-                      className="text-xs font-pixel text-arcade-neon-magenta hover:text-arcade-neon-yellow transition-colors"
-                    >
-                      LOGIN TO SAVE SCORES
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      <PacManCanvas
+        gameState={gameState}
+        pacman={pacman}
+        pacmanDirection={pacmanDirection}
+        ghosts={ghosts}
+        currentMaze={currentMaze}
+        enableGlow={settings.enableGlow}
+        showAuthModal={showAuthModal}
+        setShowAuthModal={setShowAuthModal}
+      />
+
+      <PacManControls
+        gameState={gameState}
+        movePacman={movePacman}
+        startGame={startGame}
+        onBackToSelect={onBackToSelect}
+      />
+
+      <PacManGameLogic
+        gameState={gameState}
+        moveGhosts={moveGhosts}
+        checkCollisions={checkCollisions}
+        drawGame={drawGame}
+      />
 
       {/* Auth Modal */}
       <ArcadeAuthModal 
