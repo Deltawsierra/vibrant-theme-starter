@@ -143,9 +143,14 @@ export const usePacManRenderer = ({
 
     // Draw ghosts
     ghosts.forEach((ghost, index) => {
-      console.log(`Drawing Ghost ${index}:`, { x: ghost.x, y: ghost.y, color: ghost.color });
+      console.log(`Drawing Ghost ${index}:`, { x: ghost.x, y: ghost.y, color: ghost.color, vulnerable: ghost.isVulnerable, respawning: ghost.isRespawning });
       
-      ctx.fillStyle = ghost.color;
+      // Use blue color for vulnerable ghosts, original color otherwise
+      const ghostColor = ghost.isVulnerable ? '#0000ff' : ghost.color;
+      const opacity = ghost.isRespawning ? 0.5 : 1.0;
+      
+      ctx.globalAlpha = opacity;
+      ctx.fillStyle = ghostColor;
       const ghostX = ghost.x * CELL_SIZE + CELL_SIZE/2;
       const ghostY = ghost.y * CELL_SIZE + CELL_SIZE/2;
       
@@ -160,15 +165,15 @@ export const usePacManRenderer = ({
       ctx.closePath();
       ctx.fill();
 
-      // Ghost eyes
-      ctx.fillStyle = '#fff';
+      // Ghost eyes - white for vulnerable, normal for others
+      ctx.fillStyle = ghost.isVulnerable ? '#ff0000' : '#fff';
       ctx.beginPath();
       ctx.arc(ghostX - 3, ghostY - 4, 2, 0, Math.PI * 2);
       ctx.arc(ghostX + 3, ghostY - 4, 2, 0, Math.PI * 2);
       ctx.fill();
 
-      // Eye pupils
-      ctx.fillStyle = '#000';
+      // Eye pupils - different for vulnerable ghosts
+      ctx.fillStyle = ghost.isVulnerable ? '#fff' : '#000';
       ctx.beginPath();
       ctx.arc(ghostX - 3, ghostY - 4, 1, 0, Math.PI * 2);
       ctx.arc(ghostX + 3, ghostY - 4, 1, 0, Math.PI * 2);
@@ -176,13 +181,15 @@ export const usePacManRenderer = ({
 
       if (enableGlow) {
         ctx.shadowBlur = 8;
-        ctx.shadowColor = ghost.color;
-        ctx.fillStyle = ghost.color;
+        ctx.shadowColor = ghostColor;
+        ctx.fillStyle = ghostColor;
         ctx.beginPath();
         ctx.arc(ghostX, ghostY - 4, 8, Math.PI, 0);
         ctx.fill();
         ctx.shadowBlur = 0;
       }
+      
+      ctx.globalAlpha = 1.0; // Reset opacity
     });
   }, [pacman, ghosts, currentMaze, pacmanDirection, enableGlow, canvasWidth, canvasHeight]);
 

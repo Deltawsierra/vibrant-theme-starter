@@ -67,17 +67,23 @@ const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
     drawGame();
   }, [drawGame]);
 
-  // Controls
+  // Controls with page scroll prevention
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (gameState === 'waiting') {
         if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
           startGame();
         }
         return;
       }
 
       if (gameState !== 'playing') return;
+
+      // Prevent page scrolling for game controls
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'W', 's', 'S', 'a', 'A', 'd', 'D'].includes(e.key)) {
+        e.preventDefault();
+      }
 
       switch (e.key) {
         case 'ArrowUp':

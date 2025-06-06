@@ -8,8 +8,15 @@ export const isValidMove = (x: number, y: number): boolean => {
 
 export const isGhostCollision = (pacman: Position, ghosts: Ghost[]): boolean => {
   return ghosts.some(ghost => 
-    Math.abs(ghost.x - pacman.x) < 1 && Math.abs(ghost.y - pacman.y) < 1
+    !ghost.isRespawning && Math.abs(ghost.x - pacman.x) < 1 && Math.abs(ghost.y - pacman.y) < 1
   );
+};
+
+export const getEatenGhost = (pacman: Position, ghosts: Ghost[]): Ghost | null => {
+  return ghosts.find(ghost => 
+    ghost.isVulnerable && !ghost.isRespawning && 
+    Math.abs(ghost.x - pacman.x) < 1 && Math.abs(ghost.y - pacman.y) < 1
+  ) || null;
 };
 
 export const getNewPosition = (position: Position, direction: Direction): Position => {
