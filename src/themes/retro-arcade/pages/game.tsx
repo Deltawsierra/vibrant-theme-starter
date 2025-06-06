@@ -1,11 +1,15 @@
 
 import React, { useState } from 'react';
 import ArcadeCabinet from '../components/ArcadeCabinet';
+import ArcadeAuthModal from '../components/ArcadeAuthModal';
 import { useArcade } from '../context/ArcadeContext';
+import { useAuth } from '@/context/AuthContext';
 
 const ArcadeGamePage: React.FC = () => {
   const { settings, playSFX } = useArcade();
+  const { user } = useAuth();
   const [selectedGame, setSelectedGame] = useState<'select' | 'pacman' | 'space-invaders'>('select');
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const handleGameSelect = (game: 'pacman' | 'space-invaders') => {
     playSFX('coin-insert');
@@ -37,6 +41,16 @@ const ArcadeGamePage: React.FC = () => {
           <div className="text-lg font-pixel text-arcade-neon-cyan">
             CLASSIC GAMES • AUTHENTIC EXPERIENCE • HIGH SCORES
           </div>
+          
+          {/* Auth Status */}
+          <div className="mt-4 flex justify-center">
+            <button
+              onClick={() => setShowAuthModal(true)}
+              className="text-sm font-pixel text-arcade-neon-magenta hover:text-arcade-neon-yellow transition-colors border border-arcade-neon-magenta hover:border-arcade-neon-yellow px-4 py-2"
+            >
+              {user ? `PLAYER: ${user.user_metadata?.username || user.email}` : 'LOGIN / SIGN UP'}
+            </button>
+          </div>
         </div>
 
         {/* Arcade Cabinet */}
@@ -58,6 +72,12 @@ const ArcadeGamePage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Auth Modal */}
+      <ArcadeAuthModal 
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      />
     </div>
   );
 };

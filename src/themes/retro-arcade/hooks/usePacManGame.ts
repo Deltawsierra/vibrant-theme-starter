@@ -31,6 +31,10 @@ export const usePacManGame = (playSFX: (type: string) => void, submitScore: (sco
   
   const powerPelletTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  const countRemainingPellets = useCallback((maze: CellType[][]) => {
+    return maze.flat().filter(cell => cell === 0 || cell === 3).length;
+  }, []);
+
   const makeGhostsVulnerable = useCallback(() => {
     console.log('Making ghosts vulnerable for', POWER_PELLET_DURATION / 1000, 'seconds');
     setGhosts(prev => prev.map(ghost => ({ ...ghost, isVulnerable: true })));
@@ -71,6 +75,26 @@ export const usePacManGame = (playSFX: (type: string) => void, submitScore: (sco
       ));
     }, GHOST_RESPAWN_DURATION);
   }, []);
+
+  const nextLevel = useCallback(() => {
+    console.log('Level completed! Moving to next level');
+    playSFX('power-up');
+    setLevel(prev => prev + 1);
+    
+    // Reset maze with all pellets
+    setCurrentMaze(MAZE.map(row => [...row]) as CellType[][]);
+    
+    // Reset positions
+    setPacman(INITIAL_PACMAN_POSITION);
+    setPacmanDirection(INITIAL_PACMAN_DIRECTION);
+    setGhosts(INITIAL_GHOSTS);
+    
+    // Clear power pellet timer
+    if (powerPelletTimerRef.current) {
+      clearTimeout(powerPelletTimerRef.current);
+      powerPelletTimerRef.current = null;
+    }
+  }, [playSFX]);
 
   const moveGhosts = useCallback(() => {
     setGhosts(prevGhosts => 
@@ -140,6 +164,12 @@ export const usePacManGame = (playSFX: (type: string) => void, submitScore: (sco
       setCurrentMaze(prev => {
         const newMaze = prev.map(row => [...row]);
         newMaze[pacman.y][pacman.x] = 2;
+        
+        // Check if level is complete
+        if (countRemainingPellets(newMaze) === 0) {
+          setTimeout(() => nextLevel(), 1000); // Brief delay before next level
+        }
+        
         return newMaze;
       });
     }
@@ -153,10 +183,16 @@ export const usePacManGame = (playSFX: (type: string) => void, submitScore: (sco
       setCurrentMaze(prev => {
         const newMaze = prev.map(row => [...row]);
         newMaze[pacman.y][pacman.x] = 2;
+        
+        // Check if level is complete
+        if (countRemainingPellets(newMaze) === 0) {
+          setTimeout(() => nextLevel(), 1000); // Brief delay before next level
+        }
+        
         return newMaze;
       });
     }
-  }, [pacman, ghosts, currentMaze, score, playSFX, submitScore, makeGhostsVulnerable, respawnGhost]);
+  }, [pacman, ghosts, currentMaze, score, playSFX, submitScore, makeGhostsVulnerable, respawnGhost, countRemainingPellets, nextLevel]);
 
   // Cleanup timer on unmount
   useEffect(() => {

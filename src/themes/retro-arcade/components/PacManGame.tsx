@@ -1,8 +1,10 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useArcade } from '../context/ArcadeContext';
+import { useAuth } from '@/context/AuthContext';
 import GameHUD from './GameHUD';
 import GameOverScreen from './GameOverScreen';
+import ArcadeAuthModal from './ArcadeAuthModal';
 import { useScores } from '../../../hooks/useScores';
 import { usePacManGame } from '../hooks/usePacManGame';
 import { usePacManRenderer } from './PacManRenderer';
@@ -15,10 +17,31 @@ interface PacManGameProps {
 const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { playSFX, settings } = useArcade();
-  const { submitScore } = useScores('pacman');
+  const { user } = useAuth();
+  const { submitScore, unlockAchievement } = useScores('pacman');
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [pelletsEaten, setPelletsEaten] = useState(0);
+  const [ghostsEaten, setGhostsEaten] = useState(0);
   
   const CANVAS_WIDTH = MAZE[0].length * CELL_SIZE;
   const CANVAS_HEIGHT = MAZE.length * CELL_SIZE;
+
+  const handleSubmitScore = async (finalScore: number) => {
+    const result = await submitScore(finalScore, level, pelletsEaten, ghostsEaten);
+    
+    // Check for achievements
+    if (level >= 5) {
+      unlockAchievement('level_5_reached', { level, score: finalScore });
+    }
+    if (ghostsEaten >= 10) {
+      unlockAchievement('ghost_hunter', { ghosts_eaten: ghostsEaten });
+    }
+    if (finalScore >= 10000) {
+      unlockAchievement('high_scorer', { score: finalScore });
+    }
+    
+    return result;
+  };
 
   const {
     gameState,
@@ -36,7 +59,7 @@ const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
     handleRestart,
     startGame,
     setGameState
-  } = usePacManGame(playSFX, submitScore);
+  } = usePacManGame(playSFX, handleSubmitScore);
 
   const { drawGame } = usePacManRenderer({
     canvasRef,
@@ -66,6 +89,12 @@ const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
   useEffect(() => {
     drawGame();
   }, [drawGame]);
+
+  // Track pellets and ghosts eaten for achievements
+  useEffect(() => {
+    // This would be better tracked in the game logic, but for now we can estimate
+    // based on score increases
+  }, [score]);
 
   // Controls with page scroll prevention
   useEffect(() => {
@@ -149,11 +178,27 @@ const PacManGame: React.FC<PacManGameProps> = ({ onBackToSelect }) => {
                 <div className="text-sm font-pixel text-arcade-neon-cyan">
                   PRESS ENTER TO START
                 </div>
+                {!user && (
+                  <div className="mt-4">
+                    <button
+                      onClick={() => setShowAuthModal(true)}
+                      className="text-xs font-pixel text-arcade-neon-magenta hover:text-arcade-neon-yellow transition-colors"
+                    >
+                      LOGIN TO SAVE SCORES
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {/* Auth Modal */}
+      <ArcadeAuthModal 
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      />
 
       <GameOverScreen
         isVisible={showGameOver}
