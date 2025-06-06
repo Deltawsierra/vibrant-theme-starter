@@ -1,0 +1,171 @@
+
+import React from 'react';
+import { Position, Ghost, Direction, CellType } from '../types/pacmanTypes';
+import { CELL_SIZE } from '../constants/pacmanConstants';
+
+interface PacManRendererProps {
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  pacman: Position;
+  pacmanDirection: Direction;
+  ghosts: Ghost[];
+  currentMaze: CellType[][];
+  enableGlow: boolean;
+  canvasWidth: number;
+  canvasHeight: number;
+}
+
+export const usePacManRenderer = ({
+  canvasRef,
+  pacman,
+  pacmanDirection,
+  ghosts,
+  currentMaze,
+  enableGlow,
+  canvasWidth,
+  canvasHeight
+}: PacManRendererProps) => {
+  const drawGame = React.useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Clear canvas
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+    // Draw maze
+    currentMaze.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        const pixelX = x * CELL_SIZE;
+        const pixelY = y * CELL_SIZE;
+
+        switch (cell) {
+          case 1: // Wall
+            ctx.fillStyle = '#0000ff';
+            ctx.fillRect(pixelX, pixelY, CELL_SIZE, CELL_SIZE);
+            if (enableGlow) {
+              ctx.shadowBlur = 10;
+              ctx.shadowColor = '#00ffff';
+              ctx.strokeStyle = '#00ffff';
+              ctx.lineWidth = 1;
+              ctx.strokeRect(pixelX, pixelY, CELL_SIZE, CELL_SIZE);
+              ctx.shadowBlur = 0;
+            }
+            break;
+          case 0: // Dot
+            ctx.fillStyle = '#ffff00';
+            ctx.beginPath();
+            ctx.arc(pixelX + CELL_SIZE/2, pixelY + CELL_SIZE/2, 2, 0, Math.PI * 2);
+            ctx.fill();
+            break;
+          case 3: // Power pellet
+            ctx.fillStyle = '#ffff00';
+            ctx.beginPath();
+            ctx.arc(pixelX + CELL_SIZE/2, pixelY + CELL_SIZE/2, 6, 0, Math.PI * 2);
+            ctx.fill();
+            if (enableGlow) {
+              ctx.shadowBlur = 8;
+              ctx.shadowColor = '#ffff00';
+              ctx.fill();
+              ctx.shadowBlur = 0;
+            }
+            break;
+        }
+      });
+    });
+
+    // Draw Pac-Man
+    const pacmanPixelX = pacman.x * CELL_SIZE + CELL_SIZE/2;
+    const pacmanPixelY = pacman.y * CELL_SIZE + CELL_SIZE/2;
+    const radius = CELL_SIZE/2 - 2;
+
+    ctx.fillStyle = '#ffff00';
+    ctx.beginPath();
+    ctx.arc(pacmanPixelX, pacmanPixelY, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Add mouth based on direction
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    
+    let startAngle, endAngle;
+    switch (pacmanDirection) {
+      case 'right':
+        startAngle = Math.PI * 0.2;
+        endAngle = Math.PI * 1.8;
+        break;
+      case 'left':
+        startAngle = Math.PI * 1.2;
+        endAngle = Math.PI * 0.8;
+        break;
+      case 'up':
+        startAngle = Math.PI * 1.7;
+        endAngle = Math.PI * 1.3;
+        break;
+      case 'down':
+        startAngle = Math.PI * 0.7;
+        endAngle = Math.PI * 0.3;
+        break;
+    }
+    
+    ctx.arc(pacmanPixelX, pacmanPixelY, radius, startAngle, endAngle);
+    ctx.lineTo(pacmanPixelX, pacmanPixelY);
+    ctx.fill();
+
+    if (enableGlow) {
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#ffff00';
+      ctx.fillStyle = '#ffff00';
+      ctx.beginPath();
+      ctx.arc(pacmanPixelX, pacmanPixelY, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    // Draw ghosts
+    ghosts.forEach(ghost => {
+      ctx.fillStyle = ghost.color;
+      const ghostX = ghost.x * CELL_SIZE + CELL_SIZE/2;
+      const ghostY = ghost.y * CELL_SIZE + CELL_SIZE/2;
+      
+      // Ghost body
+      ctx.beginPath();
+      ctx.arc(ghostX, ghostY - 4, 8, Math.PI, 0);
+      ctx.lineTo(ghostX + 8, ghostY + 6);
+      ctx.lineTo(ghostX + 4, ghostY + 2);
+      ctx.lineTo(ghostX, ghostY + 6);
+      ctx.lineTo(ghostX - 4, ghostY + 2);
+      ctx.lineTo(ghostX - 8, ghostY + 6);
+      ctx.closePath();
+      ctx.fill();
+
+      // Ghost eyes
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(ghostX - 3, ghostY - 4, 2, 0, Math.PI * 2);
+      ctx.arc(ghostX + 3, ghostY - 4, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eye pupils
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(ghostX - 3, ghostY - 4, 1, 0, Math.PI * 2);
+      ctx.arc(ghostX + 3, ghostY - 4, 1, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (enableGlow) {
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = ghost.color;
+        ctx.fillStyle = ghost.color;
+        ctx.beginPath();
+        ctx.arc(ghostX, ghostY - 4, 8, Math.PI, 0);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    });
+  }, [pacman, ghosts, currentMaze, pacmanDirection, enableGlow, canvasWidth, canvasHeight]);
+
+  return { drawGame };
+};
