@@ -6,9 +6,11 @@ export const INITIAL_LEVEL = 1;
 export const DOT_SCORE = 10;
 export const POWER_PELLET_SCORE = 50;
 
-export const INITIAL_PACMAN_POSITION = { x: 13, y: 23 };
+// Changed to a safer starting position that's definitely an open cell
+export const INITIAL_PACMAN_POSITION = { x: 1, y: 1 };
 export const INITIAL_PACMAN_DIRECTION = 'right' as const;
 
+// Moved ghosts to safer positions to avoid overlapping with Pac-Man
 export const INITIAL_GHOSTS = [
   { x: 13, y: 11, color: '#ff0000', direction: 'up' as const },
   { x: 13, y: 13, color: '#ffb8ff', direction: 'down' as const },

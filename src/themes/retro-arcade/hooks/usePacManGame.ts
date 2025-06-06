@@ -33,8 +33,11 @@ export const usePacManGame = (playSFX: (type: string) => void, submitScore: (sco
   }, []);
 
   const checkCollisions = useCallback(() => {
+    console.log('Checking collisions - Pac-Man:', pacman, 'Ghosts:', ghosts.map(g => ({x: g.x, y: g.y})));
+    
     // Check ghost collision
     if (isGhostCollision(pacman, ghosts)) {
+      console.log('Ghost collision detected!');
       playSFX('game-over');
       setLives(prev => {
         const newLives = prev - 1;
@@ -44,6 +47,7 @@ export const usePacManGame = (playSFX: (type: string) => void, submitScore: (sco
           submitScore(score);
         } else {
           // Reset positions
+          console.log('Resetting positions due to collision');
           setPacman(INITIAL_PACMAN_POSITION);
           setGhosts(INITIAL_GHOSTS);
         }
@@ -53,6 +57,7 @@ export const usePacManGame = (playSFX: (type: string) => void, submitScore: (sco
 
     // Check dot collection
     if (currentMaze[pacman.y] && currentMaze[pacman.y][pacman.x] === 0) {
+      console.log('Dot collected at:', pacman);
       playSFX('success');
       setScore(prev => prev + DOT_SCORE);
       setCurrentMaze(prev => {
@@ -64,6 +69,7 @@ export const usePacManGame = (playSFX: (type: string) => void, submitScore: (sco
 
     // Check power pellet collection
     if (currentMaze[pacman.y] && currentMaze[pacman.y][pacman.x] === 3) {
+      console.log('Power pellet collected at:', pacman);
       playSFX('power-up');
       setScore(prev => prev + POWER_PELLET_SCORE);
       setCurrentMaze(prev => {
@@ -76,14 +82,19 @@ export const usePacManGame = (playSFX: (type: string) => void, submitScore: (sco
 
   const movePacman = useCallback((direction: Direction) => {
     const newPos = getNewPosition(pacman, direction);
+    console.log('Attempting to move Pac-Man from:', pacman, 'to:', newPos, 'direction:', direction);
     
     if (isValidMove(newPos.x, newPos.y)) {
+      console.log('Move is valid, updating position');
       setPacman(newPos);
       setPacmanDirection(direction);
+    } else {
+      console.log('Move is invalid - blocked by wall');
     }
   }, [pacman]);
 
   const handleRestart = useCallback(() => {
+    console.log('Restarting game');
     setGameState('waiting');
     setShowGameOver(false);
     setScore(0);
@@ -96,6 +107,7 @@ export const usePacManGame = (playSFX: (type: string) => void, submitScore: (sco
   }, []);
 
   const startGame = useCallback(() => {
+    console.log('Starting game with Pac-Man at:', INITIAL_PACMAN_POSITION);
     setGameState('playing');
     playSFX('coin-insert');
   }, [playSFX]);

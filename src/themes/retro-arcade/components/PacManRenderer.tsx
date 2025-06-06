@@ -31,6 +31,14 @@ export const usePacManRenderer = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Debug: Log Pac-Man's position and game state
+    console.log('Pac-Man Debug:', {
+      position: { x: pacman.x, y: pacman.y },
+      mazeCell: currentMaze[pacman.y] ? currentMaze[pacman.y][pacman.x] : 'OUT_OF_BOUNDS',
+      canvasSize: { width: canvasWidth, height: canvasHeight },
+      direction: pacmanDirection
+    });
+
     // Clear canvas
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -76,11 +84,20 @@ export const usePacManRenderer = ({
       });
     });
 
-    // Draw Pac-Man
+    // Draw Pac-Man (with enhanced visibility for debugging)
     const pacmanPixelX = pacman.x * CELL_SIZE + CELL_SIZE/2;
     const pacmanPixelY = pacman.y * CELL_SIZE + CELL_SIZE/2;
     const radius = CELL_SIZE/2 - 2;
 
+    console.log('Drawing Pac-Man at pixel coordinates:', { pacmanPixelX, pacmanPixelY, radius });
+
+    // Draw a bright red circle first for debugging
+    ctx.fillStyle = '#ff0000';
+    ctx.beginPath();
+    ctx.arc(pacmanPixelX, pacmanPixelY, radius + 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Draw the actual Pac-Man on top
     ctx.fillStyle = '#ffff00';
     ctx.beginPath();
     ctx.arc(pacmanPixelX, pacmanPixelY, radius, 0, Math.PI * 2);
@@ -125,7 +142,9 @@ export const usePacManRenderer = ({
     }
 
     // Draw ghosts
-    ghosts.forEach(ghost => {
+    ghosts.forEach((ghost, index) => {
+      console.log(`Drawing Ghost ${index}:`, { x: ghost.x, y: ghost.y, color: ghost.color });
+      
       ctx.fillStyle = ghost.color;
       const ghostX = ghost.x * CELL_SIZE + CELL_SIZE/2;
       const ghostY = ghost.y * CELL_SIZE + CELL_SIZE/2;
