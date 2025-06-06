@@ -5,7 +5,7 @@ import themeRegistry from '@/themes';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
 interface ThemePageLoaderProps {
-  pageName: 'About' | 'Work' | 'Contact' | 'Showcase';
+  pageName: 'About' | 'Work' | 'Contact' | 'Showcase' | 'Game';
 }
 
 const ThemePageLoader: React.FC<ThemePageLoaderProps> = ({ pageName }) => {

@@ -19,6 +19,12 @@ import Showcase from "./pages/Showcase";
 import AuthPage from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
+// Create a Game page component
+const Game = () => {
+  const { currentTheme } = useTheme();
+  return <ThemePageLoader pageName="Game" />;
+};
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -47,6 +53,7 @@ const App = () => (
                         <Route path="/work" element={<Work />} />
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/showcase" element={<Showcase />} />
+                        <Route path="/game" element={<Game />} />
                         <Route path="/auth" element={<AuthPage />} />
                         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                         <Route path="*" element={<NotFound />} />
