@@ -32,6 +32,7 @@ const ThemePageLoader: React.FC<ThemePageLoaderProps> = ({ pageName }) => {
 
     console.log('Theme components available:', Object.keys(themeComponents));
     const PageComponent = themeComponents[pageName];
+    const ThemeProvider = themeComponents.Provider;
     
     if (!PageComponent) {
       console.error('Page component not found:', { theme: currentTheme, page: pageName });
@@ -65,7 +66,13 @@ const ThemePageLoader: React.FC<ThemePageLoaderProps> = ({ pageName }) => {
             </div>
           }
         >
-          <PageComponent />
+          {ThemeProvider ? (
+            <ThemeProvider>
+              <PageComponent />
+            </ThemeProvider>
+          ) : (
+            <PageComponent />
+          )}
         </Suspense>
       </ErrorBoundary>
     );
