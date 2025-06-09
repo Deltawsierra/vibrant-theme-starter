@@ -19,6 +19,7 @@ import Auth from '@/pages/Auth';
 
 // Add the new recruiter detector
 import AIRecruiterDetector from '@/components/AIRecruiterDetector';
+import AIFloatingButton from '@/components/AIFloatingButton';
 
 const App: React.FC = () => {
   return (
@@ -41,6 +42,9 @@ const App: React.FC = () => {
                   </Routes>
                 </Suspense>
               </Router>
+              
+              {/* Global AI Assistant - only show on theme pages */}
+              <AIFloatingButton />
               
               {/* Global Toast Notifications */}
               <Toaster />
