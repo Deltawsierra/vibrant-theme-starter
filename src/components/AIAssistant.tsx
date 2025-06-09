@@ -21,7 +21,6 @@ const AIAssistant: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isAnimatingIn, setIsAnimatingIn] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-  const [showHelpBubble, setShowHelpBubble] = useState(true);
   const personality = getThemePersonality(currentTheme);
 
   // Add welcome message when theme changes or first opens
@@ -37,18 +36,9 @@ const AIAssistant: React.FC = () => {
     }
   }, [isOpen, currentTheme, personality.welcomeMessage, messages.length]);
 
-  // Hide help bubble after 5 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowHelpBubble(false);
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, []);
-
   const handleOpen = () => {
     setIsAnimatingIn(true);
     setIsOpen(true);
-    setShowHelpBubble(false);
     setTimeout(() => setIsAnimatingIn(false), 500);
   };
 
@@ -102,7 +92,7 @@ const AIAssistant: React.FC = () => {
       {!isOpen && (
         <AIFloatingButton
           currentTheme={currentTheme}
-          showHelpBubble={showHelpBubble}
+          showHelpBubble={true}
           onOpen={handleOpen}
         />
       )}
