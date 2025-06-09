@@ -1,72 +1,78 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HelmetProvider } from 'react-helmet-async';
-import { ThemeProvider, useTheme } from "@/context/ThemeContext";
-import { AuthProvider } from "@/context/AuthContext";
-import { AccessibilityProvider } from "@/components/AccessibilityProvider";
-import { AnalyticsProvider } from "@/components/Analytics";
-import { ErrorTrackerProvider } from "@/components/ErrorTracker";
-import ErrorBoundary from "@/components/ErrorBoundary";
-import ThemePageLoader from "@/components/ThemePageLoader";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Work from "./pages/Work";
-import Contact from "./pages/Contact";
-import Showcase from "./pages/Showcase";
-import Game from "./pages/Game";
-import AuthPage from "./pages/Auth";
-import NotFound from "./pages/NotFound";
-import AIAssistant from "@/components/AIAssistant";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      gcTime: 1000 * 60 * 10, // 10 minutes
-    },
-  },
-});
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from '@/context/ThemeContext';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { Toaster } from '@/components/ui/toaster';
+import PageTransition from '@/components/PageTransition';
 
-const App = () => (
-  <ErrorBoundary>
-    <HelmetProvider>
-      <ErrorTrackerProvider>
-        <AnalyticsProvider>
-          <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-              <ThemeProvider>
-                <AccessibilityProvider>
-                  <TooltipProvider>
-                    <Toaster />
-                    <Sonner />
-                    <BrowserRouter>
-                      <Routes>
-                        <Route path="/" element={<Index />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/work" element={<Work />} />
-                        <Route path="/contact" element={<Contact />} />
-                        <Route path="/showcase" element={<Showcase />} />
-                        <Route path="/game" element={<Game />} />
-                        <Route path="/auth" element={<AuthPage />} />
-                        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                        <Route path="*" element={<NotFound />} />
-                      </Routes>
-                      
-                      {/* Global AI Assistant - appears on all pages */}
-                      <AIAssistant />
-                    </BrowserRouter>
-                  </TooltipProvider>
-                </AccessibilityProvider>
-              </ThemeProvider>
-            </AuthProvider>
-          </QueryClientProvider>
-        </AnalyticsProvider>
-      </ErrorTrackerProvider>
-    </HelmetProvider>
-  </ErrorBoundary>
-);
+// Common pages
+import Index from '@/pages/Index';
+import About from '@/pages/About';
+import Work from '@/pages/Work';
+import Contact from '@/pages/Contact';
+import Showcase from '@/pages/Showcase';
+import Game from '@/pages/Game';
+import NotFound from '@/pages/NotFound';
+import Auth from '@/pages/Auth';
+
+// Add the new recruiter detector
+import AIRecruiterDetector from '@/components/AIRecruiterDetector';
+
+const App: React.FC = () => {
+  return (
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AIRecruiterDetector>
+          <Router>
+            <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+              <Routes>
+                <Route path="/" element={
+                  <PageTransition>
+                    <Index />
+                  </PageTransition>
+                } />
+                <Route path="/about" element={
+                  <PageTransition>
+                    <About />
+                  </PageTransition>
+                } />
+                <Route path="/work" element={
+                  <PageTransition>
+                    <Work />
+                  </PageTransition>
+                } />
+                <Route path="/contact" element={
+                  <PageTransition>
+                    <Contact />
+                  </PageTransition>
+                } />
+                <Route path="/showcase" element={
+                  <PageTransition>
+                    <Showcase />
+                  </PageTransition>
+                } />
+                <Route path="/game" element={
+                  <PageTransition>
+                    <Game />
+                  </PageTransition>
+                } />
+                <Route path="/auth" element={
+                  <PageTransition>
+                    <Auth />
+                  </PageTransition>
+                } />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </Router>
+          
+          {/* Global Toast Notifications */}
+          <Toaster />
+        </AIRecruiterDetector>
+      </ThemeProvider>
+    </ErrorBoundary>
+  );
+};
 
 export default App;

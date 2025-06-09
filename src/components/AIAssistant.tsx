@@ -1,10 +1,14 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import AIFloatingButton from './AIFloatingButton';
 import AIArcadeAdvisor from './AIArcadeAdvisor';
 import AIFullDialog from './AIFullDialog';
 import { getThemePersonality, generateAIResponse } from '@/utils/aiAssistantUtils';
+import { logAIConversation } from '@/utils/ai/recruiters';
+import { AIRecruiterContext } from './AIRecruiterDetector';
+import { recruiterMessages } from '@/utils/ai/personalities/recruiter-messages';
+import { useToast } from '@/hooks/use-toast';
 
 interface Message {
   id: string;
@@ -21,20 +25,38 @@ const AIAssistant: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isAnimatingIn, setIsAnimatingIn] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+  const [sessionId, setSessionId] = useState<string>('');
+  const { isRecruiter } = useContext(AIRecruiterContext);
+  const { toast } = useToast();
+  
   const personality = getThemePersonality(currentTheme);
+
+  // Generate a session ID when the component mounts
+  useEffect(() => {
+    setSessionId(Date.now().toString());
+  }, []);
 
   // Add welcome message when theme changes or first opens
   useEffect(() => {
     if (isOpen && messages.length === 0) {
+      let welcomeText = personality.welcomeMessage;
+      
+      // If recruiter is detected, use a specialized welcome message
+      if (isRecruiter) {
+        const themeRecruiterMessages = recruiterMessages[currentTheme]?.welcome || 
+                                      recruiterMessages.minimalist.welcome;
+        welcomeText = themeRecruiterMessages[Math.floor(Math.random() * themeRecruiterMessages.length)];
+      }
+      
       const welcomeMessage: Message = {
         id: Date.now().toString(),
-        text: personality.welcomeMessage,
+        text: welcomeText,
         isUser: false,
         timestamp: new Date()
       };
       setMessages([welcomeMessage]);
     }
-  }, [isOpen, currentTheme, personality.welcomeMessage, messages.length]);
+  }, [isOpen, currentTheme, personality.welcomeMessage, messages.length, isRecruiter]);
 
   const handleOpen = () => {
     setIsAnimatingIn(true);
@@ -47,6 +69,23 @@ const AIAssistant: React.FC = () => {
     setTimeout(() => {
       setIsOpen(false);
       setIsAnimatingOut(false);
+      
+      // Log the conversation when closing
+      if (messages.length > 1) {
+        const transcript = messages
+          .map(msg => `${msg.isUser ? 'User' : 'AI'}: ${msg.text}`)
+          .join('\n');
+        
+        logAIConversation(
+          sessionId, 
+          transcript, 
+          isRecruiter ? 'recruiter' : 'general'
+        ).then(result => {
+          if (result) {
+            console.log('Conversation logged:', result);
+          }
+        });
+      }
     }, 500);
   };
 
@@ -88,7 +127,7 @@ const AIAssistant: React.FC = () => {
 
   return (
     <>
-      {/* Floating Button - Bottom Right */}
+      {/* Floating Button - Bottom Right - Always visible when minimized */}
       {!isOpen && (
         <AIFloatingButton
           currentTheme={currentTheme}
@@ -111,6 +150,7 @@ const AIAssistant: React.FC = () => {
             handleSendMessage={handleSendMessage}
             handleKeyPress={handleKeyPress}
             handleClose={handleClose}
+            isRecruiter={isRecruiter}
           />
         ) : (
           <AIFullDialog
@@ -123,6 +163,7 @@ const AIAssistant: React.FC = () => {
             handleSendMessage={handleSendMessage}
             handleKeyPress={handleKeyPress}
             setIsOpen={setIsOpen}
+            isRecruiter={isRecruiter}
           />
         )
       )}

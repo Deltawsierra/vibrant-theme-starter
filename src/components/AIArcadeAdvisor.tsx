@@ -1,9 +1,12 @@
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import AIAvatar from './AIAvatar';
+import React, { useMemo } from 'react';
+import { useArcade } from '@/themes/retro-arcade/context/ArcadeContext';
+import { X, MessageCircle } from 'lucide-react';
+import AIAvatarDisplay from './AIAvatarDisplay';
 import { type ThemePersonality } from '@/utils/aiAssistantUtils';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
+import AIResumeTools from './AIResumeTools';
 
 interface Message {
   id: string;
@@ -23,6 +26,7 @@ interface AIArcadeAdvisorProps {
   handleSendMessage: () => void;
   handleKeyPress: (e: React.KeyboardEvent) => void;
   handleClose: () => void;
+  isRecruiter?: boolean;
 }
 
 const AIArcadeAdvisor: React.FC<AIArcadeAdvisorProps> = ({
@@ -35,97 +39,168 @@ const AIArcadeAdvisor: React.FC<AIArcadeAdvisorProps> = ({
   setInputValue,
   handleSendMessage,
   handleKeyPress,
-  handleClose
+  handleClose,
+  isRecruiter = false
 }) => {
+  const { settings } = useArcade();
+
+  const animationClass = useMemo(() => {
+    if (isAnimatingIn) return 'animate-arcade-ai-in';
+    if (isAnimatingOut) return 'animate-arcade-ai-out';
+    return '';
+  }, [isAnimatingIn, isAnimatingOut]);
+
   return (
-    <div className={`fixed inset-0 z-50 flex pointer-events-none bg-black/80 backdrop-blur-sm ${isAnimatingIn ? 'animate-fade-in' : ''} ${isAnimatingOut ? 'animate-fade-out' : ''}`}>
-      {/* Avatar Panel - Left Side */}
-      <div className={`w-80 h-full bg-arcade-dark-300/95 border-r-4 border-arcade-neon-cyan shadow-[0_0_40px_rgba(0,255,255,0.8)] flex flex-col justify-center items-center p-6 pointer-events-auto transform transition-transform duration-500 backdrop-blur-sm ${isAnimatingIn ? 'translate-x-0' : isAnimatingOut ? '-translate-x-full' : 'translate-x-0'}`}>
-        
-        {/* Character Portrait */}
-        <div className="mb-8">
-          <AIAvatar 
-            theme="retro-arcade"
-            size="lg" 
-            isTyping={isTyping}
-          />
-        </div>
-
-        {/* Character Info */}
-        <div className="text-center mb-6">
-          <h3 className="text-3xl font-bold text-arcade-neon-yellow pixelated-font mb-3 drop-shadow-lg">{personality.name}</h3>
-          <p className="text-base text-arcade-neon-cyan pixelated-font drop-shadow-md">{personality.role}</p>
-        </div>
-
-        {/* Close Button */}
-        <Button
-          onClick={handleClose}
-          className="mt-auto bg-arcade-neon-pink hover:bg-pink-400 text-arcade-dark-300 border-2 border-arcade-neon-pink pixelated-font font-bold px-8 py-4 text-base"
-        >
-          STEP AWAY
-        </Button>
-      </div>
-
-      {/* Speech Bubble - Center */}
-      <div className="flex-1 flex items-center justify-center p-8 pointer-events-none">
-        <div className={`relative max-w-2xl w-full bg-arcade-dark-200/95 border-4 border-arcade-neon-green rounded-2xl p-8 shadow-[0_0_30px_rgba(0,255,0,0.5)] backdrop-blur-md pointer-events-auto transform transition-all duration-500 ${isAnimatingIn ? 'scale-100 opacity-100' : isAnimatingOut ? 'scale-95 opacity-0' : 'scale-100 opacity-100'}`}>
-          
-          {/* Speech Bubble Pointer */}
-          <div className="absolute left-0 top-1/3 w-0 h-0 border-r-[30px] border-r-arcade-neon-green border-t-[20px] border-t-transparent border-b-[20px] border-b-transparent transform -translate-x-7"></div>
-          
-          {/* Messages Area */}
-          <div className="mb-8 max-h-80 overflow-y-auto pixel-scrollbar bg-arcade-dark-100/90 rounded-lg p-6 border-2 border-arcade-dark-300 backdrop-blur-sm">
-            <div className="space-y-5">
-              {messages.map((message) => (
-                <div key={message.id} className={`text-base leading-relaxed p-3 rounded-lg ${message.isUser ? 'bg-arcade-dark-300/50 ml-4' : 'bg-arcade-dark-200/30'}`}>
-                  {!message.isUser && (
-                    <div className="mb-3">
-                      <strong className="text-arcade-neon-yellow pixelated-font text-lg drop-shadow-md">{personality.name}:</strong>
-                    </div>
-                  )}
-                  {message.isUser && (
-                    <div className="mb-3">
-                      <strong className="text-arcade-neon-pink pixelated-font text-lg drop-shadow-md">Player:</strong>
-                    </div>
-                  )}
-                  <div className={`pixelated-font text-base ${message.isUser ? 'text-arcade-neon-pink/90' : 'text-arcade-neon-green'} drop-shadow-sm`}>
-                    {message.text}
-                  </div>
-                </div>
+    <div 
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm ${animationClass}`}
+      style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
+    >
+      <div className="w-full max-w-4xl h-full max-h-[90vh] relative">
+        {/* AI Advisor Container */}
+        <div className="relative w-full h-full border-4 bg-arcade-dark-200/95 border-arcade-neon-green text-arcade-neon-green shadow-[0_0_20px_rgba(0,255,0,0.5)] pixel-border">
+          <div className="absolute top-0 right-0 left-0 h-8 bg-arcade-dark-300 border-b-4 border-arcade-neon-green flex items-center justify-between px-2">
+            <div className="flex space-x-2">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="w-3 h-3 bg-arcade-neon-green"></div>
               ))}
-              
-              {isTyping && (
-                <div className="text-base p-3 rounded-lg bg-arcade-dark-200/30">
-                  <div className="mb-3">
-                    <strong className="text-arcade-neon-yellow pixelated-font text-lg drop-shadow-md">{personality.name}:</strong>
-                  </div>
-                  <div className="flex space-x-2">
-                    <div className="w-4 h-4 bg-arcade-neon-green rounded-sm animate-bounce pixelated drop-shadow-md"></div>
-                    <div className="w-4 h-4 bg-arcade-neon-green rounded-sm animate-bounce pixelated drop-shadow-md" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-4 h-4 bg-arcade-neon-green rounded-sm animate-bounce pixelated drop-shadow-md" style={{ animationDelay: '0.2s' }}></div>
-                  </div>
-                </div>
-              )}
             </div>
+            <div className="font-pixel text-xs text-arcade-neon-green animate-pulse">
+              ARCADE AI V1.0
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClose}
+              className="w-6 h-6 p-0 text-arcade-neon-green hover:text-arcade-neon-yellow hover:bg-transparent"
+            >
+              <X className="w-4 h-4" />
+            </Button>
           </div>
 
-          {/* Input Section */}
-          <div className="flex space-x-4">
-            <Input
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Insert coin to chat, player..."
-              className="flex-1 bg-arcade-dark-100/90 border-2 border-arcade-neon-cyan text-arcade-neon-green placeholder-arcade-neon-cyan/70 pixelated-font text-base backdrop-blur-sm p-4"
-              disabled={isTyping}
-            />
-            <Button
-              onClick={handleSendMessage}
-              disabled={!inputValue.trim() || isTyping}
-              className="bg-arcade-neon-cyan hover:bg-arcade-neon-yellow text-arcade-dark-300 border-2 border-arcade-neon-cyan hover:border-arcade-neon-yellow pixelated-font font-bold px-8 py-4 text-base"
-            >
-              SEND
-            </Button>
+          <div className="pt-8 pb-4 px-4 h-full flex flex-col lg:flex-row">
+            {/* Avatar Section */}
+            <div className="lg:w-1/3 flex flex-col items-center justify-start p-2 lg:p-4">
+              <div className="mb-4 w-full text-center font-pixel">
+                <h2 className="text-xl font-bold text-arcade-neon-yellow animate-neon-pulse">
+                  {personality.name}
+                </h2>
+                <p className="text-sm text-arcade-neon-cyan">
+                  {personality.role}
+                </p>
+              </div>
+              
+              <div className="bg-arcade-dark-300/60 border-4 border-arcade-neon-yellow p-2 w-full max-w-[240px] h-[240px] flex items-center justify-center">
+                <AIAvatarDisplay 
+                  isTyping={isTyping} 
+                  theme="retro-arcade"
+                  isRecruiter={isRecruiter}
+                />
+              </div>
+
+              {/* Recruiter Tools - Only show if isRecruiter is true */}
+              {isRecruiter && (
+                <div className="mt-6 w-full">
+                  <AIResumeTools theme="retro-arcade" />
+                </div>
+              )}
+
+              <div className="mt-4 w-full bg-arcade-dark-300/60 border-2 border-arcade-neon-green p-3">
+                <div className="text-xs font-pixel text-arcade-neon-green mb-2">SYSTEM STATUS:</div>
+                <div className="text-xs space-y-1">
+                  <div className="flex justify-between">
+                    <span>MEMORY:</span>
+                    <span className="text-arcade-neon-yellow">87%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>POWER:</span>
+                    <span className="text-arcade-neon-yellow">OPTIMAL</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>MODE:</span>
+                    <span className={isRecruiter ? "text-arcade-neon-red" : "text-arcade-neon-yellow"}>
+                      {isRecruiter ? "RECRUITER" : "STANDARD"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Chat Section */}
+            <div className="lg:w-2/3 flex flex-col mt-4 lg:mt-0">
+              {/* Messages Area */}
+              <ScrollArea className="flex-1 mb-4 h-[300px] lg:h-[500px] bg-arcade-dark-100/40 border-2 border-arcade-neon-cyan p-2">
+                <div className="space-y-4 p-2">
+                  {messages.map((message) => (
+                    <div 
+                      key={message.id} 
+                      className={`p-3 font-pixel ${message.isUser ? 
+                        'bg-arcade-dark-300/70 border-2 border-arcade-neon-yellow text-arcade-neon-yellow ml-8' : 
+                        'bg-arcade-dark-300/40 border-2 border-arcade-neon-green text-arcade-neon-green mr-4'}`}
+                    >
+                      <div className="mb-1 text-xs">
+                        {message.isUser ? (
+                          <span className="text-arcade-neon-yellow">PLAYER:</span>
+                        ) : (
+                          <span className="text-arcade-neon-cyan">{personality.name}:</span>
+                        )}
+                      </div>
+                      <div className={message.isUser ? 'text-arcade-neon-yellow' : 'text-arcade-neon-green'}>
+                        {message.text}
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {isTyping && (
+                    <div className="p-3 font-pixel bg-arcade-dark-300/40 border-2 border-arcade-neon-green text-arcade-neon-green mr-4">
+                      <div className="mb-1 text-xs text-arcade-neon-cyan">
+                        {personality.name}:
+                      </div>
+                      <div className="flex space-x-2">
+                        <div className="w-2 h-2 bg-arcade-neon-green animate-pulse-fast"></div>
+                        <div className="w-2 h-2 bg-arcade-neon-green animate-pulse-fast" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-arcade-neon-green animate-pulse-fast" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </ScrollArea>
+              
+              {/* Input Area */}
+              <div className="border-2 border-arcade-neon-cyan bg-arcade-dark-300/80 p-2 flex">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  placeholder={personality.inputPlaceholder}
+                  className="flex-1 bg-transparent border-0 text-arcade-neon-cyan font-pixel focus:ring-0 focus:outline-none"
+                  disabled={isTyping}
+                />
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={!inputValue.trim() || isTyping}
+                  className="bg-arcade-neon-cyan hover:bg-arcade-neon-yellow text-black font-pixel border-2 border-black"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                </Button>
+              </div>
+
+              {/* Bottom console decoration */}
+              <div className="mt-4 flex justify-between">
+                <div className="flex space-x-3">
+                  {["A", "B", "C", "D"].map(btn => (
+                    <div key={btn} className="w-8 h-8 rounded-full bg-arcade-dark-300 border-2 border-arcade-neon-magenta flex items-center justify-center text-arcade-neon-magenta font-pixel">
+                      {btn}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex space-x-2">
+                  {[1, 2, 3, 4].map(i => (
+                    <div key={i} className={`w-3 h-6 ${settings.enableGlow ? 'animate-neon-blink' : ''} bg-arcade-neon-cyan`}></div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
