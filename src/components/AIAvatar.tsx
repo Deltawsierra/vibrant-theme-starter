@@ -42,39 +42,56 @@ const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm
         );
 
       case 'retro-arcade':
-        return (
-          <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-lg' : ''}`}>
-            {/* Pixel art style female arcade owner */}
-            <div className={`w-full h-full bg-gradient-to-br from-amber-200 to-amber-300 ${isLarge ? 'rounded-lg' : 'rounded'} border-2 border-arcade-neon-cyan relative overflow-hidden`}>
-              {/* Hair */}
-              <div className={`absolute top-0 left-0 right-0 ${isLarge ? 'h-6' : 'h-2'} bg-gradient-to-r from-amber-800 to-amber-700`}></div>
-              {/* Face */}
-              <div className={`absolute ${isLarge ? 'top-4 left-2 right-2 bottom-6' : 'top-1 left-1 right-1 bottom-2'} bg-gradient-to-br from-amber-100 to-amber-200`}>
-                {/* Glasses */}
-                <div className={`absolute ${isLarge ? 'top-4 left-2 right-2 h-6' : 'top-1 left-1 right-1 h-2'} flex items-center justify-center`}>
-                  <div className={`${isLarge ? 'w-16 h-4 border-2' : 'w-4 h-1 border'} border-gray-800 rounded bg-transparent flex`}>
-                    <div className={`${isLarge ? 'w-6 h-4 mx-2' : 'w-1.5 h-1 mx-0.5'} bg-gray-800 rounded-full`}></div>
-                    <div className={`${isLarge ? 'w-6 h-4 mx-2' : 'w-1.5 h-1 mx-0.5'} bg-gray-800 rounded-full`}></div>
-                  </div>
-                </div>
-                {/* Smile */}
-                <div className={`absolute ${isLarge ? 'bottom-4' : 'bottom-1'} left-1/2 transform -translate-x-1/2 ${isLarge ? 'w-8 h-2' : 'w-2 h-0.5'} bg-pink-400 rounded-full`}></div>
-              </div>
-              {/* Flannel pattern */}
-              <div className={`absolute bottom-0 left-0 right-0 ${isLarge ? 'h-4' : 'h-1'} bg-gradient-to-r from-red-700 to-blue-700`}></div>
-              {/* Gaming accessories for large size */}
-              {isLarge && (
-                <>
-                  <div className="absolute bottom-2 right-2 w-3 h-3 bg-gray-800 rounded-sm"></div>
-                  <div className="absolute bottom-1 left-2 w-2 h-2 bg-arcade-neon-yellow rounded-full"></div>
-                </>
+        if (isLarge) {
+          // Use the provided pixel art image for large size
+          return (
+            <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-lg' : ''}`}>
+              <img 
+                src="/lovable-uploads/6669d385-afb4-4b5e-bd6a-32ece6029099.png"
+                alt="Pixel AI Assistant"
+                className="w-full h-full object-cover pixelated"
+                style={{ imageRendering: 'pixelated' }}
+              />
+              {isTyping && (
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-arcade-neon-yellow rounded-full animate-ping"></div>
               )}
             </div>
-            {isTyping && (
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-arcade-neon-yellow rounded-full animate-ping"></div>
-            )}
-          </div>
-        );
+          );
+        } else {
+          // For small sizes, use a simplified version
+          return (
+            <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-lg' : ''}`}>
+              <div className={`w-full h-full bg-gradient-to-br from-amber-200 to-amber-300 ${isLarge ? 'rounded-lg' : 'rounded'} border-2 border-arcade-neon-cyan relative overflow-hidden`}>
+                {/* Hair */}
+                <div className={`absolute top-0 left-0 right-0 ${isLarge ? 'h-6' : 'h-2'} bg-gradient-to-r from-amber-800 to-amber-700`}></div>
+                {/* Face */}
+                <div className={`absolute ${isLarge ? 'top-4 left-2 right-2 bottom-6' : 'top-1 left-1 right-1 bottom-2'} bg-gradient-to-br from-amber-100 to-amber-200`}>
+                  {/* Glasses */}
+                  <div className={`absolute ${isLarge ? 'top-4 left-2 right-2 h-6' : 'top-1 left-1 right-1 h-2'} flex items-center justify-center`}>
+                    <div className={`${isLarge ? 'w-16 h-4 border-2' : 'w-4 h-1 border'} border-gray-800 rounded bg-transparent flex`}>
+                      <div className={`${isLarge ? 'w-6 h-4 mx-2' : 'w-1.5 h-1 mx-0.5'} bg-gray-800 rounded-full`}></div>
+                      <div className={`${isLarge ? 'w-6 h-4 mx-2' : 'w-1.5 h-1 mx-0.5'} bg-gray-800 rounded-full`}></div>
+                    </div>
+                  </div>
+                  {/* Smile */}
+                  <div className={`absolute ${isLarge ? 'bottom-4' : 'bottom-1'} left-1/2 transform -translate-x-1/2 ${isLarge ? 'w-8 h-2' : 'w-2 h-0.5'} bg-pink-400 rounded-full`}></div>
+                </div>
+                {/* Flannel pattern */}
+                <div className={`absolute bottom-0 left-0 right-0 ${isLarge ? 'h-4' : 'h-1'} bg-gradient-to-r from-red-700 to-blue-700`}></div>
+                {/* Gaming accessories for large size */}
+                {isLarge && (
+                  <>
+                    <div className="absolute bottom-2 right-2 w-3 h-3 bg-gray-800 rounded-sm"></div>
+                    <div className="absolute bottom-1 left-2 w-2 h-2 bg-arcade-neon-yellow rounded-full"></div>
+                  </>
+                )}
+              </div>
+              {isTyping && (
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-arcade-neon-yellow rounded-full animate-ping"></div>
+              )}
+            </div>
+          );
+        }
 
       case 'storytelling':
         return (

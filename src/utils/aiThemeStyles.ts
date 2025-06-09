@@ -12,11 +12,11 @@ export const getAIThemeStyles = (currentTheme: Theme) => {
       avatar: 'bg-gradient-to-br from-gray-100 to-gray-200'
     },
     'retro-arcade': {
-      container: 'bg-arcade-dark-300 border-2 border-arcade-neon-cyan shadow-[0_0_20px_rgba(0,255,255,0.5)]',
-      speechBubble: 'bg-arcade-dark-200 border-2 border-arcade-neon-green text-arcade-neon-green shadow-[0_0_10px_rgba(0,255,0,0.3)]',
-      bubblePointer: 'border-t-arcade-neon-green',
-      button: 'bg-arcade-neon-cyan hover:bg-arcade-neon-yellow text-arcade-dark-300',
-      input: 'bg-arcade-dark-100 border-arcade-neon-cyan text-arcade-neon-green placeholder-arcade-neon-cyan/50',
+      container: 'bg-arcade-dark-300 border-4 border-arcade-neon-cyan shadow-[0_0_30px_rgba(0,255,255,0.7)] animate-pulse-border',
+      speechBubble: 'bg-arcade-dark-200 border-4 border-arcade-neon-green text-arcade-neon-green shadow-[0_0_20px_rgba(0,255,0,0.5)] pixel-border',
+      bubblePointer: 'border-t-arcade-neon-green border-t-4',
+      button: 'bg-arcade-neon-cyan hover:bg-arcade-neon-yellow text-arcade-dark-300 border-2 border-arcade-neon-cyan hover:border-arcade-neon-yellow pixel-button',
+      input: 'bg-arcade-dark-100 border-2 border-arcade-neon-cyan text-arcade-neon-green placeholder-arcade-neon-cyan/70 pixel-input',
       avatar: 'bg-gradient-to-br from-amber-200 to-amber-300'
     },
     storytelling: {
