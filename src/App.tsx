@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@/context/ThemeContext';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { Toaster } from '@/components/ui/toaster';
-import PageTransition from '@/components/PageTransition';
 
 // Common pages
 import Index from '@/pages/Index';
@@ -27,41 +26,13 @@ const App: React.FC = () => {
           <Router>
             <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
               <Routes>
-                <Route path="/" element={
-                  <PageTransition>
-                    <Index />
-                  </PageTransition>
-                } />
-                <Route path="/about" element={
-                  <PageTransition>
-                    <About />
-                  </PageTransition>
-                } />
-                <Route path="/work" element={
-                  <PageTransition>
-                    <Work />
-                  </PageTransition>
-                } />
-                <Route path="/contact" element={
-                  <PageTransition>
-                    <Contact />
-                  </PageTransition>
-                } />
-                <Route path="/showcase" element={
-                  <PageTransition>
-                    <Showcase />
-                  </PageTransition>
-                } />
-                <Route path="/game" element={
-                  <PageTransition>
-                    <Game />
-                  </PageTransition>
-                } />
-                <Route path="/auth" element={
-                  <PageTransition>
-                    <Auth />
-                  </PageTransition>
-                } />
+                <Route path="/" element={<Index />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/work" element={<Work />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/showcase" element={<Showcase />} />
+                <Route path="/game" element={<Game />} />
+                <Route path="/auth" element={<Auth />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
