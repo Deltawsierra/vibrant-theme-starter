@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { ArcadeProvider } from './context/ArcadeContext';
+import ArcadeLayout from './components/ArcadeLayout';
 
 // Import theme pages
 import ArcadeAbout from './pages/About';
@@ -17,7 +18,9 @@ const RetroArcadeTheme = {
   Game: ArcadeGame,
   Provider: ({ children }: { children: React.ReactNode }) => (
     <ArcadeProvider>
-      {children}
+      <ArcadeLayout>
+        {children}
+      </ArcadeLayout>
     </ArcadeProvider>
   )
 };
