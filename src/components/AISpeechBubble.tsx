@@ -51,43 +51,43 @@ const AISpeechBubble: React.FC<AISpeechBubbleProps> = ({
       <div className={`absolute left-0 top-8 lg:top-1/3 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[20px] ${themeStyles.bubblePointer} transform -translate-x-5`}></div>
       
       {/* Speech Bubble */}
-      <div className={`flex-1 rounded-2xl p-6 ${themeStyles.speechBubble} flex flex-col`}>
+      <div className={`flex-1 rounded-2xl p-8 ${themeStyles.speechBubble} flex flex-col`}>
         {/* Character Name */}
-        <div className="mb-4">
-          <h3 className="font-bold text-lg">{personality.name}</h3>
-          <p className="text-sm opacity-70">{personality.role}</p>
+        <div className="mb-6">
+          <h3 className={themeStyles.characterName}>{personality.name}</h3>
+          <p className={themeStyles.characterRole}>{personality.role}</p>
         </div>
 
         {/* Messages */}
-        <ScrollArea className="flex-1 mb-4 max-h-64 lg:max-h-96">
-          <div className="space-y-3 pr-2">
+        <ScrollArea className="flex-1 mb-6 max-h-64 lg:max-h-96">
+          <div className="space-y-4 pr-2">
             {messages.map((message) => (
-              <div key={message.id} className="text-sm leading-relaxed">
+              <div key={message.id} className={`${themeStyles.messageText} p-3 rounded-lg ${message.isUser ? 'bg-black/10 ml-4' : 'bg-white/5'}`}>
                 {!message.isUser && (
                   <div className="mb-2">
-                    <strong>{personality.name}:</strong>
+                    <strong className={themeStyles.characterName.replace('text-xl', 'text-sm')}>{personality.name}:</strong>
                   </div>
                 )}
                 {message.isUser && (
-                  <div className="mb-2 opacity-70">
-                    <strong>You:</strong>
+                  <div className="mb-2">
+                    <strong className={`${themeStyles.characterRole} opacity-80`}>You:</strong>
                   </div>
                 )}
-                <div className={`${message.isUser ? 'opacity-80 italic' : ''}`}>
+                <div className={`${message.isUser ? 'opacity-90 italic' : ''}`}>
                   {message.text}
                 </div>
               </div>
             ))}
             
             {isTyping && (
-              <div className="text-sm">
+              <div className={`${themeStyles.messageText} p-3 rounded-lg bg-white/5`}>
                 <div className="mb-2">
-                  <strong>{personality.name}:</strong>
+                  <strong className={themeStyles.characterName.replace('text-xl', 'text-sm')}>{personality.name}:</strong>
                 </div>
                 <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-current rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-3 h-3 bg-current rounded-full animate-bounce"></div>
+                  <div className="w-3 h-3 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                  <div className="w-3 h-3 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                 </div>
               </div>
             )}
