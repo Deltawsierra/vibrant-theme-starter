@@ -21,6 +21,7 @@ const AIAssistant: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [avatarClicked, setAvatarClicked] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const personality = getThemePersonality(currentTheme);
 
@@ -81,49 +82,60 @@ const AIAssistant: React.FC = () => {
     }
   };
 
+  const handleAvatarClick = () => {
+    setAvatarClicked(true);
+    setTimeout(() => setAvatarClicked(false), 500);
+  };
+
   const getThemeStyles = () => {
     const styles = {
       minimalist: {
-        container: 'bg-white border-gray-300 text-gray-900',
+        container: 'bg-white border-gray-300 text-gray-900 shadow-xl',
+        speechBubble: 'bg-white border-2 border-gray-300 text-gray-900',
+        bubblePointer: 'border-t-gray-300',
         button: 'bg-gray-800 hover:bg-gray-700 text-white',
-        userBubble: 'bg-gray-100 text-gray-900 border-gray-200',
-        aiBubble: 'bg-gray-50 text-gray-800 border-gray-100',
-        input: 'border-gray-300 focus:border-gray-500'
+        input: 'border-gray-300 focus:border-gray-500 bg-white',
+        avatar: 'bg-gradient-to-br from-gray-100 to-gray-200'
       },
       'retro-arcade': {
-        container: 'bg-arcade-dark-300 border-arcade-neon-cyan text-arcade-neon-green',
+        container: 'bg-arcade-dark-300 border-2 border-arcade-neon-cyan shadow-[0_0_20px_rgba(0,255,255,0.5)]',
+        speechBubble: 'bg-arcade-dark-200 border-2 border-arcade-neon-green text-arcade-neon-green shadow-[0_0_10px_rgba(0,255,0,0.3)]',
+        bubblePointer: 'border-t-arcade-neon-green',
         button: 'bg-arcade-neon-cyan hover:bg-arcade-neon-yellow text-arcade-dark-300',
-        userBubble: 'bg-arcade-neon-cyan/20 text-arcade-neon-cyan border-arcade-neon-cyan',
-        aiBubble: 'bg-arcade-neon-green/20 text-arcade-neon-green border-arcade-neon-green',
-        input: 'bg-arcade-dark-200 border-arcade-neon-cyan text-arcade-neon-green'
+        input: 'bg-arcade-dark-100 border-arcade-neon-cyan text-arcade-neon-green placeholder-arcade-neon-cyan/50',
+        avatar: 'bg-gradient-to-br from-amber-200 to-amber-300'
       },
       storytelling: {
-        container: 'bg-story-parchment border-story-warm-400 text-story-ink',
+        container: 'bg-story-parchment border-2 border-story-warm-400 shadow-xl',
+        speechBubble: 'bg-story-parchment border-2 border-story-warm-300 text-story-ink shadow-lg',
+        bubblePointer: 'border-t-story-warm-300',
         button: 'bg-story-warm-600 hover:bg-story-warm-700 text-white',
-        userBubble: 'bg-story-warm-100 text-story-ink border-story-warm-300',
-        aiBubble: 'bg-story-warm-50 text-story-ink border-story-warm-200',
-        input: 'border-story-warm-300 focus:border-story-warm-500'
+        input: 'border-story-warm-300 focus:border-story-warm-500 bg-story-warm-50',
+        avatar: 'bg-gradient-to-br from-blue-300 to-blue-500'
       },
       '3d-interactive': {
-        container: 'bg-threed-slate-900/95 border-threed-blue-500 text-white backdrop-blur-sm',
+        container: 'bg-threed-slate-900/95 border-2 border-threed-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.5)] backdrop-blur-sm',
+        speechBubble: 'bg-threed-slate-800/90 border-2 border-threed-blue-400 text-white shadow-[0_0_15px_rgba(59,130,246,0.3)] backdrop-blur-sm',
+        bubblePointer: 'border-t-threed-blue-400',
         button: 'bg-threed-blue-600 hover:bg-threed-blue-700 text-white',
-        userBubble: 'bg-threed-blue-600/20 text-threed-blue-300 border-threed-blue-500',
-        aiBubble: 'bg-threed-slate-800/80 text-white border-threed-slate-600',
-        input: 'bg-threed-slate-800 border-threed-blue-500 text-white'
+        input: 'bg-threed-slate-700 border-threed-blue-500 text-white placeholder-white/50',
+        avatar: 'bg-gradient-to-br from-blue-400 via-purple-500 to-cyan-400'
       },
       ecommerce: {
-        container: 'bg-white border-ecommerce-primary-300 text-gray-900',
+        container: 'bg-white border-2 border-ecommerce-primary-300 shadow-xl',
+        speechBubble: 'bg-white border-2 border-ecommerce-primary-200 text-gray-900 shadow-lg',
+        bubblePointer: 'border-t-ecommerce-primary-200',
         button: 'bg-ecommerce-primary-600 hover:bg-ecommerce-primary-700 text-white',
-        userBubble: 'bg-ecommerce-primary-50 text-ecommerce-primary-800 border-ecommerce-primary-200',
-        aiBubble: 'bg-gray-50 text-gray-800 border-gray-200',
-        input: 'border-ecommerce-primary-300 focus:border-ecommerce-primary-500'
+        input: 'border-ecommerce-primary-300 focus:border-ecommerce-primary-500 bg-white',
+        avatar: 'bg-gradient-to-br from-amber-200 to-amber-300'
       },
       videography: {
-        container: 'bg-black/95 border-video-gold-500 text-white backdrop-blur-sm',
+        container: 'bg-black/95 border-2 border-video-gold-500 shadow-[0_0_25px_rgba(251,191,36,0.4)] backdrop-blur-sm',
+        speechBubble: 'bg-gray-900/90 border-2 border-video-gold-400 text-white shadow-[0_0_15px_rgba(251,191,36,0.2)] backdrop-blur-sm',
+        bubblePointer: 'border-t-video-gold-400',
         button: 'bg-video-gold-500 hover:bg-video-gold-600 text-black',
-        userBubble: 'bg-video-gold-500/20 text-video-gold-300 border-video-gold-400',
-        aiBubble: 'bg-gray-900/80 text-white border-gray-700',
-        input: 'bg-gray-900 border-video-gold-500 text-white'
+        input: 'bg-gray-800 border-video-gold-500 text-white placeholder-white/50',
+        avatar: 'bg-gradient-to-br from-amber-200 to-amber-300'
       }
     };
 
@@ -141,83 +153,108 @@ const AIAssistant: React.FC = () => {
           className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110 ${themeStyles.button}`}
           aria-label="Open AI Assistant"
         >
-          <MessageCircle className="w-6 h-6 mx-auto" />
+          <AIAvatar theme={currentTheme} size="sm" />
         </button>
       )}
 
-      {/* Chat Window */}
+      {/* Full Dialog Window */}
       {isOpen && (
-        <div className={`fixed bottom-6 right-6 z-50 w-80 h-96 rounded-lg shadow-2xl border-2 ${themeStyles.container} flex flex-col`}>
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b">
-            <div className="flex items-center space-x-3">
-              <AIAvatar theme={currentTheme} isTyping={isTyping} />
-              <div>
-                <h3 className="font-semibold text-sm">{personality.name}</h3>
-                <p className="text-xs opacity-70">{personality.role}</p>
-              </div>
-            </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className={`relative w-full max-w-4xl h-full max-h-[90vh] rounded-xl ${themeStyles.container} flex flex-col lg:flex-row overflow-hidden`}>
+            
+            {/* Close Button */}
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsOpen(false)}
-              className="w-8 h-8 p-0"
+              className="absolute top-4 right-4 z-10 w-8 h-8 p-0 text-current hover:bg-white/10"
             >
               <X className="w-4 h-4" />
             </Button>
-          </div>
 
-          {/* Messages */}
-          <ScrollArea className="flex-1 p-4">
-            <div className="space-y-3">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[80%] rounded-lg p-3 text-sm border ${
-                      message.isUser ? themeStyles.userBubble : themeStyles.aiBubble
-                    }`}
-                  >
-                    {message.text}
-                  </div>
-                </div>
-              ))}
-              
-              {isTyping && (
-                <div className="flex justify-start">
-                  <div className={`rounded-lg p-3 text-sm border ${themeStyles.aiBubble}`}>
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-current rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            <div ref={messagesEndRef} />
-          </ScrollArea>
-
-          {/* Input */}
-          <div className="p-4 border-t">
-            <div className="flex space-x-2">
-              <Input
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder={personality.inputPlaceholder}
-                className={`flex-1 text-sm ${themeStyles.input}`}
-                disabled={isTyping}
-              />
-              <Button
-                onClick={handleSendMessage}
-                disabled={!inputValue.trim() || isTyping}
-                className={`${themeStyles.button} px-3`}
+            {/* Avatar Section */}
+            <div className="lg:w-1/3 flex items-center justify-center p-6 lg:p-8">
+              <div 
+                className={`transition-transform duration-300 cursor-pointer ${avatarClicked ? 'scale-110' : 'scale-100'}`}
+                onClick={handleAvatarClick}
               >
-                <Send className="w-4 h-4" />
-              </Button>
+                <AIAvatar 
+                  theme={currentTheme} 
+                  size="lg" 
+                  isTyping={isTyping}
+                />
+              </div>
+            </div>
+
+            {/* Speech Bubble Section */}
+            <div className="lg:w-2/3 flex flex-col p-6 lg:p-8 relative">
+              {/* Speech Bubble Pointer */}
+              <div className={`absolute left-0 top-8 lg:top-1/3 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[20px] ${themeStyles.bubblePointer} transform -translate-x-5`}></div>
+              
+              {/* Speech Bubble */}
+              <div className={`flex-1 rounded-2xl p-6 ${themeStyles.speechBubble} flex flex-col`}>
+                {/* Character Name */}
+                <div className="mb-4">
+                  <h3 className="font-bold text-lg">{personality.name}</h3>
+                  <p className="text-sm opacity-70">{personality.role}</p>
+                </div>
+
+                {/* Messages */}
+                <ScrollArea className="flex-1 mb-4 max-h-64 lg:max-h-96">
+                  <div className="space-y-3 pr-2">
+                    {messages.map((message) => (
+                      <div key={message.id} className="text-sm leading-relaxed">
+                        {!message.isUser && (
+                          <div className="mb-2">
+                            <strong>{personality.name}:</strong>
+                          </div>
+                        )}
+                        {message.isUser && (
+                          <div className="mb-2 opacity-70">
+                            <strong>You:</strong>
+                          </div>
+                        )}
+                        <div className={`${message.isUser ? 'opacity-80 italic' : ''}`}>
+                          {message.text}
+                        </div>
+                      </div>
+                    ))}
+                    
+                    {isTyping && (
+                      <div className="text-sm">
+                        <div className="mb-2">
+                          <strong>{personality.name}:</strong>
+                        </div>
+                        <div className="flex space-x-1">
+                          <div className="w-2 h-2 bg-current rounded-full animate-bounce"></div>
+                          <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                          <div className="w-2 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div ref={messagesEndRef} />
+                </ScrollArea>
+
+                {/* Input */}
+                <div className="flex space-x-2">
+                  <Input
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder={personality.inputPlaceholder}
+                    className={`flex-1 ${themeStyles.input}`}
+                    disabled={isTyping}
+                  />
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={!inputValue.trim() || isTyping}
+                    className={`${themeStyles.button} px-4`}
+                  >
+                    <Send className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
