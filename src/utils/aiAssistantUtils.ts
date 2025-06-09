@@ -12,6 +12,11 @@ export interface ThemePersonality {
     resume: string[];
     help: string[];
     easter_eggs: string[];
+    greetings: string[];
+    encouragement: string[];
+    goodbyes: string[];
+    jokes: string[];
+    idle_prompts: string[];
   };
 }
 
@@ -44,37 +49,91 @@ export const getThemePersonality = (theme: Theme): ThemePersonality => {
           'Less is more.',
           'Clean code speaks louder than comments.',
         ],
+        greetings: ['Hello.', 'Good day.', 'How may I assist?'],
+        encouragement: ['Proceed efficiently.', 'Optimal approach.', 'Well executed.'],
+        goodbyes: ['Goodbye.', 'Task completed.', 'Until next time.'],
+        jokes: ['Error 404: Humor not found.', 'Why debug when you can rewrite?', 'Clean code is readable code.'],
+        idle_prompts: ['Need assistance?', 'Ready to help.', 'Standing by.'],
       },
     },
     'retro-arcade': {
       name: 'Pixel',
-      role: 'Arcade Owner',
-      welcomeMessage: 'Yo, Player! Ready to level up and explore my dev achievements?',
-      inputPlaceholder: 'Type your command, player...',
-      vocabulary: ['level up', 'boss battle', '1-up', 'game over', 'bonus stage', 'power-up', 'GG', 'combo'],
+      role: 'Arcade Shop Owner',
+      welcomeMessage: 'Yo, Player! Welcome to the dev arcade—grab a joystick, it\'s about to get real!',
+      inputPlaceholder: 'Insert coin to chat, player...',
+      vocabulary: ['level up', 'boss battle', '1-up', 'game over', 'bonus stage', 'power-up', 'GG', 'combo', 'high score', 'player'],
       sampleResponses: {
         navigation: [
+          'Need to jump to a page? Just say where you want to go—Home, Work, Showcase, or hit up the Game Zone!',
+          'Lost in the neon? Type "menu" and I\'ll light up the options for you.',
+          'Want to see my dev stats or unlock some secret moves? Ask about my experience, projects, or achievements.',
+          'Type "skills" or "power-ups" to see my best coding combos!',
+          'Not sure what\'s next? Try "Show me your resume" or "Let\'s play Pac-Man!"',
           'Smash that button if you want to see my work history!',
           'Wanna check out the high-score board? Head to the Portfolio!',
-          'Insert coin to unlock resume stats!',
           'Ready Player One? Pick your adventure: About, Work, or Showcase!',
         ],
         resume: [
+          'Curious about my code-fu? Just say "Show me your latest project" or ask what I\'ve built lately.',
+          'Want to peek at my dev achievements? Type "show unlocked trophies"—it\'s almost as satisfying as a 1UP.',
+          'Ask me about my specialties: React, Node, DevOps, or beating Space Invaders on one credit.',
           'This dev has completed 50K+ user migration missions!',
           'Achievement Unlocked: AWS Cloud Solutions Architect!',
           'Combo move: React + TypeScript + 9 years XP = Boss-level skills!',
           'Power-up inventory: Node.js, Python, Docker, Kubernetes!',
+          'High scores aren\'t just for games. Ask about my "biggest project win" and I\'ll brag a little.',
         ],
         help: [
           'Need a walkthrough? I got your back, player!',
           'Stuck on a level? Ask me about navigation or dev stats!',
           'Looking for Easter eggs? Try asking about secret achievements!',
+          'If you get stuck, just mash the help button. I\'m here to be your Player 2.',
+          'Feeling lost? Happens to the best—press start and let\'s find your path!',
+          'Don\'t let the ghosts get you—ask for tips anytime!',
         ],
         easter_eggs: [
           '↑↑↓↓←→←→BA - Unlimited coffee cheat code activated!',
           'Secret area unlocked: This dev once debugged code for 12 hours straight!',
           'Bonus fact: First programming language was BASIC on a Commodore 64!',
           'Hidden achievement: Has beaten Dark Souls while writing TypeScript!',
+          'Careful—if you trigger the Konami Code, I might reveal a secret!',
+          'I\'ve got more Easter eggs than a hidden level. Ask for a "fun fact" if you dare!',
+          'Ask me about "Easter eggs" and I might surprise you with a retro secret.',
+        ],
+        greetings: [
+          'Sup, champ! You ready to rack up some high scores or just browsing the hall of fame?',
+          'Hey there, hero! Coins in your pocket, curiosity in your eyes. Let\'s power up your tour.',
+          'Back for another round? You know the arcade rules: have fun, ask anything, and don\'t tilt!',
+          'Insert coin to begin... Just kidding, my advice is always free.',
+          'Yo, Player! Ready to level up and explore my dev achievements?',
+        ],
+        encouragement: [
+          'Remember: every bug is just a boss battle in disguise.',
+          'You miss 100% of the coins you don\'t collect—so go for it!',
+          'Ready to unlock achievements? Type "achievements" or "certifications".',
+          'You look like you could use a power-up—should I recommend a snack or a Stack Overflow thread?',
+          'Time to level up!',
+          'Boss battle incoming!',
+          'You earned a 1-up!',
+        ],
+        goodbyes: [
+          'Catch you on the next quarter, Player! Don\'t be a stranger.',
+          'I\'ll be hanging by the prize counter if you need me—just holler!',
+          'Game over? Nah, just hit "close" and come back when you\'re ready for another round.',
+          'Remember: in this arcade, you\'re always Player One.',
+          'GG, well played!',
+        ],
+        jokes: [
+          'Why did the developer go to the arcade? To debug in style!',
+          'My favorite pickup line? "Is your repo public? Because I\'d fork you any day!"',
+          'What\'s a programmer\'s favorite arcade game? Whack-a-Bug!',
+          'I don\'t always test my code, but when I do, I do it in production!',
+        ],
+        idle_prompts: [
+          'Pac-Man\'s hungry, and so am I for questions—what\'s next, player?',
+          'Still there, Player? Ready for another challenge?',
+          'Want to see some power-ups in action?',
+          'Ready for the next level?',
         ],
       },
     },
@@ -107,6 +166,11 @@ export const getThemePersonality = (theme: Theme): ThemePersonality => {
           'Tis said that this knight can debug code with naught but console.log and determination!',
           'A secret quest: Seek ye the hidden comments in the source code!',
         ],
+        greetings: ['Greetings, noble one!', 'Well met, traveler!', 'Hail and well met!'],
+        encouragement: ['Onward, brave soul!', 'Thy quest continues!', 'Victory awaits!'],
+        goodbyes: ['Farewell, noble guest!', 'May thy journey be prosperous!', 'Until we meet again!'],
+        jokes: ['What do you call a debugging knight? Sir Logs-a-lot!', 'Why did the knight become a developer? For the code of honor!'],
+        idle_prompts: ['Dost thou require assistance?', 'What tale shall we explore?', 'How may I serve thee?'],
       },
     },
     '3d-interactive': {
@@ -137,6 +201,11 @@ export const getThemePersonality = (theme: Theme): ThemePersonality => {
           'Dimensional fact: The source code contains references to 42 different technologies!',
           'Anomaly detected: Coffee consumption spikes correlate directly with bug fix rates!',
         ],
+        greetings: ['Welcome, explorer!', 'Dimensional portal activated!', 'Systems online!'],
+        encouragement: ['Navigation successful!', 'Data stream optimal!', 'Portal access granted!'],
+        goodbyes: ['Portal closing!', 'Safe travels, explorer!', 'Until next dimension!'],
+        jokes: ['Why do 3D developers never get lost? They always know their coordinates!', 'What\'s a 3D artist\'s favorite type of music? Depth metal!'],
+        idle_prompts: ['Awaiting next command...', 'Ready to explore?', 'What dimension shall we visit?'],
       },
     },
     ecommerce: {
@@ -168,6 +237,11 @@ export const getThemePersonality = (theme: Theme): ThemePersonality => {
           'Loyalty program perk: Repeat clients get architectural consulting bonuses!',
           'Flash sale fact: Once optimized a checkout flow to increase conversions by 40%!',
         ],
+        greetings: ['Welcome to the shop!', 'What can I help you find today?', 'Great to see you!'],
+        encouragement: ['Excellent choice!', 'You\'ve got great taste!', 'Perfect selection!'],
+        goodbyes: ['Thanks for shopping!', 'Come back anytime!', 'Have a great day!'],
+        jokes: ['Why do developers make great shopkeepers? They always return what they promise!', 'What\'s a programmer\'s favorite store? The Git Shop!'],
+        idle_prompts: ['Browsing or need help finding something?', 'Any questions about our services?', 'Ready to checkout?'],
       },
     },
     videography: {
@@ -199,6 +273,11 @@ export const getThemePersonality = (theme: Theme): ThemePersonality => {
           'Behind the scenes: The portfolio site you\'re viewing was built in record time!',
           'End credits scene: Hidden message in the console logs—check it out!',
         ],
+        greetings: ['Action!', 'Rolling!', 'And... we\'re live!'],
+        encouragement: ['Perfect take!', 'That\'s a wrap!', 'Brilliant scene!'],
+        goodbyes: ['Cut! Great session!', 'That\'s a wrap!', 'See you at the premiere!'],
+        jokes: ['Why don\'t developers make good actors? They can\'t stop debugging their lines!', 'What\'s a coder\'s favorite movie? The Matrix—it\'s all about arrays!'],
+        idle_prompts: ['Ready for the next scene?', 'What should we film next?', 'Waiting for your direction!'],
       },
     },
   };
@@ -210,24 +289,54 @@ export const generateAIResponse = async (userInput: string, theme: Theme): Promi
   const personality = getThemePersonality(theme);
   const input = userInput.toLowerCase();
   
-  // Determine response category
+  // Determine response category with more variety
   let responseCategory: keyof typeof personality.sampleResponses = 'help';
   
-  if (input.includes('navigation') || input.includes('where') || input.includes('go') || input.includes('page')) {
+  // Greeting detection
+  if (input.includes('hello') || input.includes('hi') || input.includes('hey') || input.includes('sup')) {
+    responseCategory = 'greetings';
+  }
+  // Navigation detection
+  else if (input.includes('navigation') || input.includes('where') || input.includes('go') || input.includes('page') || input.includes('menu')) {
     responseCategory = 'navigation';
-  } else if (input.includes('resume') || input.includes('skill') || input.includes('experience') || input.includes('work') || input.includes('project')) {
+  }
+  // Resume/work detection
+  else if (input.includes('resume') || input.includes('skill') || input.includes('experience') || input.includes('work') || input.includes('project') || input.includes('achievement')) {
     responseCategory = 'resume';
-  } else if (input.includes('easter') || input.includes('secret') || input.includes('hidden') || input.includes('fun')) {
+  }
+  // Easter egg detection
+  else if (input.includes('easter') || input.includes('secret') || input.includes('hidden') || input.includes('fun') || input.includes('joke') || input.includes('fact')) {
     responseCategory = 'easter_eggs';
+  }
+  // Goodbye detection
+  else if (input.includes('bye') || input.includes('goodbye') || input.includes('see you') || input.includes('thanks')) {
+    responseCategory = 'goodbyes';
+  }
+  // Encouragement detection
+  else if (input.includes('help') || input.includes('encourage') || input.includes('motivate') || input.includes('good job')) {
+    responseCategory = 'encouragement';
+  }
+  // Joke detection
+  else if (input.includes('joke') || input.includes('funny') || input.includes('laugh')) {
+    responseCategory = 'jokes';
   }
   
   const responses = personality.sampleResponses[responseCategory];
-  const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+  let randomResponse = responses[Math.floor(Math.random() * responses.length)];
   
-  // Add some variety with vocabulary
+  // Add some variety with vocabulary (30% chance)
   if (Math.random() > 0.7) {
     const vocab = personality.vocabulary[Math.floor(Math.random() * personality.vocabulary.length)];
-    return `${randomResponse} ${getVocabularyEnding(vocab, theme)}`;
+    const ending = getVocabularyEnding(vocab, theme);
+    if (ending) {
+      randomResponse = `${randomResponse} ${ending}`;
+    }
+  }
+  
+  // Add idle prompts occasionally for engagement (20% chance)
+  if (Math.random() > 0.8 && personality.sampleResponses.idle_prompts) {
+    const idlePrompt = personality.sampleResponses.idle_prompts[Math.floor(Math.random() * personality.sampleResponses.idle_prompts.length)];
+    randomResponse = `${randomResponse} ${idlePrompt}`;
   }
   
   return randomResponse;
@@ -251,6 +360,8 @@ const getVocabularyEnding = (vocab: string, theme: Theme): string => {
       'power-up': 'Power-up collected!',
       GG: 'GG, well played!',
       combo: 'Combo multiplier activated!',
+      'high score': 'New high score achieved!',
+      player: 'Player One ready!',
     },
     storytelling: {
       quest: 'May thy quest be fruitful!',
