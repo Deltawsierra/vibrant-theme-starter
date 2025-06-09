@@ -5,7 +5,6 @@ import ArcadeBackground from './ArcadeBackground';
 import ArcadeHUD from './ArcadeHUD';
 import AudioControlsSidebar from './AudioControlsSidebar';
 import { useArcade } from '../context/ArcadeContext';
-import AIFloatingButton from '@/components/AIFloatingButton';
 
 interface ArcadeLayoutProps {
   children: React.ReactNode;
@@ -32,9 +31,6 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
       
       {/* Audio Controls */}
       <AudioControlsSidebar />
-      
-      {/* AI Assistant */}
-      <AIFloatingButton />
       
       {/* Scanlines Effect */}
       {settings.enableScanlines && (
