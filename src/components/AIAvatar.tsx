@@ -6,9 +6,10 @@ interface AIAvatarProps {
   theme: Theme;
   isTyping?: boolean;
   size?: 'sm' | 'md' | 'lg';
+  isRecruiter?: boolean;
 }
 
-const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm' }) => {
+const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm', isRecruiter = false }) => {
   const sizeClasses = {
     sm: 'w-8 h-8',
     md: 'w-16 h-16',
@@ -18,10 +19,13 @@ const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm
   const getAvatarElement = () => {
     const isLarge = size === 'lg';
     
+    // Add recruiter indicator styling if needed
+    const recruiterGlow = isRecruiter ? 'ring-2 ring-blue-400 ring-opacity-50' : '';
+    
     switch (theme) {
       case 'minimalist':
         return (
-          <div className={`${sizeClasses[size]} rounded-lg bg-gradient-to-br from-gray-200 to-gray-400 border-2 border-gray-300 flex items-center justify-center relative overflow-hidden ${isLarge ? 'shadow-lg animate-pulse-gentle' : ''}`}>
+          <div className={`${sizeClasses[size]} rounded-lg bg-gradient-to-br from-gray-200 to-gray-400 border-2 border-gray-300 flex items-center justify-center relative overflow-hidden ${isLarge ? 'shadow-lg animate-pulse-gentle' : ''} ${recruiterGlow}`}>
             {/* Minimalist robot face */}
             <div className="w-full h-full relative animate-subtle-breathing">
               {/* Face */}
@@ -45,7 +49,7 @@ const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm
         if (isLarge) {
           // Use the new pixel art image for large size with animations
           return (
-            <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-2xl' : ''}`}>
+            <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-2xl' : ''} ${recruiterGlow}`}>
               <div className="animate-subtle-breathing">
                 <img 
                   src="/lovable-uploads/3d058cc3-0b77-4158-8d16-51a542051a19.png"
@@ -90,7 +94,7 @@ const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm
         } else {
           // For small sizes, use a simplified animated version
           return (
-            <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-lg' : ''}`}>
+            <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-lg' : ''} ${recruiterGlow}`}>
               <div className={`w-full h-full bg-gradient-to-br from-amber-200 to-amber-300 ${isLarge ? 'rounded-lg' : 'rounded'} border-2 border-arcade-neon-cyan relative overflow-hidden animate-subtle-breathing`}>
                 {/* Hair */}
                 <div className={`absolute top-0 left-0 right-0 ${isLarge ? 'h-6' : 'h-2'} bg-gradient-to-r from-amber-800 to-amber-700`}></div>
@@ -118,7 +122,7 @@ const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm
 
       case 'storytelling':
         return (
-          <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-lg' : ''}`}>
+          <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-lg' : ''} ${recruiterGlow}`}>
             {/* Medieval knight */}
             <div className={`w-full h-full bg-gradient-to-br from-blue-300 to-blue-500 ${isLarge ? 'rounded-lg' : 'rounded-full'} border-2 border-yellow-400 relative overflow-hidden animate-subtle-breathing`}>
               {/* Helmet */}
@@ -152,7 +156,7 @@ const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm
 
       case '3d-interactive':
         return (
-          <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-2xl' : ''}`}>
+          <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-2xl' : ''} ${recruiterGlow}`}>
             {/* AI orb */}
             <div className={`w-full h-full bg-gradient-to-br from-blue-400 via-purple-500 to-cyan-400 ${isLarge ? 'rounded-2xl' : 'rounded-full'} relative overflow-hidden shadow-lg animate-orb-pulse`}>
               {/* Glow effect */}
@@ -192,7 +196,7 @@ const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm
 
       case 'ecommerce':
         return (
-          <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-lg' : ''}`}>
+          <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-lg' : ''} ${recruiterGlow}`}>
             {/* Modern shopkeeper */}
             <div className={`w-full h-full bg-gradient-to-br from-amber-200 to-amber-300 ${isLarge ? 'rounded-lg' : 'rounded-full'} border-2 border-blue-400 relative overflow-hidden animate-subtle-breathing`}>
               {/* Hair */}
@@ -226,7 +230,7 @@ const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm
 
       case 'videography':
         return (
-          <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-lg' : ''}`}>
+          <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-lg' : ''} ${recruiterGlow}`}>
             {/* Film director */}
             <div className={`w-full h-full bg-gradient-to-br from-amber-200 to-amber-300 ${isLarge ? 'rounded-lg' : 'rounded-full'} border-2 border-yellow-500 relative overflow-hidden animate-subtle-breathing`}>
               {/* Beret */}
@@ -257,7 +261,7 @@ const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm
 
       default:
         return (
-          <div className={`${sizeClasses[size]} rounded-full bg-gray-300 flex items-center justify-center animate-subtle-breathing`}>
+          <div className={`${sizeClasses[size]} rounded-full bg-gray-300 flex items-center justify-center animate-subtle-breathing ${recruiterGlow}`}>
             <MessageCircle className="w-4 h-4 text-gray-600" />
           </div>
         );

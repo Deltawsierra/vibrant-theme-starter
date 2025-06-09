@@ -4,28 +4,35 @@ import { type Theme } from '@/context/ThemeContext';
 import AIAvatar from './AIAvatar';
 
 interface AIAvatarDisplayProps {
-  currentTheme: Theme;
+  theme?: Theme;
+  currentTheme?: Theme;
   isTyping: boolean;
-  avatarClicked: boolean;
-  onAvatarClick: () => void;
+  avatarClicked?: boolean;
+  onAvatarClick?: () => void;
+  isRecruiter?: boolean;
 }
 
 const AIAvatarDisplay: React.FC<AIAvatarDisplayProps> = ({
+  theme,
   currentTheme,
   isTyping,
-  avatarClicked,
-  onAvatarClick
+  avatarClicked = false,
+  onAvatarClick,
+  isRecruiter = false
 }) => {
+  const themeToUse = theme || currentTheme || 'minimalist';
+  
   return (
     <div className="lg:w-1/3 flex items-center justify-center p-6 lg:p-8">
       <div 
-        className={`transition-transform duration-300 cursor-pointer ${avatarClicked ? 'scale-110' : 'scale-100'}`}
+        className={`transition-transform duration-300 ${onAvatarClick ? 'cursor-pointer' : ''} ${avatarClicked ? 'scale-110' : 'scale-100'}`}
         onClick={onAvatarClick}
       >
         <AIAvatar 
-          theme={currentTheme} 
+          theme={themeToUse} 
           size="lg" 
           isTyping={isTyping}
+          isRecruiter={isRecruiter}
         />
       </div>
     </div>
