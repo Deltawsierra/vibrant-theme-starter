@@ -8,7 +8,7 @@ import {
   threeDInteractivePersonality,
   ecommercePersonality,
   videographyPersonality
-} from './personalities';
+} from './personalities/index';
 
 export const getThemePersonality = (theme: Theme): ThemePersonality => {
   const personalities: Record<Theme, ThemePersonality> = {
