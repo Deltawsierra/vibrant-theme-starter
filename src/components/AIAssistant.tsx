@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect, useContext } from 'react';
 import { useTheme } from '@/context/ThemeContext';
-import AIFloatingButton from './AIFloatingButton';
 import AIArcadeAdvisor from './AIArcadeAdvisor';
 import AIFullDialog from './AIFullDialog';
 import { getThemePersonality, generateAIResponse } from '@/utils/aiAssistantUtils';
@@ -17,9 +16,12 @@ interface Message {
   timestamp: Date;
 }
 
-const AIAssistant: React.FC = () => {
+interface AIAssistantProps {
+  onClose: () => void;
+}
+
+const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
   const { currentTheme } = useTheme();
-  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -36,9 +38,9 @@ const AIAssistant: React.FC = () => {
     setSessionId(Date.now().toString());
   }, []);
 
-  // Add welcome message when theme changes or first opens
+  // Add welcome message when component mounts
   useEffect(() => {
-    if (isOpen && messages.length === 0) {
+    if (messages.length === 0) {
       let welcomeText = personality.welcomeMessage;
       
       // If recruiter is detected, use a specialized welcome message
@@ -56,20 +58,11 @@ const AIAssistant: React.FC = () => {
       };
       setMessages([welcomeMessage]);
     }
-  }, [isOpen, currentTheme, personality.welcomeMessage, messages.length, isRecruiter]);
-
-  const handleOpen = () => {
-    setIsAnimatingIn(true);
-    setIsOpen(true);
-    setTimeout(() => setIsAnimatingIn(false), 500);
-  };
+  }, [currentTheme, personality.welcomeMessage, messages.length, isRecruiter]);
 
   const handleClose = () => {
     setIsAnimatingOut(true);
     setTimeout(() => {
-      setIsOpen(false);
-      setIsAnimatingOut(false);
-      
       // Log the conversation when closing
       if (messages.length > 1) {
         const transcript = messages
@@ -86,6 +79,8 @@ const AIAssistant: React.FC = () => {
           }
         });
       }
+      
+      onClose();
     }, 500);
   };
 
@@ -125,49 +120,34 @@ const AIAssistant: React.FC = () => {
     }
   };
 
-  return (
-    <>
-      {/* Floating Button - Bottom Right - Always visible when minimized */}
-      {!isOpen && (
-        <AIFloatingButton
-          currentTheme={currentTheme}
-          showHelpBubble={true}
-          onOpen={handleOpen}
-        />
-      )}
-
-      {/* Full Dialog/Advisor Window */}
-      {isOpen && (
-        currentTheme === 'retro-arcade' ? (
-          <AIArcadeAdvisor
-            isAnimatingIn={isAnimatingIn}
-            isAnimatingOut={isAnimatingOut}
-            messages={messages}
-            isTyping={isTyping}
-            personality={personality}
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            handleSendMessage={handleSendMessage}
-            handleKeyPress={handleKeyPress}
-            handleClose={handleClose}
-            isRecruiter={isRecruiter}
-          />
-        ) : (
-          <AIFullDialog
-            currentTheme={currentTheme}
-            messages={messages}
-            isTyping={isTyping}
-            personality={personality}
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            handleSendMessage={handleSendMessage}
-            handleKeyPress={handleKeyPress}
-            setIsOpen={setIsOpen}
-            isRecruiter={isRecruiter}
-          />
-        )
-      )}
-    </>
+  // Show the appropriate dialog based on theme
+  return currentTheme === 'retro-arcade' ? (
+    <AIArcadeAdvisor
+      isAnimatingIn={isAnimatingIn}
+      isAnimatingOut={isAnimatingOut}
+      messages={messages}
+      isTyping={isTyping}
+      personality={personality}
+      inputValue={inputValue}
+      setInputValue={setInputValue}
+      handleSendMessage={handleSendMessage}
+      handleKeyPress={handleKeyPress}
+      handleClose={handleClose}
+      isRecruiter={isRecruiter}
+    />
+  ) : (
+    <AIFullDialog
+      currentTheme={currentTheme}
+      messages={messages}
+      isTyping={isTyping}
+      personality={personality}
+      inputValue={inputValue}
+      setInputValue={setInputValue}
+      handleSendMessage={handleSendMessage}
+      handleKeyPress={handleKeyPress}
+      setIsOpen={handleClose}
+      isRecruiter={isRecruiter}
+    />
   );
 };
 
