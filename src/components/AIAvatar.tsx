@@ -12,7 +12,7 @@ const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm
   const sizeClasses = {
     sm: 'w-8 h-8',
     md: 'w-16 h-16',
-    lg: 'w-32 h-40'
+    lg: 'w-48 h-56' // Much larger for the advisor layout
   };
 
   const getAvatarElement = () => {
@@ -43,17 +43,17 @@ const AIAvatar: React.FC<AIAvatarProps> = ({ theme, isTyping = false, size = 'sm
 
       case 'retro-arcade':
         if (isLarge) {
-          // Use the provided pixel art image for large size
+          // Use the new pixel art image for large size
           return (
-            <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-lg' : ''}`}>
+            <div className={`${sizeClasses[size]} relative ${isLarge ? 'shadow-2xl' : ''}`}>
               <img 
-                src="/lovable-uploads/6669d385-afb4-4b5e-bd6a-32ece6029099.png"
+                src="/lovable-uploads/3d058cc3-0b77-4158-8d16-51a542051a19.png"
                 alt="Pixel AI Assistant"
                 className="w-full h-full object-cover pixelated"
                 style={{ imageRendering: 'pixelated' }}
               />
               {isTyping && (
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-arcade-neon-yellow rounded-full animate-ping"></div>
+                <div className="absolute -top-2 -right-2 w-4 h-4 bg-arcade-neon-yellow rounded-full animate-ping"></div>
               )}
             </div>
           );
