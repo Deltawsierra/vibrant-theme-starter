@@ -22,7 +22,7 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
   const [bootProgress, setBootProgress] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Extended boot sequence effect - minimum 3 seconds
+  // Faster boot sequence effect - reduced to 2.5 seconds
   useEffect(() => {
     if (isInitialized) return;
 
@@ -32,18 +32,18 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
           clearInterval(progressTimer);
           return 100;
         }
-        return prev + 3; // Slower progress for better readability
+        return prev + 4; // Faster progress for quicker boot
       });
     }, 100);
 
-    // Minimum 3 second boot time
+    // Reduced boot time to 2.5 seconds
     const bootTimer = setTimeout(() => {
       setShowBootSequence(false);
       setIsInitialized(true);
       if (userHasInteracted) {
         playBackgroundMusic();
       }
-    }, 3000); // Extended to 3 seconds minimum
+    }, 2500); // Reduced from 3000 to 2500 (0.5 seconds faster)
 
     return () => {
       clearTimeout(bootTimer);
@@ -73,7 +73,7 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
 
   return (
     <>
-      {/* Boot Sequence - only shows on initial load with extended timing */}
+      {/* Boot Sequence - only shows on initial load with faster timing */}
       {showBootSequence && !isInitialized && (
         <ArcadeBootSequence 
           isVisible={showBootSequence && !isInitialized}
