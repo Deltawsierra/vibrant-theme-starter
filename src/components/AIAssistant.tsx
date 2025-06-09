@@ -22,6 +22,7 @@ const AIAssistant: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isAnimatingIn, setIsAnimatingIn] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+  const [showHelpBubble, setShowHelpBubble] = useState(true);
   const personality = getThemePersonality(currentTheme);
 
   // Add welcome message when theme changes or first opens
@@ -37,9 +38,18 @@ const AIAssistant: React.FC = () => {
     }
   }, [isOpen, currentTheme, personality.welcomeMessage, messages.length]);
 
+  // Hide help bubble after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowHelpBubble(false);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleOpen = () => {
     setIsAnimatingIn(true);
     setIsOpen(true);
+    setShowHelpBubble(false);
     setTimeout(() => setIsAnimatingIn(false), 500);
   };
 
@@ -91,26 +101,40 @@ const AIAssistant: React.FC = () => {
   if (currentTheme === 'retro-arcade') {
     return (
       <>
-        {/* Minimized Button - Small coin icon */}
+        {/* Minimized Button - Bottom Right with Speech Bubble */}
         {!isOpen && (
-          <button
-            onClick={handleOpen}
-            className="fixed right-6 top-1/2 -translate-y-1/2 z-50 w-16 h-16 bg-arcade-dark-300 border-4 border-arcade-neon-cyan rounded-lg shadow-[0_0_20px_rgba(0,255,255,0.5)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(0,255,255,0.7)] animate-pulse-slow pixelated"
-            aria-label="Open AI Assistant"
-          >
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="w-8 h-8 bg-arcade-neon-yellow rounded-full border-2 border-arcade-neon-cyan pixelated">
-                <div className="w-full h-full bg-gradient-to-br from-arcade-neon-yellow to-yellow-300 rounded-full flex items-center justify-center">
-                  <span className="text-xs font-bold text-arcade-dark-300 pixelated-font">¥</span>
+          <div className="fixed bottom-6 right-6 z-50">
+            {/* Help Speech Bubble */}
+            {showHelpBubble && (
+              <div className="absolute bottom-20 right-0 bg-arcade-dark-200 border-2 border-arcade-neon-cyan rounded-lg p-3 shadow-[0_0_20px_rgba(0,255,255,0.5)] animate-fade-in pixelated">
+                <div className="text-arcade-neon-cyan pixelated-font text-sm whitespace-nowrap">
+                  Here to assist!
+                </div>
+                {/* Speech bubble pointer */}
+                <div className="absolute bottom-0 right-4 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-arcade-neon-cyan transform translate-y-2"></div>
+              </div>
+            )}
+            
+            {/* AI Icon Button */}
+            <button
+              onClick={handleOpen}
+              className="w-16 h-16 bg-arcade-dark-300 border-4 border-arcade-neon-cyan rounded-lg shadow-[0_0_20px_rgba(0,255,255,0.5)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(0,255,255,0.7)] animate-pulse-slow pixelated"
+              aria-label="Open AI Assistant"
+            >
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-arcade-neon-yellow rounded-full border-2 border-arcade-neon-cyan pixelated">
+                  <div className="w-full h-full bg-gradient-to-br from-arcade-neon-yellow to-yellow-300 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-bold text-arcade-dark-300 pixelated-font">AI</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </button>
+            </button>
+          </div>
         )}
 
         {/* Full Advisor Panel */}
         {isOpen && (
-          <div className={`fixed inset-0 z-50 flex pointer-events-none ${isAnimatingIn ? 'animate-fade-in' : ''} ${isAnimatingOut ? 'animate-fade-out' : ''}`}>
+          <div className={`fixed inset-0 z-50 flex pointer-events-none bg-black/70 backdrop-blur-sm ${isAnimatingIn ? 'animate-fade-in' : ''} ${isAnimatingOut ? 'animate-fade-out' : ''}`}>
             {/* Avatar Panel - Left Side */}
             <div className={`w-80 h-full bg-arcade-dark-300 border-r-4 border-arcade-neon-cyan shadow-[0_0_40px_rgba(0,255,255,0.8)] flex flex-col justify-center items-center p-6 pointer-events-auto transform transition-transform duration-500 ${isAnimatingIn ? 'translate-x-0' : isAnimatingOut ? '-translate-x-full' : 'translate-x-0'}`}>
               
@@ -146,7 +170,7 @@ const AIAssistant: React.FC = () => {
                 <div className="absolute left-0 top-1/3 w-0 h-0 border-r-[30px] border-r-arcade-neon-green border-t-[20px] border-t-transparent border-b-[20px] border-b-transparent transform -translate-x-7"></div>
                 
                 {/* Messages Area */}
-                <div className="mb-6 max-h-80 overflow-y-auto pixel-scrollbar">
+                <div className="mb-6 max-h-80 overflow-y-auto pixel-scrollbar bg-arcade-dark-100 rounded p-4 border-2 border-arcade-dark-300">
                   <div className="space-y-4">
                     {messages.map((message) => (
                       <div key={message.id} className="text-sm leading-relaxed">
@@ -210,15 +234,28 @@ const AIAssistant: React.FC = () => {
   // Default layout for other themes
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Button - Bottom Right */}
       {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg transition-all duration-300 hover:scale-110"
-          aria-label="Open AI Assistant"
-        >
-          <AIAvatar theme={currentTheme} size="sm" />
-        </button>
+        <div className="fixed bottom-6 right-6 z-50">
+          {/* Help Speech Bubble */}
+          {showHelpBubble && (
+            <div className="absolute bottom-20 right-0 bg-background border border-border rounded-lg p-3 shadow-lg animate-fade-in">
+              <div className="text-foreground text-sm whitespace-nowrap">
+                Here to assist!
+              </div>
+              {/* Speech bubble pointer */}
+              <div className="absolute bottom-0 right-4 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-border transform translate-y-2"></div>
+            </div>
+          )}
+          
+          <button
+            onClick={() => setIsOpen(true)}
+            className="w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg transition-all duration-300 hover:scale-110 flex items-center justify-center"
+            aria-label="Open AI Assistant"
+          >
+            <AIAvatar theme={currentTheme} size="sm" />
+          </button>
+        </div>
       )}
 
       {/* Full Dialog Window */}
@@ -237,7 +274,7 @@ const AIAssistant: React.FC = () => {
             </Button>
 
             {/* Avatar Section */}
-            <div className="lg:w-1/3 flex items-center justify-center p-6 lg:p-8">
+            <div className="lg:w-1/3 flex items-center justify-center p-6 lg:p-8 bg-card">
               <AIAvatar 
                 theme={currentTheme} 
                 size="lg" 
@@ -246,7 +283,7 @@ const AIAssistant: React.FC = () => {
             </div>
 
             {/* Speech Bubble Section */}
-            <div className="lg:w-2/3 flex flex-col p-6 lg:p-8 relative">
+            <div className="lg:w-2/3 flex flex-col p-6 lg:p-8 relative bg-background">
               {/* Speech Bubble Pointer */}
               <div className="absolute left-0 top-8 lg:top-1/3 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[20px] border-t-border transform -translate-x-5"></div>
               
@@ -259,7 +296,7 @@ const AIAssistant: React.FC = () => {
                 </div>
 
                 {/* Messages */}
-                <div className="flex-1 mb-4 max-h-64 lg:max-h-96 overflow-y-auto">
+                <div className="flex-1 mb-4 max-h-64 lg:max-h-96 overflow-y-auto bg-muted/30 rounded p-4">
                   <div className="space-y-3 pr-2">
                     {messages.map((message) => (
                       <div key={message.id} className="text-sm leading-relaxed">
@@ -301,7 +338,7 @@ const AIAssistant: React.FC = () => {
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder={personality.inputPlaceholder}
-                    className="flex-1"
+                    className="flex-1 bg-background"
                     disabled={isTyping}
                   />
                   <Button
