@@ -1,16 +1,16 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, memo } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import AIAvatar from './AIAvatar';
 import AIAssistant from './AIAssistant';
 
-const AIFloatingButton: React.FC = () => {
+const AIFloatingButton: React.FC = memo(() => {
   const { currentTheme } = useTheme();
   const [showHelpBubble, setShowHelpBubble] = useState(false);
   const [isAIOpen, setIsAIOpen] = useState(false);
 
   // Show help bubble after 3 seconds, hide after 5 seconds
-  React.useEffect(() => {
+  useEffect(() => {
     const showTimer = setTimeout(() => setShowHelpBubble(true), 3000);
     const hideTimer = setTimeout(() => setShowHelpBubble(false), 8000);
     
@@ -20,10 +20,14 @@ const AIFloatingButton: React.FC = () => {
     };
   }, []);
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     setIsAIOpen(true);
     setShowHelpBubble(false);
-  };
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setIsAIOpen(false);
+  }, []);
 
   if (currentTheme === 'retro-arcade') {
     return (
@@ -58,7 +62,7 @@ const AIFloatingButton: React.FC = () => {
         
         {/* AI Assistant Modal */}
         {isAIOpen && (
-          <AIAssistant onClose={() => setIsAIOpen(false)} />
+          <AIAssistant onClose={handleClose} />
         )}
       </>
     );
@@ -90,10 +94,12 @@ const AIFloatingButton: React.FC = () => {
       
       {/* AI Assistant Modal */}
       {isAIOpen && (
-        <AIAssistant onClose={() => setIsAIOpen(false)} />
+        <AIAssistant onClose={handleClose} />
       )}
     </>
   );
-};
+});
+
+AIFloatingButton.displayName = 'AIFloatingButton';
 
 export default AIFloatingButton;

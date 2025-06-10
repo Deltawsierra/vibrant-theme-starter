@@ -1,8 +1,10 @@
+
 import React from 'react';
 
 export class PerformanceMonitor {
   private static instance: PerformanceMonitor;
   private metrics: Map<string, number> = new Map();
+  private isEnabled: boolean = import.meta.env.DEV;
 
   private constructor() {}
 
@@ -14,10 +16,13 @@ export class PerformanceMonitor {
   }
 
   public startTimer(name: string): void {
+    if (!this.isEnabled) return;
     this.metrics.set(name, performance.now());
   }
 
   public endTimer(name: string): number {
+    if (!this.isEnabled) return 0;
+    
     const startTime = this.metrics.get(name);
     if (startTime === undefined) {
       console.warn(`Timer ${name} was not started`);
@@ -27,7 +32,8 @@ export class PerformanceMonitor {
     const duration = performance.now() - startTime;
     this.metrics.delete(name);
     
-    if (import.meta.env.DEV) {
+    // Only log in development and if duration is significant
+    if (duration > 16) { // More than one frame
       console.log(`Performance: ${name} took ${duration.toFixed(2)}ms`);
     }
     
@@ -38,6 +44,8 @@ export class PerformanceMonitor {
     name: string,
     fn: (...args: T) => R
   ): (...args: T) => R {
+    if (!this.isEnabled) return fn;
+    
     return (...args: T): R => {
       this.startTimer(name);
       const result = fn(...args);
@@ -47,44 +55,66 @@ export class PerformanceMonitor {
   }
 
   public getWebVitals(): Promise<any> {
-    return new Promise((resolve) => {
-      // Simple web vitals measurement
-      const observer = new PerformanceObserver((list) => {
-        const entries = list.getEntries();
-        const vitals = {
-          fcp: 0,
-          lcp: 0,
-          fid: 0,
-          cls: 0,
-          ttfb: 0
-        };
+    if (!this.isEnabled) {
+      return Promise.resolve({});
+    }
 
-        entries.forEach((entry) => {
-          if (entry.entryType === 'paint' && entry.name === 'first-contentful-paint') {
-            vitals.fcp = entry.startTime;
+    return new Promise((resolve) => {
+      const vitals = {
+        fcp: 0,
+        lcp: 0,
+        fid: 0,
+        cls: 0,
+        ttfb: 0
+      };
+
+      // Use a more efficient observer pattern
+      const observerConfig = { entryTypes: ['paint', 'largest-contentful-paint', 'first-input', 'layout-shift', 'navigation'] };
+      
+      try {
+        const observer = new PerformanceObserver((list) => {
+          const entries = list.getEntries();
+          
+          for (const entry of entries) {
+            switch (entry.entryType) {
+              case 'paint':
+                if (entry.name === 'first-contentful-paint') {
+                  vitals.fcp = entry.startTime;
+                }
+                break;
+              case 'largest-contentful-paint':
+                vitals.lcp = entry.startTime;
+                break;
+              case 'first-input':
+                vitals.fid = (entry as any).processingStart - entry.startTime;
+                break;
+              case 'layout-shift':
+                if (!(entry as any).hadRecentInput) {
+                  vitals.cls += (entry as any).value;
+                }
+                break;
+              case 'navigation':
+                vitals.ttfb = (entry as any).responseStart - entry.startTime;
+                break;
+            }
           }
-          if (entry.entryType === 'largest-contentful-paint') {
-            vitals.lcp = entry.startTime;
-          }
-          if (entry.entryType === 'first-input') {
-            vitals.fid = (entry as any).processingStart - entry.startTime;
-          }
-          if (entry.entryType === 'layout-shift' && !(entry as any).hadRecentInput) {
-            vitals.cls += (entry as any).value;
-          }
-          if (entry.entryType === 'navigation') {
-            vitals.ttfb = (entry as any).responseStart - entry.startTime;
-          }
+
+          resolve(vitals);
         });
 
+        observer.observe(observerConfig);
+        
+        // Fallback timeout
+        setTimeout(() => resolve(vitals), 2000);
+      } catch (error) {
+        console.warn('Performance Observer not supported', error);
         resolve(vitals);
-      });
-
-      observer.observe({ entryTypes: ['paint', 'largest-contentful-paint', 'first-input', 'layout-shift', 'navigation'] });
-      
-      // Fallback timeout
-      setTimeout(() => resolve({}), 5000);
+      }
     });
+  }
+
+  public clearMetrics(): void {
+    this.metrics.clear();
   }
 }
 
@@ -92,18 +122,37 @@ export function withPerformanceTracking<P extends object>(
   Component: React.ComponentType<P>,
   name?: string
 ) {
+  if (!import.meta.env.DEV) {
+    return React.memo(Component);
+  }
+
   const componentName = name || Component.displayName || Component.name || 'Component';
   
   return React.memo((props: P) => {
     const monitor = PerformanceMonitor.getInstance();
     
     React.useEffect(() => {
-      monitor.startTimer(`${componentName}-render`);
+      monitor.startTimer(`${componentName}-mount`);
       return () => {
-        monitor.endTimer(`${componentName}-render`);
+        monitor.endTimer(`${componentName}-mount`);
       };
     }, []);
 
     return React.createElement(Component, props);
   });
 }
+
+// Utility for measuring async operations
+export const measureAsync = async <T>(
+  name: string,
+  asyncFn: () => Promise<T>
+): Promise<T> => {
+  const monitor = PerformanceMonitor.getInstance();
+  monitor.startTimer(name);
+  try {
+    const result = await asyncFn();
+    return result;
+  } finally {
+    monitor.endTimer(name);
+  }
+};

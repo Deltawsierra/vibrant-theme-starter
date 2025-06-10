@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo, useCallback } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import AIArcadeAdvisor from './AIArcadeAdvisor';
 import AIFullDialog from './AIFullDialog';
@@ -20,84 +20,78 @@ interface AIAssistantProps {
   onClose: () => void;
 }
 
-// Check if arcade context is available
-const useArcadeContextSafely = () => {
-  try {
-    // Try to import and use the arcade context
-    const { useArcade } = require('@/themes/retro-arcade/context/ArcadeContext');
-    return useArcade();
-  } catch (error) {
-    // If arcade context is not available, return null
-    return null;
-  }
-};
-
 const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
   const { currentTheme } = useTheme();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [isAnimatingIn, setIsAnimatingIn] = useState(false);
-  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
-  const [sessionId, setSessionId] = useState<string>('');
+  const [sessionId] = useState<string>(() => Date.now().toString());
   const { isRecruiter } = useContext(AIRecruiterContext);
   const { toast } = useToast();
   
-  const personality = getThemePersonality(currentTheme);
-  const arcadeContext = useArcadeContextSafely();
+  // Memoize personality to prevent recalculation
+  const personality = useMemo(() => getThemePersonality(currentTheme), [currentTheme]);
+  
+  // Safely check for arcade context only when needed
+  const arcadeContext = useMemo(() => {
+    if (currentTheme !== 'retro-arcade') return null;
+    
+    try {
+      const { useArcade } = require('@/themes/retro-arcade/context/ArcadeContext');
+      return useArcade();
+    } catch (error) {
+      console.warn('Arcade context not available:', error);
+      return null;
+    }
+  }, [currentTheme]);
 
-  // Generate a session ID when the component mounts
-  useEffect(() => {
-    setSessionId(Date.now().toString());
-  }, []);
+  // Memoize welcome message generation
+  const welcomeMessage = useMemo(() => {
+    let welcomeText = personality.welcomeMessage;
+    
+    if (isRecruiter) {
+      const themeRecruiterMessages = recruiterMessages[currentTheme]?.welcome || 
+                                    recruiterMessages.minimalist.welcome;
+      welcomeText = themeRecruiterMessages[Math.floor(Math.random() * themeRecruiterMessages.length)];
+    }
+    
+    return {
+      id: 'welcome',
+      text: welcomeText,
+      isUser: false,
+      timestamp: new Date()
+    };
+  }, [currentTheme, personality.welcomeMessage, isRecruiter]);
 
-  // Add welcome message when component mounts
+  // Initialize welcome message only once
   useEffect(() => {
     if (messages.length === 0) {
-      let welcomeText = personality.welcomeMessage;
-      
-      // If recruiter is detected, use a specialized welcome message
-      if (isRecruiter) {
-        const themeRecruiterMessages = recruiterMessages[currentTheme]?.welcome || 
-                                      recruiterMessages.minimalist.welcome;
-        welcomeText = themeRecruiterMessages[Math.floor(Math.random() * themeRecruiterMessages.length)];
-      }
-      
-      const welcomeMessage: Message = {
-        id: Date.now().toString(),
-        text: welcomeText,
-        isUser: false,
-        timestamp: new Date()
-      };
       setMessages([welcomeMessage]);
     }
-  }, [currentTheme, personality.welcomeMessage, messages.length, isRecruiter]);
+  }, [welcomeMessage, messages.length]);
 
-  const handleClose = () => {
-    setIsAnimatingOut(true);
-    setTimeout(() => {
-      // Log the conversation when closing
-      if (messages.length > 1) {
-        const transcript = messages
-          .map(msg => `${msg.isUser ? 'User' : 'AI'}: ${msg.text}`)
-          .join('\n');
-        
-        logAIConversation(
-          sessionId, 
-          transcript, 
-          isRecruiter ? 'recruiter' : 'general'
-        ).then(result => {
-          if (result) {
-            console.log('Conversation logged:', result);
-          }
-        });
-      }
+  const handleClose = useCallback(() => {
+    // Log the conversation when closing
+    if (messages.length > 1) {
+      const transcript = messages
+        .map(msg => `${msg.isUser ? 'User' : 'AI'}: ${msg.text}`)
+        .join('\n');
       
-      onClose();
-    }, 500);
-  };
+      logAIConversation(
+        sessionId, 
+        transcript, 
+        isRecruiter ? 'recruiter' : 'general'
+      ).then(result => {
+        if (result) {
+          console.log('Conversation logged:', result);
+        }
+      });
+    }
+    
+    onClose();
+  }, [messages, sessionId, isRecruiter, onClose]);
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = useCallback(async () => {
     if (!inputValue.trim()) return;
 
     const userMessage: Message = {
@@ -124,23 +118,22 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
       setMessages(prev => [...prev, aiMessage]);
       setIsTyping(false);
     }, 1000 + Math.random() * 1500);
-  };
+  }, [inputValue, currentTheme]);
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
-  };
+  }, [handleSendMessage]);
 
-  // Show the appropriate dialog based on theme and context availability
   // Only use arcade advisor if we're in retro-arcade theme AND arcade context is available
   const shouldUseArcadeAdvisor = currentTheme === 'retro-arcade' && arcadeContext !== null;
 
   return shouldUseArcadeAdvisor ? (
     <AIArcadeAdvisor
-      isAnimatingIn={isAnimatingIn}
-      isAnimatingOut={isAnimatingOut}
+      isAnimatingIn={false}
+      isAnimatingOut={false}
       messages={messages}
       isTyping={isTyping}
       personality={personality}
@@ -167,4 +160,4 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
   );
 };
 
-export default AIAssistant;
+export default React.memo(AIAssistant);

@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, memo } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { type Theme } from '@/context/ThemeContext';
 import { type ThemePersonality } from '@/utils/aiAssistantUtils';
@@ -24,7 +24,7 @@ interface AISpeechBubbleProps {
   onKeyPress: (e: React.KeyboardEvent) => void;
 }
 
-const AISpeechBubble: React.FC<AISpeechBubbleProps> = ({
+const AISpeechBubble: React.FC<AISpeechBubbleProps> = memo(({
   messages,
   isTyping,
   personality,
@@ -43,7 +43,7 @@ const AISpeechBubble: React.FC<AISpeechBubbleProps> = ({
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages.length, isTyping]); // Only depend on message count and typing state
 
   return (
     <div className="lg:w-2/3 flex flex-col p-6 lg:p-8 relative">
@@ -108,6 +108,8 @@ const AISpeechBubble: React.FC<AISpeechBubbleProps> = ({
       </div>
     </div>
   );
-};
+});
+
+AISpeechBubble.displayName = 'AISpeechBubble';
 
 export default AISpeechBubble;
