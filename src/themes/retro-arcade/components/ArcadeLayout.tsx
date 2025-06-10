@@ -18,6 +18,9 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
       {/* Animated Background */}
       <ArcadeBackground />
       
+      {/* CRT Scanlines Base Effect */}
+      <div className="fixed inset-0 pointer-events-none z-0 bg-crt-scanlines opacity-10"></div>
+      
       {/* Navigation */}
       <ArcadeNavigation />
       
@@ -32,12 +35,18 @@ const ArcadeLayout: React.FC<ArcadeLayoutProps> = ({ children }) => {
       {/* Audio Controls */}
       <AudioControlsSidebar />
       
-      {/* Scanlines Effect */}
+      {/* Enhanced Scanlines Effect */}
       {settings.enableScanlines && (
-        <div className="fixed inset-0 pointer-events-none z-50 opacity-20">
-          <div className="h-full w-full bg-gradient-to-b from-transparent via-arcade-neon-cyan to-transparent animate-scanlines"></div>
+        <div className="fixed inset-0 pointer-events-none z-50 opacity-30">
+          <div className="h-full w-full bg-gradient-to-b from-transparent via-arcade-neon-cyan/10 to-transparent animate-screen-flicker"></div>
         </div>
       )}
+      
+      {/* Grid Floor Effect */}
+      <div className="fixed bottom-0 left-0 right-0 h-32 pointer-events-none z-5">
+        <div className="absolute inset-0 bg-arcade-grid opacity-20 animate-slide" 
+             style={{ backgroundSize: '40px 40px' }} />
+      </div>
     </div>
   );
 };
