@@ -41,13 +41,13 @@ const App: React.FC = () => {
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>
+                
+                {/* Global AI Assistant - moved inside Router context */}
+                <AIFloatingButton />
+                
+                {/* Global Toast Notifications */}
+                <Toaster />
               </Router>
-              
-              {/* Global AI Assistant - only show on theme pages */}
-              <AIFloatingButton />
-              
-              {/* Global Toast Notifications */}
-              <Toaster />
             </AIRecruiterDetector>
           </ThemeProvider>
         </AuthProvider>
