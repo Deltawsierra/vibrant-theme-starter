@@ -20,6 +20,18 @@ interface AIAssistantProps {
   onClose: () => void;
 }
 
+// Check if arcade context is available
+const useArcadeContextSafely = () => {
+  try {
+    // Try to import and use the arcade context
+    const { useArcade } = require('@/themes/retro-arcade/context/ArcadeContext');
+    return useArcade();
+  } catch (error) {
+    // If arcade context is not available, return null
+    return null;
+  }
+};
+
 const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
   const { currentTheme } = useTheme();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -32,6 +44,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
   const { toast } = useToast();
   
   const personality = getThemePersonality(currentTheme);
+  const arcadeContext = useArcadeContextSafely();
 
   // Generate a session ID when the component mounts
   useEffect(() => {
@@ -120,8 +133,11 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ onClose }) => {
     }
   };
 
-  // Show the appropriate dialog based on theme
-  return currentTheme === 'retro-arcade' ? (
+  // Show the appropriate dialog based on theme and context availability
+  // Only use arcade advisor if we're in retro-arcade theme AND arcade context is available
+  const shouldUseArcadeAdvisor = currentTheme === 'retro-arcade' && arcadeContext !== null;
+
+  return shouldUseArcadeAdvisor ? (
     <AIArcadeAdvisor
       isAnimatingIn={isAnimatingIn}
       isAnimatingOut={isAnimatingOut}
