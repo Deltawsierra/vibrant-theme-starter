@@ -1,16 +1,18 @@
 
-import About from './pages/About';
-import Work from './pages/Work';
-import Contact from './pages/Contact';
-import Showcase from './pages/Showcase';
-import { VideoProvider } from './context/VideoContext';
+import React from 'react';
+
+// Import all pages with explicit default imports
+import VideographyAbout from './pages/About';
+import VideographyWork from './pages/Work';
+import VideographyContact from './pages/Contact';
+import VideographyShowcase from './pages/Showcase';
 
 export const videographyTheme = {
-  About,
-  Work,
-  Contact,
-  Showcase,
-  Provider: VideoProvider,
+  About: VideographyAbout,
+  Work: VideographyWork,
+  Contact: VideographyContact,
+  Showcase: VideographyShowcase,
+  Provider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children),
 };
 
 export default videographyTheme;

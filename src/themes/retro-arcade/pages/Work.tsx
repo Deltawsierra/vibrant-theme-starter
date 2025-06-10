@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { useArcade } from '../context/ArcadeContext';
 
-const RetroArcadeWork = () => {
+const RetroArcadeWork: React.FC = () => {
   const { settings } = useArcade();
 
   const projects = [

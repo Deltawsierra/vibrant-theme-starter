@@ -2,7 +2,7 @@
 import React from 'react';
 import VideographyLayout from '../components/VideographyLayout';
 
-const VideographyWork = () => {
+const VideographyWork: React.FC = () => {
   return (
     <VideographyLayout>
       <div className="text-center">

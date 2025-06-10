@@ -34,8 +34,8 @@ const ThemePageLoader: React.FC<ThemePageLoaderProps> = ({ pageName }) => {
     const PageComponent = themeComponents[pageName];
     const ThemeProvider = themeComponents.Provider;
     
-    if (!PageComponent) {
-      console.error('Page component not found:', { theme: currentTheme, page: pageName });
+    if (!PageComponent || typeof PageComponent !== 'function') {
+      console.error('Page component not found or invalid:', { theme: currentTheme, page: pageName, component: PageComponent });
       console.log('Available pages for theme:', Object.keys(themeComponents));
       return (
         <div className="min-h-screen flex items-center justify-center">
@@ -66,7 +66,7 @@ const ThemePageLoader: React.FC<ThemePageLoaderProps> = ({ pageName }) => {
             </div>
           }
         >
-          {ThemeProvider ? (
+          {ThemeProvider && typeof ThemeProvider === 'function' ? (
             <ThemeProvider>
               <PageComponent />
             </ThemeProvider>

@@ -2,7 +2,7 @@
 import React from 'react';
 import StoryLayout from '../components/StoryLayout';
 
-const StorytellingWork = () => {
+const StorytellingWork: React.FC = () => {
   return (
     <StoryLayout>
       <h1 className="text-4xl font-bold text-amber-800 mb-8 text-center">

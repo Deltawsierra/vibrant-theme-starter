@@ -2,7 +2,7 @@
 import React from 'react';
 import EcommerceLayout from '../components/EcommerceLayout';
 
-const EcommerceWork = () => {
+const EcommerceWork: React.FC = () => {
   return (
     <EcommerceLayout>
       <div className="text-center">

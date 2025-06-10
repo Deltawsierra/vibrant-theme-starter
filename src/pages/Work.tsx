@@ -1,7 +1,8 @@
 
+import React from 'react';
 import ThemePageLoader from "@/components/ThemePageLoader";
 
-const Work = () => {
+const Work: React.FC = () => {
   return <ThemePageLoader pageName="Work" />;
 };
 

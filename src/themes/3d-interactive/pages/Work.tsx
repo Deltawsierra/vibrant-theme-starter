@@ -2,7 +2,7 @@
 import React from 'react';
 import ThreeDLayout from '../components/ThreeDLayout';
 
-const ThreeDInteractiveWork = () => {
+const ThreeDInteractiveWork: React.FC = () => {
   return (
     <ThreeDLayout>
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white z-10">

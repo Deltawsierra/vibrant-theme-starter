@@ -1,28 +1,21 @@
 
 import React from 'react';
 import { ArcadeProvider } from './context/ArcadeContext';
-import ArcadeLayout from './components/ArcadeLayout';
 
-// Import theme pages
-import ArcadeAbout from './pages/About';
-import ArcadeWork from './pages/Work';
-import ArcadeContact from './pages/Contact';
-import ArcadeShowcase from './pages/Showcase';
-import ArcadeGame from './pages/game';
+// Import all pages with explicit default imports
+import RetroArcadeAbout from './pages/About';
+import RetroArcadeWork from './pages/Work';
+import RetroArcadeContact from './pages/Contact';
+import RetroArcadeShowcase from './pages/Showcase';
+import RetroArcadeGame from './pages/game';
 
-const RetroArcadeTheme = {
-  About: ArcadeAbout,
-  Work: ArcadeWork,
-  Contact: ArcadeContact,
-  Showcase: ArcadeShowcase,
-  Game: ArcadeGame,
-  Provider: ({ children }: { children: React.ReactNode }) => (
-    <ArcadeProvider>
-      <ArcadeLayout>
-        {children}
-      </ArcadeLayout>
-    </ArcadeProvider>
-  )
+const retroArcadeTheme = {
+  About: RetroArcadeAbout,
+  Work: RetroArcadeWork,
+  Contact: RetroArcadeContact,
+  Showcase: RetroArcadeShowcase,
+  Game: RetroArcadeGame,
+  Provider: ArcadeProvider,
 };
 
-export default RetroArcadeTheme;
+export default retroArcadeTheme;

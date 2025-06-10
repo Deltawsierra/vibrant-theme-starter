@@ -2,7 +2,7 @@
 import React from 'react';
 import MinimalistLayout from '../components/MinimalistLayout';
 
-const MinimalistWork = () => {
+const MinimalistWork: React.FC = () => {
   const projects = [
     {
       title: "Enterprise SaaS Platform",

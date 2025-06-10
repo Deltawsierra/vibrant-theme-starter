@@ -1,16 +1,18 @@
 
 import React from 'react';
-import About from './pages/About';
-import Work from './pages/Work';
-import Contact from './pages/Contact';
-import Showcase from './pages/Showcase';
+
+// Import all pages with explicit default imports
+import MinimalistAbout from './pages/About';
+import MinimalistWork from './pages/Work';
+import MinimalistContact from './pages/Contact';
+import MinimalistShowcase from './pages/Showcase';
 
 export const minimalistTheme = {
-  About,
-  Work,
-  Contact,
-  Showcase,
-  Provider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children), // No-op provider
+  About: MinimalistAbout,
+  Work: MinimalistWork,
+  Contact: MinimalistContact,
+  Showcase: MinimalistShowcase,
+  Provider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children),
 };
 
 export default minimalistTheme;
