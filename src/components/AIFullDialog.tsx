@@ -43,10 +43,37 @@ const AIFullDialog: React.FC<AIFullDialogProps> = ({
   isRecruiter = false
 }) => {
   const themeStyles = getAIThemeStyles(currentTheme);
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // Handle backdrop click
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      setIsOpen(false);
+    }
+  };
+
+  // Handle escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [setIsOpen]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className={`relative w-full max-w-4xl h-full max-h-[90vh] rounded-xl shadow-2xl flex flex-col lg:flex-row overflow-hidden ${themeStyles.container}`}>
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      onClick={handleBackdropClick}
+    >
+      <div 
+        ref={dialogRef}
+        className={`relative w-full max-w-4xl h-full max-h-[90vh] rounded-xl shadow-2xl flex flex-col lg:flex-row overflow-hidden ${themeStyles.container}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Close Button */}
         <Button
